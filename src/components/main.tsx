@@ -20,7 +20,7 @@ const Orrery = () => {
       mountRef.current.appendChild(renderer.domElement);
     }
 
-    //orbitControls for navigation
+    //orbitControls for  navigation
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;  
     controls.dampingFactor = 0.05;
@@ -30,8 +30,11 @@ const Orrery = () => {
     const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
+    const planetGeometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const planetMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+    const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+    scene.add(planet);
  
-  
     camera.position.z = 10;
  
     const handleResize = () => {
@@ -40,11 +43,10 @@ const Orrery = () => {
       renderer.setSize(window.innerWidth, window.innerHeight);
     };
     window.addEventListener("resize", handleResize);
+ 
+    controls.update();  
+    renderer.render(scene, camera);
 
- 
-   controls.update();  
-      renderer.render(scene, camera);
- 
     // Clean up on unmount
     return () => {
       if (mountRef.current) {
