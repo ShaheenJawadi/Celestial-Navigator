@@ -30,6 +30,14 @@ const Orrery = () => {
     const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xffff00 });
     const sun = new THREE.Mesh(sunGeometry, sunMaterial);
     scene.add(sun);
+
+    const orbitGeometry = new THREE.RingGeometry(5, 5.1, 64);
+    const orbitMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff, side: THREE.DoubleSide });
+    const orbit = new THREE.Mesh(orbitGeometry, orbitMaterial);
+    orbit.rotation.x = Math.PI / 2;  
+    scene.add(orbit);
+
+    
     const planetGeometry = new THREE.SphereGeometry(0.5, 32, 32);
     const planetMaterial = new THREE.MeshBasicMaterial({ color: 0x0000ff });
     const planet = new THREE.Mesh(planetGeometry, planetMaterial);
