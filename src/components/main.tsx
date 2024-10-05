@@ -34,7 +34,7 @@ const Orrery = () => {
       longNode: 0.0 * (Math.PI / 180), // Longitude of ascending node (radians)
     };
 
-    const earth = new Planet(scene, 0.5, 0x0000ff, earthElements);
+    const earth = new Planet(scene, 3, 0x0000ff, earthElements);
 
     // Mercury
     const mercuryElements = {
@@ -46,7 +46,7 @@ const Orrery = () => {
       longNode: 48.33076593 * (Math.PI / 180), // Longitude of ascending node (radians)
     };
 
-    const mercury = new Planet(scene, 0.3, 0xffa500, mercuryElements);
+    const mercury = new Planet(scene, 1, 0xffa500, mercuryElements);
 
     camera.position.z = 10;
 
@@ -58,7 +58,7 @@ const Orrery = () => {
     const animate = () => {
       requestAnimationFrame(animate);
       
-      const time = Date.now() * 0.00000000000001; 
+      const time = Date.now() * 0.000000000000001; 
 
       earth.update(time);
       mercury.update(time);
