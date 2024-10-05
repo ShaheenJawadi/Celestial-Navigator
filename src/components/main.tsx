@@ -1,5 +1,4 @@
-import { useEffect, useRef } from "react";
-import * as THREE from "three";
+import { useEffect, useRef } from "react"; 
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SceneSetup } from "./scene";
 import { Planet } from "./planets/planet";

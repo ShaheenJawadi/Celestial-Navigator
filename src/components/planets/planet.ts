@@ -4,8 +4,16 @@ export class Planet {
   planet: THREE.Mesh;
 
   constructor() {
+
+    const textureLoader = new THREE.TextureLoader();
+    const planetTexture = textureLoader.load("textures/planets/earth.jpg");
+
+
     const geometry = new THREE.SphereGeometry(0.5, 32, 32);
-    const material = new THREE.MeshBasicMaterial({ color: 0x0000ff });
+  
+    const material = new THREE.MeshBasicMaterial({
+      map: planetTexture,   
+  });
     this.planet = new THREE.Mesh(geometry, material);
   }
 
