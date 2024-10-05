@@ -34,7 +34,7 @@ const Orrery = () => {
       longNode: 0.0 * (Math.PI / 180), // Longitude of ascending node (radians)
     };
 
-    const earth = new Planet(scene, 3, 0x0000ff, earthElements);
+    const earth = new Planet(scene, 3, '/textures/planets/earth.jpg', earthElements);
 
     // Mercury
     const mercuryElements = {
@@ -46,7 +46,8 @@ const Orrery = () => {
       longNode: 48.33076593 * (Math.PI / 180), // Longitude of ascending node (radians)
     };
 
-    const mercury = new Planet(scene, 1, 0xffa500, mercuryElements);
+
+    const mercury = new Planet(scene, 1, '/textures/planets/mercury.jpg', mercuryElements);
 
     camera.position.z = 10;
 
