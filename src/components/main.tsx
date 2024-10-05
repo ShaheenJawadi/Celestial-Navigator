@@ -3,6 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SceneSetup } from "./scene";
 import { Planet } from "./planets/planet";
 import { Sun } from "./stars/sun";
+import { planetsList } from "@/data/planets";
 
 const Orrery = () => {
   const mountRef = useRef<HTMLDivElement>(null);
@@ -23,31 +24,8 @@ const Orrery = () => {
     controls.enablePan = true;
 
     scene.add(sun.getMesh());
-
-    // Earth
-    const earthElements = {
-      a: 1.00000261, // Semi-major axis (AU)
-      e: 0.01671123, // Eccentricity
-      I: -0.00001531 * (Math.PI / 180), // Inclination (radians)
-      L: 100.46457166 * (Math.PI / 180), // Mean Longitude (radians)
-      longPeri: 102.93768193 * (Math.PI / 180), // Longitude of perihelion (radians)
-      longNode: 0.0 * (Math.PI / 180), // Longitude of ascending node (radians)
-    };
-
-    const earth = new Planet(scene, 3, '/textures/planets/earth.jpg', earthElements);
-
-    // Mercury
-    const mercuryElements = {
-      a: 0.38709927, // Semi-major axis (AU)
-      e: 0.20563593, // Eccentricity
-      I: 7.00497902 * (Math.PI / 180), // Inclination (radians)
-      L: 252.25032350 * (Math.PI / 180), // Mean Longitude (radians)
-      longPeri: 77.45779628 * (Math.PI / 180), // Longitude of perihelion (radians)
-      longNode: 48.33076593 * (Math.PI / 180), // Longitude of ascending node (radians)
-    };
-
-
-    const mercury = new Planet(scene, 1, '/textures/planets/mercury.jpg', mercuryElements);
+ 
+    const planets = planetsList.map(planetData => new Planet(scene, planetData.radius, planetData.texture, planetData.keplerianElements));
 
     camera.position.z = 10;
 
@@ -61,8 +39,7 @@ const Orrery = () => {
       
       const time = Date.now() * 0.000000000000001; 
 
-      earth.update(time);
-      mercury.update(time);
+      planets.forEach(planet => planet.update(time));
       controls.update();
       renderer.render(scene, camera);
     };
