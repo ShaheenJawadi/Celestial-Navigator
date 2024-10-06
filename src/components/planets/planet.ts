@@ -1,3 +1,4 @@
+import { keplerianElementsType, planetType } from '@/types/planet';
 import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 
@@ -7,24 +8,20 @@ import * as THREE from 'three';
 export class Planet {
     mesh: THREE.Mesh;
     currentTime: number = 0;
-    keplerianElements: {
-        a: number; // semi-major axis
-        e: number; // eccentricity
-        I: number; // inclination
-        L: number; // mean longitude
-        longPeri: number; // longitude of perihelion
-        longNode: number; // longitude of ascending node
-    };
+    keplerianElements: keplerianElementsType;
+    planetData: planetType;
     orbitLine: THREE.Line; // To store the orbit line
 
-    constructor(scene: THREE.Scene, radius: number, texture_img: string, elements: any) {
-        this.keplerianElements = elements;
+    constructor(scene: THREE.Scene,  data:planetType) {
+        const { name, color ,texture ,radius , keplerianElements } = data;
+        this.keplerianElements = keplerianElements;
+        this.planetData = data;
 
         const textureLoader = new THREE.TextureLoader();
-        const texture = textureLoader.load(texture_img);
+        const texture3d = textureLoader.load(texture);
 
         const geometry = new THREE.SphereGeometry(radius*PLANET_SIZE_SCALE_FACTOR, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ map: texture });
+        const material = new THREE.MeshBasicMaterial({ map: texture3d });
         this.mesh = new THREE.Mesh(geometry, material);
         scene.add(this.mesh);
 
@@ -95,7 +92,7 @@ export class Planet {
         }
     
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });  
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: this.planetData.color , linewidth: 0.1 });  
         const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
     
         return orbitLine;

@@ -7,8 +7,10 @@ const IMG_FOLDER= "/textures/planets/"
 export const planetsList: planetType[] = [
     {
         name: "Earth",
+        color:'#2e3b92',
         texture:IMG_FOLDER+"earth.jpg", 
         radius: 6371,
+
         keplerianElements:{
             a: 1.00000261, 
             e: 0.01671123,  
@@ -22,6 +24,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Mercury",
+        color:'#b5b5b5',
         texture:IMG_FOLDER+"mercury.jpg", 
         radius: 2440,
         keplerianElements:{
@@ -39,6 +42,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Venus",
+        color:'#e1d99f',
         texture:IMG_FOLDER+"venus.jpg", 
         radius: 6052,
         keplerianElements:{
@@ -56,6 +60,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Mars",
+        color:'#c1440e',
         texture:IMG_FOLDER+"mars.jpg", 
         radius: 3390,
         keplerianElements:{
@@ -73,6 +78,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Jupiter",
+        color:'#d2b48c',
         texture:IMG_FOLDER+"jupiter.jpg", 
         radius: 69911,
         keplerianElements:{
@@ -91,6 +97,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Saturn",
+        color:'#f8e48b',
         texture:IMG_FOLDER+"saturn.jpg", 
         radius: 58232,
         keplerianElements:{
@@ -109,6 +116,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Uranus",
+        color:'#b2ffff',
         texture:IMG_FOLDER+"uranus.jpg", 
         radius: 25362,
         keplerianElements:{
@@ -127,6 +135,7 @@ export const planetsList: planetType[] = [
 
     {
         name: "Neptune",
+        color:'#4166f5',
         texture:IMG_FOLDER+"neptune.jpg", 
         radius: 24622,
         keplerianElements:{

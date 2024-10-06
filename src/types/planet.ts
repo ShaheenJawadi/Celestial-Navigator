@@ -2,6 +2,7 @@
 export type planetType = {
     name: string;
     texture: string;
+    color : string;
     radius: number;
 
     keplerianElements: keplerianElementsType

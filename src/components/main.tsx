@@ -25,7 +25,7 @@ const Orrery = () => {
 
     scene.add(sun.getMesh());
  
-    const planets = planetsList.map(planetData => new Planet(scene, planetData.radius, planetData.texture, planetData.keplerianElements));
+    const planets = planetsList.map(planetData => new Planet(scene,planetData));
     camera.far = 10000;
     camera.position.set(0, 100, 200);
     
