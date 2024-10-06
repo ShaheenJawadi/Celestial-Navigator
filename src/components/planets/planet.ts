@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 
-const SCALE_FACTOR = 1000;
+const SCALE_FACTOR = 150;
 const ORBIT_SEGMENTS = 200;
 
 export class Planet {
@@ -28,19 +28,18 @@ export class Planet {
         scene.add(this.mesh);
 
        
-        this.orbitLine = this.createOrbitLine();
+        this.orbitLine = this.createOrbit();
         scene.add(this.orbitLine);
     }
 
     update(timeIncrement: number) {
-        this.currentTime += timeIncrement;
+        this.currentTime = timeIncrement;
 
         // Update the planet position
         const position = this.calculateOrbitalPosition(this.currentTime);
         this.mesh.position.copy(position);
     }
-
-    // Method to calculate the orbital position based on time
+ 
     calculateOrbitalPosition(time: number): THREE.Vector3 {
         const { a, e, I, longPeri, longNode } = this.keplerianElements;
 
@@ -73,24 +72,31 @@ export class Planet {
         return new THREE.Vector3(xFinal * SCALE_FACTOR, z * SCALE_FACTOR, yFinal * SCALE_FACTOR);
     }
 
-    createOrbitLine(): THREE.Line {
-        const points: THREE.Vector3[] = [];
-
+     createOrbit(  ) {
+        const { a, e, I, longPeri, longNode } =  this.keplerianElements;
+        const orbitPoints = [];
+    
         for (let i = 0; i <= ORBIT_SEGMENTS; i++) {
-            const meanAnomaly  =(i / ORBIT_SEGMENTS) * 2 * Math.PI; // Full orbit
-            const position = this.calculateOrbitalPosition(meanAnomaly );
-             console.log(`Orbit Point ${i}:`, position);  
-            points.push(position);
+            const trueAnomaly = (i / ORBIT_SEGMENTS) * 2 * Math.PI;  
+            const r = a * (1 - e * Math.cos(trueAnomaly));  
+    
+        
+            const x = r * Math.cos(trueAnomaly + longPeri);
+            const y = r * Math.sin(trueAnomaly + longPeri);
+            const z = y * Math.sin(I);   
+            const yInclined = y * Math.cos(I);  
+    
+          
+            const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
+            const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
+    
+            orbitPoints.push(new THREE.Vector3(xFinal * SCALE_FACTOR, z * SCALE_FACTOR, yFinal * SCALE_FACTOR));
         }
-
-        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(points);
- 
-        const orbitMaterial = new THREE.LineDashedMaterial({
-            color: 0xffffff,
-            dashSize: 0.5,
-            gapSize: 0.5,
-            linewidth: 2
-        });
-        return new THREE.Line(orbitGeometry, orbitMaterial);
+    
+        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });  
+        const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+    
+        return orbitLine;
     }
 }

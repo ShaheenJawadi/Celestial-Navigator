@@ -10,7 +10,7 @@ export class Sun {
 
   
 
-    const geometry = new THREE.SphereGeometry(696340 /1000, 32, 32);
+    const geometry = new THREE.SphereGeometry(696340 /10000, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: texture });
     this.sun = new THREE.Mesh(geometry, material);
   }
