@@ -1,7 +1,8 @@
+import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 
-const SCALE_FACTOR = 150;
-const ORBIT_SEGMENTS = 200;
+ 
+ 
 
 export class Planet {
     mesh: THREE.Mesh;
@@ -22,7 +23,7 @@ export class Planet {
         const textureLoader = new THREE.TextureLoader();
         const texture = textureLoader.load(texture_img);
 
-        const geometry = new THREE.SphereGeometry(radius/SCALE_FACTOR, 32, 32);
+        const geometry = new THREE.SphereGeometry(radius*PLANET_SIZE_SCALE_FACTOR, 32, 32);
         const material = new THREE.MeshBasicMaterial({ map: texture });
         this.mesh = new THREE.Mesh(geometry, material);
         scene.add(this.mesh);
@@ -69,7 +70,7 @@ export class Planet {
         const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
         const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
 
-        return new THREE.Vector3(xFinal * SCALE_FACTOR, z * SCALE_FACTOR, yFinal * SCALE_FACTOR);
+        return new THREE.Vector3(xFinal * DISTANCE_SCALE_FACTOR, z * DISTANCE_SCALE_FACTOR, yFinal * DISTANCE_SCALE_FACTOR);
     }
 
      createOrbit(  ) {
@@ -90,7 +91,7 @@ export class Planet {
             const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
             const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
     
-            orbitPoints.push(new THREE.Vector3(xFinal * SCALE_FACTOR, z * SCALE_FACTOR, yFinal * SCALE_FACTOR));
+            orbitPoints.push(new THREE.Vector3(xFinal * DISTANCE_SCALE_FACTOR, z * DISTANCE_SCALE_FACTOR, yFinal * DISTANCE_SCALE_FACTOR));
         }
     
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);

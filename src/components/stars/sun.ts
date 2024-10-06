@@ -1,3 +1,4 @@
+import { SUN_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 
 export class Sun {
@@ -10,7 +11,7 @@ export class Sun {
 
   
 
-    const geometry = new THREE.SphereGeometry(696340 /10000, 32, 32);
+    const geometry = new THREE.SphereGeometry(696340*SUN_SCALE_FACTOR, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: texture });
     this.sun = new THREE.Mesh(geometry, material);
   }
