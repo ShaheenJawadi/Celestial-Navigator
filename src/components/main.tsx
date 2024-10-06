@@ -8,11 +8,11 @@ import * as THREE from 'three';
 const Orrery = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneSetup = new SceneSetup();
-  
-  const sun = new Sun();
+   const { scene, camera, renderer } = sceneSetup;
+  const sun = new Sun(scene);
 
   useEffect(() => {
-    const { scene, camera, renderer } = sceneSetup;
+   
 
     if (mountRef.current) {
       mountRef.current.appendChild(renderer.domElement);
@@ -22,8 +22,7 @@ const Orrery = () => {
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.enablePan = true;
-
-    scene.add(sun.getMesh());
+ 
  
     const planets = planetsList.map(planetData => new Planet(scene,planetData));
     camera.far = 10000;

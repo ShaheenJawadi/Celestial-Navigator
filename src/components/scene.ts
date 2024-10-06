@@ -13,8 +13,15 @@ export class SceneSetup {
       0.1,
       100000
     );
+
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
+    this.renderer.shadowMap.enabled = true; 
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
+
+
+    const ambientLight = new THREE.AmbientLight(0x404040, 0.5);  
+this.scene.add(ambientLight);
   }
 
   getRenderer() {

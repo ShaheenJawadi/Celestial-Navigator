@@ -21,8 +21,12 @@ export class Planet {
         const texture3d = textureLoader.load(texture);
 
         const geometry = new THREE.SphereGeometry(radius*PLANET_SIZE_SCALE_FACTOR, 32, 32);
-        const material = new THREE.MeshBasicMaterial({ map: texture3d });
+        const material = new THREE.MeshStandardMaterial({ map: texture3d, 
+             roughness: 1,  
+            metalness: 0, });
         this.mesh = new THREE.Mesh(geometry, material);
+        this.mesh.castShadow = true;
+        this.mesh.receiveShadow = true;
         scene.add(this.mesh);
 
        
