@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 
-const SCALE_FACTOR = 150;
-const ORBIT_SEGMENTS = 1000;
+const SCALE_FACTOR = 1000;
+const ORBIT_SEGMENTS = 200;
 
 export class Planet {
     mesh: THREE.Mesh;
@@ -22,7 +22,7 @@ export class Planet {
         const textureLoader = new THREE.TextureLoader();
         const texture = textureLoader.load(texture_img);
 
-        const geometry = new THREE.SphereGeometry(radius, 32, 32);
+        const geometry = new THREE.SphereGeometry(radius/SCALE_FACTOR, 32, 32);
         const material = new THREE.MeshBasicMaterial({ map: texture });
         this.mesh = new THREE.Mesh(geometry, material);
         scene.add(this.mesh);
@@ -77,14 +77,20 @@ export class Planet {
         const points: THREE.Vector3[] = [];
 
         for (let i = 0; i <= ORBIT_SEGMENTS; i++) {
-            const time = (i / ORBIT_SEGMENTS) * 2 * Math.PI; // Full orbit
-            const position = this.calculateOrbitalPosition(time);
+            const meanAnomaly  =(i / ORBIT_SEGMENTS) * 2 * Math.PI; // Full orbit
+            const position = this.calculateOrbitalPosition(meanAnomaly );
+             console.log(`Orbit Point ${i}:`, position);  
             points.push(position);
         }
 
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(points);
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xffffff });
-
+ 
+        const orbitMaterial = new THREE.LineDashedMaterial({
+            color: 0xffffff,
+            dashSize: 0.5,
+            gapSize: 0.5,
+            linewidth: 2
+        });
         return new THREE.Line(orbitGeometry, orbitMaterial);
     }
 }

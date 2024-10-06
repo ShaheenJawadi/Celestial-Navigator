@@ -8,7 +8,7 @@ export const planetsList: planetType[] = [
     {
         name: "Earth",
         texture:IMG_FOLDER+"earth.jpg", 
-        radius: 3,
+        radius: 6371,
         keplerianElements:{
             a: 1.00000261, 
             e: 0.01671123,  
@@ -23,7 +23,7 @@ export const planetsList: planetType[] = [
     {
         name: "Mercury",
         texture:IMG_FOLDER+"mercury.jpg", 
-        radius: 3,
+        radius: 2440,
         keplerianElements:{
             a: 0.38709927      , 
             e: 0.20563593 ,  
@@ -35,11 +35,12 @@ export const planetsList: planetType[] = [
 
     },
 
- 
+/* //////////////////// */
+
     {
         name: "Venus",
         texture:IMG_FOLDER+"venus.jpg", 
-        radius: 3,
+        radius: 6052,
         keplerianElements:{
             a:  0.72333566, 
             e:  0.00677672 ,  
@@ -56,7 +57,7 @@ export const planetsList: planetType[] = [
     {
         name: "Mars",
         texture:IMG_FOLDER+"mars.jpg", 
-        radius: 3,
+        radius: 3390,
         keplerianElements:{
             a: 1.52371034 , 
             e: 0.09339410 ,  
@@ -73,7 +74,7 @@ export const planetsList: planetType[] = [
     {
         name: "Jupiter",
         texture:IMG_FOLDER+"jupiter.jpg", 
-        radius: 3,
+        radius: 69911,
         keplerianElements:{
             a:5.20288700, 
             e:  0.04838624   ,  
@@ -91,7 +92,7 @@ export const planetsList: planetType[] = [
     {
         name: "Saturn",
         texture:IMG_FOLDER+"saturn.jpg", 
-        radius: 3,
+        radius: 58232,
         keplerianElements:{
             a:  9.53667594  , 
             e: 0.05386179 ,  
@@ -109,7 +110,7 @@ export const planetsList: planetType[] = [
     {
         name: "Uranus",
         texture:IMG_FOLDER+"uranus.jpg", 
-        radius: 3,
+        radius: 25362,
         keplerianElements:{
             a: 19.18916464, 
             e:0.04725744 ,  
@@ -127,7 +128,7 @@ export const planetsList: planetType[] = [
     {
         name: "Neptune",
         texture:IMG_FOLDER+"neptune.jpg", 
-        radius: 3,
+        radius: 24622,
         keplerianElements:{
             a: 30.06992276, 
             e:0.00859048      ,  

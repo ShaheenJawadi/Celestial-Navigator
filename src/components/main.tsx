@@ -4,7 +4,7 @@ import { SceneSetup } from "./scene";
 import { Planet } from "./planets/planet";
 import { Sun } from "./stars/sun";
 import { planetsList } from "@/data/planets";
-
+import * as THREE from 'three';
 const Orrery = () => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneSetup = new SceneSetup();
@@ -26,8 +26,9 @@ const Orrery = () => {
     scene.add(sun.getMesh());
  
     const planets = planetsList.map(planetData => new Planet(scene, planetData.radius, planetData.texture, planetData.keplerianElements));
-
-    camera.position.z = 10;
+    camera.far = 10000;
+    camera.position.set(0, 100, 200);
+    
 
     const handleResize = () => {
       sceneSetup.handleResize();
@@ -43,7 +44,8 @@ const Orrery = () => {
       controls.update();
       renderer.render(scene, camera);
     };
-
+    const gridHelper = new THREE.GridHelper(200, 10);
+    scene.add(gridHelper);
     animate();
 
     return () => {
