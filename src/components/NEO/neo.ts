@@ -1,7 +1,7 @@
 import { NEOTypes } from '@/types/NEO';
 import { DISTANCE_SCALE_FACTOR, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
-const AU_TO_METERS = 1.496e11; 
+ 
 export class NEO {
     private scene: THREE.Scene;
     private instancedMesh: THREE.InstancedMesh;
@@ -65,7 +65,7 @@ export class NEO {
     
     
 
-    // Helper function to convert Mean Anomaly to Eccentric Anomaly
+     
     private meanAnomalyToEccentricAnomaly(M: number, e: number): number {
         let E = M; // Initial guess for E
         let deltaE = 0;
