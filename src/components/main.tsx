@@ -5,7 +5,13 @@ import { Planet } from "./planets/planet";
 import { Sun } from "./stars/sun";
 import { planetsList } from "@/data/planets";
 import * as THREE from 'three';
-const Orrery = () => {
+import { NEOSData } from "@/data/NEO";
+import { NEO } from "./NEO/neo";
+import { NEOTypes } from "@/types/NEO";
+
+
+
+const Orrery = ({NEOList}:{NEOList:NEOTypes[]}) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneSetup = new SceneSetup();
    const { scene, camera, renderer } = sceneSetup;
@@ -25,6 +31,8 @@ const Orrery = () => {
  
  
     const planets = planetsList.map(planetData => new Planet(scene,planetData));
+ 
+    const neoManager = new NEO(scene, NEOList);
     camera.far = 10000;
     camera.position.set(0, 100, 200);
     
@@ -40,11 +48,11 @@ const Orrery = () => {
       const time = Date.now() * 0.000000000000001; 
 
       planets.forEach(planet => planet.update(time));
+      neoManager.update(time);
       controls.update();
       renderer.render(scene, camera);
     };
-    const gridHelper = new THREE.GridHelper(200, 10);
-    scene.add(gridHelper);
+   
     animate();
 
     return () => {
@@ -57,5 +65,5 @@ const Orrery = () => {
 
   return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
 };
-
+ 
 export default Orrery;
