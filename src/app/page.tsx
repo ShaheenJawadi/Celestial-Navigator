@@ -1,6 +1,5 @@
  "use client";
-import { useEffect, useState } from "react";
-import styles from "./page.module.css";
+import { useEffect, useState } from "react"; 
 import dynamic from 'next/dynamic';
 import { NEOTypes } from "@/types/NEO";
 import Papa from 'papaparse';
@@ -29,8 +28,7 @@ export default function Home() {
             setNeos(results.data);
             setLoading(false);
           },
-          error: (error:any) => {
-            setError(error.message);
+          error: (error:any) => { 
             setLoading(false);
           },
         });

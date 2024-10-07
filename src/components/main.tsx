@@ -3,9 +3,7 @@ import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SceneSetup } from "./scene";
 import { Planet } from "./planets/planet";
 import { Sun } from "./stars/sun";
-import { planetsList } from "@/data/planets";
-import * as THREE from 'three';
-import { NEOSData } from "@/data/NEO";
+import { planetsList } from "@/data/planets"; 
 import { NEO } from "./NEO/neo";
 import { NEOTypes } from "@/types/NEO";
 
