@@ -38,7 +38,7 @@ const Orrery = (params:Params) => {
       (planetData) => new Planet(scene, planetData)
     );
 
-    const neoManager = new NEO(scene, NEAList);
+    const neoManager = new NEO(scene, NEAList, CometList, PHAList);
     camera.far = 10000;
     camera.position.set(0, 100, 200);
 
