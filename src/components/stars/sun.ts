@@ -1,3 +1,4 @@
+import { IMG_FOLDER } from '@/data/planets';
 import { SUN_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 
@@ -7,7 +8,7 @@ export class Sun {
   constructor(scene: THREE.Scene) {
 
     const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load("/textures/planets/sun.jpg");
+    const texture = textureLoader.load(IMG_FOLDER+"sun.jpg");
 
 
 

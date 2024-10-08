@@ -8,37 +8,45 @@ const Orrery = dynamic(() => import('../components/main'), { ssr: false });
 
 export default function Home() {
 
-  const [neos, setNeos] = useState<NEOTypes[]>([]);
+  const [neas, setNeas] = useState<NEOTypes[]>([]);
+  const [phas, setPhas] = useState<NEOTypes[]>([]);
+  const [comets, setComets] = useState<NEOTypes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
-    const fetchCSVData = async () => {
-      try {
-        const response = await fetch('data/asteroids.csv');  
-        
-        const csvData = await response.text();
-
-     
+    const fetchCSVData = async (filePath: string) => {
+      const response = await fetch(filePath);
+      const csvData = await response.text();
+      return new Promise<NEOTypes[]>((resolve, reject) => {
         Papa.parse<NEOTypes>(csvData, {
           header: true,
           skipEmptyLines: true,
-          complete: (results) => {
-             
-            setNeos(results.data);
-            setLoading(false);
-          },
-          error: (error:any) => { 
-            setLoading(false);
-          },
+          complete: (results) => resolve(results.data),
+          error: (err: any) => reject(err),
         });
+      });
+    };
+  
+    const fetchAllData = async () => {
+      try {
+        const [neaData, phaData, cometData] = await Promise.all([
+          fetchCSVData('data/nea.csv'),
+          fetchCSVData('data/pha.csv'),
+          fetchCSVData('data/comets.csv'),
+        ]);
+        
+        setNeas(neaData);
+        setPhas(phaData);
+        setComets(cometData);
+        setLoading(false);
       } catch (error) {
         setError((error as Error).message);
         setLoading(false);
       }
     };
-
-    fetchCSVData();
+  
+    fetchAllData();
   }, []);
 
   if (loading) {
@@ -51,7 +59,7 @@ export default function Home() {
   
   return (
     <div  > 
-      <Orrery NEOList={neos}  />
+      <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
     </div>
   );
 }

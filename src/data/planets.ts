@@ -2,7 +2,7 @@ import { planetType } from "@/types/planet";
 
 
 
-const IMG_FOLDER= "/textures/planets/"
+export const IMG_FOLDER= "./textures/planets/"
 
 export const planetsList: planetType[] = [
     {
