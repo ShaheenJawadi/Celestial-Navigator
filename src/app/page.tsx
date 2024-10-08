@@ -15,7 +15,7 @@ export default function Home() {
   useEffect(() => {
     const fetchCSVData = async () => {
       try {
-        const response = await fetch('data/asteroids.csv');  
+        const response = await fetch('data/neo.csv');  
         
         const csvData = await response.text();
 
