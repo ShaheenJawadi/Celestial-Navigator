@@ -59,7 +59,7 @@ export default function Home() {
   
   return (
     <div  > 
-      <Orrery NEOList={neas}  />
+      <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
     </div>
   );
 }

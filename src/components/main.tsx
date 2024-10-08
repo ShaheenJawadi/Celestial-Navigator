@@ -7,7 +7,18 @@ import { planetsList } from "@/data/planets";
 import { NEO } from "./NEO/neo";
 import { NEOTypes } from "@/types/NEO";
 
-const Orrery = ({ NEOList }: { NEOList: NEOTypes[] }) => {
+
+
+type Params ={
+  NEAList: NEOTypes[];
+  PHAList: NEOTypes[];
+  CometList: NEOTypes[];
+}
+
+const Orrery = (params:Params) => {
+
+  const  { NEAList, CometList, PHAList} = params;
+
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneSetup = new SceneSetup();
   const { scene, camera, renderer } = sceneSetup;
@@ -27,7 +38,7 @@ const Orrery = ({ NEOList }: { NEOList: NEOTypes[] }) => {
       (planetData) => new Planet(scene, planetData)
     );
 
-    const neoManager = new NEO(scene, NEOList);
+    const neoManager = new NEO(scene, NEAList);
     camera.far = 10000;
     camera.position.set(0, 100, 200);
 
