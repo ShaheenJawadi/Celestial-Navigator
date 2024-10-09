@@ -34,3 +34,8 @@ export function calculateOrbitalPosition(time: number ,keplerianElements: kepler
 
     return new THREE.Vector3(xFinal * DISTANCE_SCALE_FACTOR, z * DISTANCE_SCALE_FACTOR, yFinal * DISTANCE_SCALE_FACTOR);
 }
+
+
+export function degreesToRadians(degrees: number): number {
+    return degrees * (Math.PI / 180);
+}
