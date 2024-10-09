@@ -4,10 +4,10 @@ import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
 import * as THREE from 'three';
 
 export function calculateOrbitalPosition(time: number ,keplerianElements: keplerianElementsType): THREE.Vector3 {
-    const { a, e, I, longPeri, longNode } = keplerianElements;
+    const { a, e, I, longPeri, longNode ,L } = keplerianElements;
 
     const n = Math.sqrt(1 / Math.pow(a, 3));
-    const M = n * time; // Mean anomaly
+    const M = (n * time )+L; // Mean anomaly
 
     let E = M;
     const tolerance = 1e-6;
