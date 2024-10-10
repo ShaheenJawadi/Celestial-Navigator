@@ -45,12 +45,22 @@ a {
 
 
 
-.popup{
-  background: #fff;
+.popupHolder{ 
   position: absolute;
   top: 0;
   left: 0;
-  height: 800px;
-  width: 500px;
+  height: 100%;
+  min-width: 400px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+}
+
+
+.popupHolder .popup{ 
+  background: #fff; 
+  min-height: 800px;
+  width: 400px;
   border-radius: 5px;
 }
