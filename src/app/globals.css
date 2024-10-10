@@ -23,6 +23,7 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
+  color: #0a0a0a;
 }
 
 * {
@@ -62,5 +63,21 @@ a {
   background: #fff; 
   min-height: 800px;
   width: 400px;
-  border-radius: 5px;
+  border-radius: 10px;
+  padding: 5px;
+}
+
+.popupHolder .popup .headSection {
+  display: flex;
+  
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.popupHolder .popup .headSection  .identifier{
+  flex: 1;
+  display: block;
+  text-align: center;
+  margin-right: 25px;
 }
