@@ -50,7 +50,7 @@ const Orrery = (params:Params) => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      const time = Date.now() * 0.000000000000001;
+      const time = Date.now() * 0.00001;
 
       planets.forEach((planet) => planet.update(time));
       neoManager.update(time);
