@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@mdi/js": "^7.4.47",
+    "@mdi/react": "^1.6.1",
     "next": "14.2.14",
     "papaparse": "^5.4.1",
     "react": "^18",
