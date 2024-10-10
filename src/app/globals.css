@@ -81,3 +81,33 @@ a {
   text-align: center;
   margin-right: 25px;
 }
+
+
+.popupHolder .popup  .dataBox{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+
+}
+
+.popupHolder .popup  .dataBox .single{
+
+
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding-bottom: 5px;
+ 
+
+}
+
+.popupHolder .popup  .dataBox .single:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background-color: #ccc;  
+}
