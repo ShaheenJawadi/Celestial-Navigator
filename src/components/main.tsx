@@ -38,7 +38,7 @@ const Orrery = (params:Params) => {
     controls.enablePan = true;
 
     const planets = planetsList.map(
-      (planetData) => new Planet(scene, planetData)
+      (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup()))
     );
 
     const neoManager = new NEO(scene, NEAList, CometList, PHAList);
