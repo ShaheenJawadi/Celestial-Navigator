@@ -6,6 +6,9 @@ import { Sun } from "./stars/sun";
 import { planetsList } from "@/data/planets";
 import { NEO } from "./NEO/neo";
 import { NEOTypes } from "@/types/NEO";
+import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/store";
+import { openPopup } from "@/store/generalState";
 
 
 
@@ -16,19 +19,19 @@ type Params ={
 }
 
 const Orrery = (params:Params) => {
-
+  const dispatch = useDispatch<AppDispatch>()
   const  { NEAList, CometList, PHAList} = params;
 
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneSetup = new SceneSetup();
   const { scene, camera, renderer } = sceneSetup;
-  const sun = new Sun(scene);
+
 
   useEffect(() => {
     if (mountRef.current) {
       mountRef.current.appendChild(renderer.domElement);
     }
-
+    const sun = new Sun(scene , camera,() => dispatch(openPopup()));
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
