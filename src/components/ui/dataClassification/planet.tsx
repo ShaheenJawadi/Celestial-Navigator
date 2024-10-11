@@ -6,9 +6,9 @@ const displayData = ({ planetName }: { planetName: string }) => {
  
   return (
     <>
-      {currentPlanet.map((planet) => {
+      {currentPlanet.map((planet , index) => {
         return (
-          <div className="single">
+          <div key={index} className="single">
             <h4>{planet.label}: {"  "}</h4>
             <span>{planet.metric.value}  <span dangerouslySetInnerHTML={{ __html: planet.metric.unit }} />   </span>
           </div>
