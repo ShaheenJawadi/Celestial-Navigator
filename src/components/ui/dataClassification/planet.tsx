@@ -19,14 +19,22 @@ const displayData = ({ planetName }: { planetName: string }) => {
           </div>
         );
       })}
+      <div style={{marginTop:10}} className="single">
+            <h4>
+              source:
+            </h4>
+            <span>
+              <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/">NASA Planetary Fact Sheet - Metric</a>
+            </span>
+          </div>
     </>
   );
 };
 
 const DisplayUnit = ({ unit }: { unit: string }) => {
-    let addMultiple = "";
+    let addMultiple = " ";
   if (unit.startsWith("10")) {
-    addMultiple="*";
+    addMultiple=" x ";
   }  
   return (
     <span>
