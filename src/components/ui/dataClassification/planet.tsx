@@ -1,11 +1,19 @@
 import { planetsInformation } from "@/data/planetsInformation";
 import { PlanetProperty } from "@/types/planet";
+import React from "react";
 
 const displayData = ({ planetName }: { planetName: string }) => {
   const currentPlanet: PlanetProperty[] = planetsInformation[planetName];
+  const [unitSystem, setUnitSystem] = React.useState<"metric"|"us">("us");
 
   return (
     <>
+    <div className="units">
+        <button  className={unitSystem=="us" ? "selected" : ""}  onClick={() => setUnitSystem("us")}>US</button>
+        <button  className={unitSystem=="metric" ? "selected" : ""} onClick={() => setUnitSystem("metric")}>Metric</button>
+    </div>
+    <div className="dataBox">
+
       {currentPlanet.map((planet, index) => {
         return (
           <div key={index} className="single">
@@ -13,8 +21,8 @@ const displayData = ({ planetName }: { planetName: string }) => {
               {planet.label}: {"  "}
             </h4>
             <span>
-              {planet.metric.value}{" "}
-              <DisplayUnit unit={planet.metric.unit as string} />{" "}
+              {planet[unitSystem].value}{" "}
+              <DisplayUnit unit={planet[unitSystem].unit as string} />{" "}
             </span>
           </div>
         );
@@ -26,6 +34,7 @@ const displayData = ({ planetName }: { planetName: string }) => {
             <span>
               <a href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/">NASA Planetary Fact Sheet - Metric</a>
             </span>
+          </div>
           </div>
     </>
   );
