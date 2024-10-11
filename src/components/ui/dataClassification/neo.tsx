@@ -1,4 +1,4 @@
-  const displayData = () => {
+  const displayData = ({spkid}:{spkid:string}) => {
     return (
       <div className="dataBox">
         <div className="single">

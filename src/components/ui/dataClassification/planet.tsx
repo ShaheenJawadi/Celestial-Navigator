@@ -1,4 +1,4 @@
-   const displayData = () => {
+   const displayData = ({planetName}:{planetName:string}) => {
     return (
       <div className="dataBox">
         <div className="single">
