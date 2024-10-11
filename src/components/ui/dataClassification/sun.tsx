@@ -1,4 +1,4 @@
-const displayData = () => {
+const DisplayData = () => {
   return (
     <>
       <div className="dataBox">
@@ -15,4 +15,4 @@ const displayData = () => {
     </>
   );
 };
-export default displayData;
+export default DisplayData;

@@ -1,4 +1,4 @@
-const displayData = ({ spkid }: { spkid: string }) => {
+const DisplayData = ({ spkid }: { spkid: string }) => {
   return (
     <>
       
@@ -16,4 +16,4 @@ const displayData = ({ spkid }: { spkid: string }) => {
   );
 };
 
-export default displayData;
+export default DisplayData;
