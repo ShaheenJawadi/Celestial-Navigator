@@ -4,6 +4,16 @@ import { mdiArrowLeftThick } from "@mdi/js";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { closePopup } from "@/store/generalState";
+import dynamic from "next/dynamic";
+
+
+const Sun = dynamic(() => import("./dataClassification/sun"), { ssr: false });
+const Planet = dynamic(() => import("./dataClassification/planet"), { ssr: false });
+const NEO = dynamic(() => import("./dataClassification/neo"), { ssr: false });
+
+
+
+
 
 export const Popup = () => {
   const state = useSelector((state: RootState) => state.generalState);
@@ -22,17 +32,9 @@ export const Popup = () => {
               <h2 className="identifier">astroid</h2>
             </div>
 
-            <div className="dataBox">
-              <div className="single">
-                <h4>name:</h4>
-                <span>name</span>
-              </div>
-
-              <div className="single">
-                <h4>name:</h4>
-                <span>name</span>
-              </div>
-            </div>
+            <Sun />
+            <Planet />
+            <NEO />
           </div>
         </div>
       )}
