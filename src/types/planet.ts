@@ -17,17 +17,21 @@ export type keplerianElementsType = {
     longNode: number; // longitude of ascending node
 }
 
+/* ***********************  */
 
-export type planetInfoType = {
-    [planetName: string]: {
-        title: string;
-        us: {
-            value: number;
-            unit: string;
-        }
-        metric: {
-            value: number;
-            unit: string;
-        }
-    }[]
+type UnitSystem = {
+    value: number;
+    unit: string;
 }
+
+
+type PlanetProperty ={
+    label: string;
+    us: UnitSystem;
+    metric: UnitSystem;
+}
+ 
+export type planetInfoType = {
+    [planetName: string]: PlanetProperty[];   
+};
+ 
