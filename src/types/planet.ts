@@ -20,7 +20,7 @@ export type keplerianElementsType = {
 /* ***********************  */
 
 type UnitSystem = {
-    value: number;
+    value: string;
     unit: string;
 }
 
