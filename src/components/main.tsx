@@ -31,14 +31,14 @@ const Orrery = (params:Params) => {
     if (mountRef.current) {
       mountRef.current.appendChild(renderer.domElement);
     }
-    const sun = new Sun(scene , camera,() => dispatch(openPopup()));
+    const sun = new Sun(scene , camera,() => dispatch(openPopup({target:"SUN",identifier:"SUN"})));
     const controls = new OrbitControls(camera, renderer.domElement);
     controls.enableDamping = true;
     controls.dampingFactor = 0.05;
     controls.enablePan = true;
 
     const planets = planetsList.map(
-      (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup()))
+      (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup({target:"PLANET",identifier:planetData.name})),)
     );
 
     const neoManager = new NEO(scene, NEAList, CometList, PHAList);
