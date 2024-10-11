@@ -66,6 +66,8 @@ a {
   width: 400px;
   border-radius: 10px;
   padding: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
 .popupHolder .popup .headSection {

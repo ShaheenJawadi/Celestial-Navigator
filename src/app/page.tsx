@@ -6,6 +6,7 @@ import { Provider } from "react-redux";
 import store from "@/store";
 import Papa from "papaparse";
 import { Popup } from "@/components/ui/popup";
+import 'react-perfect-scrollbar/dist/css/styles.css';
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
