@@ -2,7 +2,7 @@
 export type planetType = {
     name: string;
     texture: string;
-    color : string;
+    color: string;
     radius: number;
 
     keplerianElements: keplerianElementsType
@@ -16,3 +16,22 @@ export type keplerianElementsType = {
     longPeri: number; // longitude of perihelion
     longNode: number; // longitude of ascending node
 }
+
+/* ***********************  */
+
+type UnitSystem = {
+    value: number;
+    unit: string;
+}
+
+
+export type PlanetProperty ={
+    label: string;
+    us: UnitSystem;
+    metric: UnitSystem;
+}
+ 
+export type planetInfoType = {
+    [planetName: string]: PlanetProperty[];   
+};
+ 

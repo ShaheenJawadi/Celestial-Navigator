@@ -1,19 +1,20 @@
- "use client";
-import { useEffect, useState } from "react"; 
-import dynamic from 'next/dynamic';
+"use client";
+import { useEffect, useState } from "react";
+import dynamic from "next/dynamic";
 import { NEOTypes } from "@/types/NEO";
-import Papa from 'papaparse';
-const Orrery = dynamic(() => import('../components/main'), { ssr: false });
-
+import { Provider } from "react-redux";
+import store from "@/store";
+import Papa from "papaparse";
+import { Popup } from "@/components/ui/popup";
+const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
-
   const [neas, setNeas] = useState<NEOTypes[]>([]);
   const [phas, setPhas] = useState<NEOTypes[]>([]);
   const [comets, setComets] = useState<NEOTypes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-  
+
   useEffect(() => {
     const fetchCSVData = async (filePath: string) => {
       const response = await fetch(filePath);
@@ -27,15 +28,15 @@ export default function Home() {
         });
       });
     };
-  
+
     const fetchAllData = async () => {
       try {
         const [neaData, phaData, cometData] = await Promise.all([
-          fetchCSVData('data/nea.csv'),
-          fetchCSVData('data/pha.csv'),
-          fetchCSVData('data/comets.csv'),
+          fetchCSVData("data/nea.csv"),
+          fetchCSVData("data/pha.csv"),
+          fetchCSVData("data/comets.csv"),
         ]);
-        
+
         setNeas(neaData);
         setPhas(phaData);
         setComets(cometData);
@@ -45,7 +46,7 @@ export default function Home() {
         setLoading(false);
       }
     };
-  
+
     fetchAllData();
   }, []);
 
@@ -56,10 +57,13 @@ export default function Home() {
   if (error) {
     return <p>Error: {error}</p>;
   }
-  
+
   return (
-    <div  > 
-      <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
+    <div>
+      <Provider store={store}>
+        <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
+        <Popup/>
+      </Provider>
     </div>
   );
 }

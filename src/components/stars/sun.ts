@@ -5,7 +5,7 @@ import * as THREE from 'three';
 export class Sun {
   sun: THREE.Mesh;
 
-  constructor(scene: THREE.Scene) {
+  constructor(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void) {
 
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load(IMG_FOLDER+"sun.jpg");
@@ -33,8 +33,27 @@ export class Sun {
     sunLight.shadow.bias = -0.0001;
 
     scene.add(sunLight);
+    this.setupInteractions(scene, camera, openPopup);
 
 
+  }
+
+  setupInteractions(scene: THREE.Scene, camera: THREE.Camera, openPopup: () => void) {
+    window.addEventListener('click', (event: MouseEvent) => {
+      const raycaster = new THREE.Raycaster();
+      const mouse = new THREE.Vector2();
+ 
+      mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+      mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+ 
+      raycaster.setFromCamera(mouse, camera);
+
+      const intersects = raycaster.intersectObjects([this.sun]);
+
+      if (intersects.length > 0) {
+        openPopup();  
+      }
+    });
   }
 
   getMesh() {

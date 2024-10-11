@@ -11,9 +11,9 @@ export class Planet {
     currentTime: number = 0;
     keplerianElements: keplerianElementsType;
     planetData: planetType;
-    orbitLine: THREE.Line; // To store the orbit line
+    orbitLine: THREE.Line;  
 
-    constructor(scene: THREE.Scene,  data:planetType) {
+    constructor(scene: THREE.Scene,  data:planetType,camera: THREE.Camera,  openPopup: () => void) {
         const { name, color ,texture ,radius , keplerianElements } = data;
         this.keplerianElements = keplerianElements;
         this.planetData = data;
@@ -33,8 +33,25 @@ export class Planet {
        
         this.orbitLine = this.createOrbit();
         scene.add(this.orbitLine);
+        this.setupInteractions(scene, camera, openPopup);
     }
-
+    setupInteractions(scene: THREE.Scene, camera: THREE.Camera, openPopup: () => void) {
+        window.addEventListener('click', (event: MouseEvent) => {
+          const raycaster = new THREE.Raycaster();
+          const mouse = new THREE.Vector2();
+     
+          mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+          mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+     
+          raycaster.setFromCamera(mouse, camera);
+    
+          const intersects = raycaster.intersectObjects([this.mesh]);
+    
+          if (intersects.length > 0) {
+            openPopup();  
+          }
+        });
+      }
     update(timeIncrement: number) {
         this.currentTime = timeIncrement;
 
