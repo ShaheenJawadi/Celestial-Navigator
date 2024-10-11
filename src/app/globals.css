@@ -74,6 +74,11 @@ a {
   padding: 10px;
   border-bottom: 1px solid #ccc;
 }
+.popupHolder .popup .headSection  .close.icon{
+  cursor: pointer;
+  font-size: 20px;
+  color: #0a0a0a;
+}
 
 .popupHolder .popup .headSection  .identifier{
   flex: 1;
