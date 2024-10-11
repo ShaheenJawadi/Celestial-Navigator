@@ -31,11 +31,17 @@ export const Popup = () => {
                 >
                   <Icon path={mdiArrowLeftThick} size={1} />
                 </div>
-                <h2 className="identifier">astroid</h2>
+                <h2 className="identifier">{state.identifier}</h2>
               </div>
-              {state.target === "SUN" ? <Sun /> : null}
-              {state.target === "PLANET" ? <Planet planetName={state.identifier as string } /> : null}
-              {state.target === "NEO" ? <NEO spkid={state.identifier as string}/> : null}
+              <div className="dataBox">
+                {state.target === "SUN" ? <Sun /> : null}
+                {state.target === "PLANET" ? (
+                  <Planet planetName={state.identifier as string} />
+                ) : null}
+                {state.target === "NEO" ? (
+                  <NEO spkid={state.identifier as string} />
+                ) : null}
+              </div>
             </div>
           </div>
         </>

@@ -1,18 +1,21 @@
-   const displayData = ({planetName}:{planetName:string}) => {
-    return (
-      <div className="dataBox">
-        <div className="single">
-          <h4>name:</h4>
-          <span>name</span>
-        </div>
-  
-        <div className="single">
-          <h4>name:</h4>
-          <span>name</span>
-        </div>
-      </div>
-    );
-  };
-  
+import { planetsInformation } from "@/data/planetsInformation";
+import { PlanetProperty } from "@/types/planet";
 
-  export default displayData;
+const displayData = ({ planetName }: { planetName: string }) => {
+  const currentPlanet:PlanetProperty[] = planetsInformation[planetName];
+ 
+  return (
+    <>
+      {currentPlanet.map((planet) => {
+        return (
+          <div className="single">
+            <h4>{planet.label}: {"  "}</h4>
+            <span>{planet.metric.value}  <span dangerouslySetInnerHTML={{ __html: planet.metric.unit }} />   </span>
+          </div>
+        );
+      })}
+    </>
+  );
+};
+
+export default displayData;

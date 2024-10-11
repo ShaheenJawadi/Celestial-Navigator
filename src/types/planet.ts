@@ -25,7 +25,7 @@ type UnitSystem = {
 }
 
 
-type PlanetProperty ={
+export type PlanetProperty ={
     label: string;
     us: UnitSystem;
     metric: UnitSystem;
