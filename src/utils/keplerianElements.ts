@@ -97,3 +97,30 @@ export function calculateOrbitalPosition(time: number, keplerianElements: kepler
 export function degreesToRadians(degrees: number): number {
     return degrees * (Math.PI / 180);
 }
+
+
+function julianDate(date: Date): number {
+    const year = date.getUTCFullYear();
+    const month = date.getUTCMonth() + 1; 
+    const day = date.getUTCDate();
+    const hour = date.getUTCHours();
+    const minute = date.getUTCMinutes();
+
+
+
+
+    let adjustedYear = year;
+    let adjustedMonth = month;
+    if (adjustedMonth <= 2) {
+        adjustedYear -= 1;
+        adjustedMonth += 12;
+    }
+    const A = Math.floor(adjustedYear / 100);
+    const B = 2 - A + Math.floor(A / 4);
+ 
+    let jd = Math.floor(365.25 * (adjustedYear + 4716)) +
+             Math.floor(30.6001 * (adjustedMonth + 1)) +
+             day + B - 1524.5;
+    jd += (hour + minute / 60) / 24;
+    return jd;
+}
