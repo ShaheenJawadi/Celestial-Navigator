@@ -32,6 +32,6 @@ export type PlanetProperty ={
 }
  
 export type planetInfoType = {
-    [planetName: string]: PlanetProperty[];   
+    [s: string]: PlanetProperty[];   
 };
  
