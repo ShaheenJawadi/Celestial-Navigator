@@ -80,7 +80,7 @@ export function julianDate(date: Date): number {
     const second = date.getUTCSeconds();
 
     // Calculate the Julian Date
-    let A = Math.floor((14 - month) / 12);
+    const A = Math.floor((14 - month) / 12);
     const y = year + 4800 - A;
     const m = month + 12 * A - 3;
 

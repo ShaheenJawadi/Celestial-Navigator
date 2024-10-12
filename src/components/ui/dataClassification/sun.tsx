@@ -11,7 +11,7 @@ const DisplayData = () => {
 
       {Object.keys(sunInfo).map((key, index) => {
         return (
-          <div className="dataBox">
+          <div key={index} className="dataBox">
             <div className="subDataSep">
               <div className="tit">{key}</div>
               <div className="separator"></div>
