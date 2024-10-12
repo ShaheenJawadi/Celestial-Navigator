@@ -1,7 +1,7 @@
 import { planetInfoType } from "@/types/planet";
 /* source : https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html */
 
-const sunInfo: planetInfoType = {
+export const sunInfo: planetInfoType = {
     "Bulk Parameters": [
 
         {

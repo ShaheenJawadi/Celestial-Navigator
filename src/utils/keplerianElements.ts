@@ -3,7 +3,6 @@ import { keplerianElementsType } from '@/types/planet';
 import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
 import * as THREE from 'three';
 
-const PERIHELION_THRESHOLD = 0.3;  // AU
 
 /* 
 export function calculateOrbitalPosition(time: number ,keplerianElements: keplerianElementsType): THREE.Vector3 {
@@ -39,6 +38,8 @@ export function calculateOrbitalPosition(time: number ,keplerianElements: kepler
 }
 
  */ 
+const PERIHELION_THRESHOLD = 0.3;  // AU
+
 export function calculateOrbitalPosition(time: number, keplerianElements: keplerianElementsType): THREE.Vector3 {
     const { a, e, I, longPeri, longNode, L } = keplerianElements;
 

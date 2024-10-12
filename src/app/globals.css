@@ -125,6 +125,27 @@ a {
 
 }
 
+.popupHolder .popup  .dataBox .subDataSep{
+
+  display: flex;
+ align-items: center;
+ width: 100%;
+  padding: 5px;
+ 
+gap: 5px;
+}
+
+.popupHolder .popup  .dataBox .subDataSep .tit{
+font-size: 15px;
+color: #8d8d8d;
+}
+
+.popupHolder .popup  .dataBox .subDataSep .separator{
+  flex: 1;
+  background: #afafafaa;
+  width: 100%;
+  height: 2px;
+}
 .popupHolder .popup  .dataBox .single{
 
 
