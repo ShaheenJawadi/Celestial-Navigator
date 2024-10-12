@@ -52,11 +52,11 @@ export class Planet {
           }
         });
       }
-    update(timeIncrement: number) {
-        this.currentTime = timeIncrement;
+    update(deltaTime: number) {
+     
 
         // Update the planet position
-        const position = calculateOrbitalPosition(this.currentTime , this.keplerianElements);
+        const position = calculateOrbitalPosition(deltaTime , this.keplerianElements);
         this.mesh.position.copy(position);
     }
  

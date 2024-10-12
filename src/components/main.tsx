@@ -9,6 +9,7 @@ import { NEOTypes } from "@/types/NEO";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { openPopup } from "@/store/generalState";
+import { julianDate } from "@/utils/keplerianElements";
 
 
 
@@ -53,7 +54,7 @@ const Orrery = (params:Params) => {
     const animate = () => {
       requestAnimationFrame(animate);
 
-      const time = Date.now() * 0.00001;
+      const time = julianDate(new Date() );
 
       planets.forEach((planet) => planet.update(time));
       neoManager.update(time);
