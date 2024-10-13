@@ -17,6 +17,7 @@ export class NEO {
     private raycaster: THREE.Raycaster;
     private mouse: THREE.Vector2; 
     private camera: THREE.Camera;
+    private currentOrbit: THREE.Line | null = null; 
 
     constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[]) {
         this.scene = scene;
@@ -138,10 +139,38 @@ export class NEO {
  
         console.log(`Clicked ${type}:`, neoData);
        
+        this.drawOrbit(neoData);
  
     }
 
-
+  private drawOrbit(neo: NEOTypes) {
+    
+        if (this.currentOrbit) {
+            this.scene.remove(this.currentOrbit);
+            this.currentOrbit.geometry.dispose();  
+        }
+    
+        const orbitPoints: THREE.Vector3[] = [];
+        const totalSegments = ORBIT_SEGMENTS;  
+    
+        for (let i = 0; i <= totalSegments; i++) {
+            const t = (i / totalSegments) * 365;  
+            const position = calculateOrbitalPosition(t, this.keplerianElementsObject(neo));
+            orbitPoints.push(position);
+        }
+    
+        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF, opacity: 0.5, transparent: true });
+        this.currentOrbit = new THREE.Line(orbitGeometry, orbitMaterial);
+        this.scene.add(this.currentOrbit);
+    }
+    
  
+
+
+    
     
 }
+
+
+ 
