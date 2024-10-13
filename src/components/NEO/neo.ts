@@ -1,8 +1,9 @@
 import { NEOTypes } from '@/types/NEO';
 import { keplerianElementsType } from '@/types/planet';
 import { calculateOrbitalPosition, degreesToRadians } from '@/utils/keplerianElements';
-import { DISTANCE_SCALE_FACTOR, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
+import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
+import { or } from 'three/webgpu';
  
 
 export class NEO {
@@ -13,9 +14,11 @@ export class NEO {
     private neoDataList: NEOTypes[];
     private phaDataList: NEOTypes[];
     private cometDataList: NEOTypes[];
+    private raycaster: THREE.Raycaster;
+    private mouse: THREE.Vector2; 
+    private camera: THREE.Camera;
 
-
-    constructor(scene: THREE.Scene, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[]) {
+    constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[]) {
         this.scene = scene;
         this.neoDataList = neaDataList;
         this.phaDataList = PHAList;
@@ -23,7 +26,13 @@ export class NEO {
 
         this.neoInstancedMesh = this.createNEOInstances(this.neoDataList, "#15FB2C", 0.15);
         this.phaInstancedMesh = this.createNEOInstances(this.phaDataList, "#D1002D", 0.2);
-        this.cometInstancedMesh = this.createNEOInstances(this.cometDataList, "#D1C600", 0.2);
+        this.cometInstancedMesh = this.createNEOInstances(this.cometDataList, "#D1C600", 1);
+
+       
+        this.raycaster = new THREE.Raycaster();
+        this.mouse = new THREE.Vector2();
+        this.camera = camera;  
+        window.addEventListener('click', this.onMouseClick.bind(this), false);
     }
 
     private createNEOInstances(dataList: NEOTypes[], color: string, defaultSize: number) {
@@ -65,6 +74,7 @@ export class NEO {
             const matrix = new THREE.Matrix4();
             matrix.setPosition(position.x, position.y, position.z);
             instancedMesh.setMatrixAt(i, matrix);
+           
         });
 
         instancedMesh.instanceMatrix.needsUpdate = true;
@@ -84,5 +94,54 @@ export class NEO {
         };
     }
 
+    private onMouseClick(event: MouseEvent) {
+        event.preventDefault();
 
+     
+        this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+        this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+   
+        this.raycaster.setFromCamera(this.mouse, this.camera);
+
+ 
+        const neoIntersect = this.raycaster.intersectObject(this.neoInstancedMesh, true);
+        const phaIntersect = this.raycaster.intersectObject(this.phaInstancedMesh, true);
+        const cometIntersect = this.raycaster.intersectObject(this.cometInstancedMesh, true);
+
+        if (neoIntersect.length > 0) {
+            const instanceId = neoIntersect[0].instanceId;
+            if (instanceId !== undefined) {
+                this.handleNEOClick('NEO', instanceId);
+            }
+        } else if (phaIntersect.length > 0) {
+            const instanceId = phaIntersect[0].instanceId;
+            if (instanceId !== undefined) {
+                this.handleNEOClick('PHA', instanceId);
+            }
+        } else if (cometIntersect.length > 0) {
+            const instanceId = cometIntersect[0].instanceId;
+            if (instanceId !== undefined) {
+                this.handleNEOClick('Comet', instanceId);
+            }
+        }
+    }
+    private handleNEOClick(type: string, instanceId: number) {
+        let neoData;
+        if (type === 'NEO') {
+            neoData = this.neoDataList[instanceId];
+        } else if (type === 'PHA') {
+            neoData = this.phaDataList[instanceId];
+        } else   {
+            neoData = this.cometDataList[instanceId];
+        }
+ 
+        console.log(`Clicked ${type}:`, neoData);
+       
+ 
+    }
+
+
+ 
+    
 }

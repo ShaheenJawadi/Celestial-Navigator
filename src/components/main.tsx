@@ -42,7 +42,7 @@ const Orrery = (params:Params) => {
       (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup({target:"PLANET",identifier:planetData.name})),)
     );
 
-    const neoManager = new NEO(scene, NEAList, CometList, PHAList);
+    const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList);
     camera.far = 10000;
     camera.position.set(0, 100, 200);
 
