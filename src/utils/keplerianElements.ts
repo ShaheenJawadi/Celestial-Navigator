@@ -3,66 +3,62 @@ import { keplerianElementsType } from '@/types/planet';
 import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
 import * as THREE from 'three';
 
-
-const epsilon = 1e-6; // Accuracy for Newton's method
-
-  export function calculateOrbitalPosition(
-    julianDate: number,
-    keplerianElements: keplerianElementsType
-): THREE.Vector3 {
+const PERIHELION_THRESHOLD = 0.3;  // AU
+ 
+export function calculateOrbitalPosition(julianDate: number, keplerianElements: keplerianElementsType): THREE.Vector3 {
     const { a, e, I, longPeri, longNode, L } = keplerianElements;
 
-    // 1. Calculate mean anomaly (M)
-    const M = (L - longPeri) % (2 * Math.PI);
-    const normalizeAngle = (angle: number) => (angle + 2 * Math.PI) % (2 * Math.PI);
+    const T0 = 2451545.0; // Julian Date for January 1, 2000 (UTC)
+    const daysSinceEpoch = julianDate - T0; // Days since epoch
 
-    // Normalize M to be between 0 and 2π
-    const M_norm = normalizeAngle(M);
+    const n = Math.sqrt(1 / Math.pow(a, 3));  // Mean motion (in rad/day)
+    const M = (n * daysSinceEpoch) + L;  // Mean anomaly
 
-    // 2. Solve for eccentric anomaly (E) using Newton's method
-    let E = M_norm; // Initial guess for E
+    let E = M;  // Eccentric anomaly
+    const tolerance = 1e-6;
     let delta = 1;
-    while (Math.abs(delta) > epsilon) {
-        delta = (E - e * Math.sin(E) - M_norm) / (1 - e * Math.cos(E));
-        E -= delta;
+
+    // Solve Kepler's equation iteratively
+    while (Math.abs(delta) > tolerance) {
+        delta = E - e * Math.sin(E) - M;
+        E -= delta / (1 - e * Math.cos(E));
     }
 
-    // 3. Calculate the true anomaly (ν)
-    const nu = 2 * Math.atan2(
+    const trueAnomaly = 2 * Math.atan2(
         Math.sqrt(1 + e) * Math.sin(E / 2),
         Math.sqrt(1 - e) * Math.cos(E / 2)
     );
 
-    // 4. Calculate the distance (r)
-    const r = a * (1 - e * Math.cos(E));
+    const r = a * (1 - e * Math.cos(E));  // Distance from the Sun
+    const perihelion = a * (1 - e);  // Calculate perihelion distance
 
-    // 5. Calculate the position in the orbital plane (x', y')
-    const xOrbital = r * Math.cos(nu);
-    const yOrbital = r * Math.sin(nu);
+    const x = r * Math.cos(trueAnomaly + longPeri);
+    const y = r * Math.sin(trueAnomaly + longPeri);
 
-    // 6. Rotate into 3D space
-    const cosI = Math.cos(I);
-    const sinI = Math.sin(I);
-    const cosNode = Math.cos(longNode);
-    const sinNode = Math.sin(longNode);
-    const cosPeri = Math.cos(longPeri);
-    const sinPeri = Math.sin(longPeri);
+    const z = y * Math.sin(I);  // Inclination (Z-axis offset)
+    const yInclined = y * Math.cos(I);
 
-    const x = xOrbital * (cosNode * cosPeri - sinNode * sinPeri * cosI) -
-              yOrbital * (cosNode * sinPeri + sinNode * cosPeri * cosI);
+    const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
+    const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
+ 
+    // Adjust position if perihelion is below the threshold
+    if (perihelion < PERIHELION_THRESHOLD) {
+        // If below threshold, keep it at the threshold distance from the Sun
+        const adjustedR = PERIHELION_THRESHOLD; 
+        return new THREE.Vector3(
+            xFinal * (adjustedR / perihelion) * DISTANCE_SCALE_FACTOR,
+            z * DISTANCE_SCALE_FACTOR,
+            yFinal * (adjustedR / perihelion) * DISTANCE_SCALE_FACTOR
+        );
+    }
 
-    const y = xOrbital * (sinNode * cosPeri + cosNode * sinPeri * cosI) -
-              yOrbital * (sinNode * sinPeri - cosNode * cosPeri * cosI);
-
-    const z = xOrbital * (sinPeri * sinI) + yOrbital * (cosPeri * sinI);
-
-  
     return new THREE.Vector3(
-        x * DISTANCE_SCALE_FACTOR,
+        xFinal * DISTANCE_SCALE_FACTOR,
         z * DISTANCE_SCALE_FACTOR,
-        y * DISTANCE_SCALE_FACTOR
+        yFinal * DISTANCE_SCALE_FACTOR
     );
 }
+
   
 
  
