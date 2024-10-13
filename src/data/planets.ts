@@ -4,8 +4,8 @@ import { degreesToRadians } from "@/utils/keplerianElements";
 
 
 export const IMG_FOLDER = "./textures/planets/"
-export const IMG_RING_FOLDER = "./textures/planets/rings/"
-
+export const SATURN_RING_TEXTURE = IMG_FOLDER+"rings/saturn.png";
+ 
 
 export const planetsList: planetType[] = [
     {
