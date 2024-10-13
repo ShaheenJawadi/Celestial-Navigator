@@ -1,3 +1,4 @@
+import { IMG_RING_FOLDER } from '@/data/planets';
 import { keplerianElementsType, planetType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
 import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
@@ -12,6 +13,7 @@ export class Planet {
     keplerianElements: keplerianElementsType;
     planetData: planetType;
     orbitLine: THREE.Line;  
+    ring: THREE.Mesh | null = null; // Added for rings
 
     constructor(scene: THREE.Scene,  data:planetType,camera: THREE.Camera,  openPopup: () => void) {
         const { name, color ,texture ,radius , keplerianElements } = data;
@@ -28,13 +30,46 @@ export class Planet {
         this.mesh = new THREE.Mesh(geometry, material);
         this.mesh.castShadow = true;
         this.mesh.receiveShadow = true;
+ 
         scene.add(this.mesh);
+        if(name === 'SATURN'){
+           this.createRings(radius);
+        }
 
        
+       
+     
+ 
+
         this.orbitLine = this.createOrbit();
         scene.add(this.orbitLine);
         this.setupInteractions(scene, camera, openPopup);
     }
+    createRings(radius: number) {
+      const innerRadius = 1.15 * PLANET_SIZE_SCALE_FACTOR * radius; 
+      const outerRadius = 2.41 * PLANET_SIZE_SCALE_FACTOR * radius; 
+      const textureLoader = new THREE.TextureLoader();
+      const ringTexture = textureLoader.load(IMG_RING_FOLDER+'saturn.png');  
+
+
+      const ringGeometry = new THREE.RingGeometry(innerRadius, outerRadius, 64);
+      const ringMaterial = new THREE.MeshStandardMaterial({
+        map: ringTexture,
+          color: 0xFFD700, 
+          side: THREE.DoubleSide,
+          transparent: true, 
+      });
+  
+      const ring = new THREE.Mesh(ringGeometry, ringMaterial);
+      ring.rotation.x = Math.PI / 2; 
+      ring.rotation.z = THREE.MathUtils.degToRad(27); 
+      ring.position.set(0, 0, 0.1 * PLANET_SIZE_SCALE_FACTOR); 
+      this.mesh.add(ring);
+  }
+  
+ 
+
+
     setupInteractions(scene: THREE.Scene, camera: THREE.Camera, openPopup: () => void) {
         window.addEventListener('click', (event: MouseEvent) => {
           const raycaster = new THREE.Raycaster();
