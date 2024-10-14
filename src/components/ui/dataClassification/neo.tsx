@@ -1,4 +1,5 @@
 import { NEOTypes } from "@/types/NEO";
+import { dateToJulian, julianToDate } from "@/utils/conversionHelpers";
 
 const DisplayData = ({
   neoData,
@@ -98,7 +99,8 @@ const DisplayData = ({
 
           <div className="single">
             <h4>Date of Closest Approach to Sun:</h4>
-            <span>{objectData.tp}</span>
+           
+            <span>  {julianToDate(parseFloat(objectData.tp))}</span>
           </div>
         </>
 
