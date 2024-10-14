@@ -1,16 +1,15 @@
-const DisplayData = ({ spkid }: { spkid: string }) => {
+import { NEOTypes } from "@/types/NEO";
+
+const DisplayData = ({ neoData }: {neoData:{kind:string,objectData:NEOTypes}}) => {
   return (
     <>
       
       <div className="dataBox">
         <div className="single">
-          <h4>name:</h4>
-          <span>name</span>
+          
+          <span>{neoData?.kind}</span>
         </div>
-        <div className="single">
-          <h4>name:</h4>
-          <span>name</span>
-        </div> 
+       
       </div>
     </>
   );

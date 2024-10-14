@@ -26,6 +26,9 @@ const generalSlice = createSlice({
       state.isPopupOpen = true;
       state.target = action.payload.target;
       state.identifier = action.payload.identifier;
+      if( action.payload.target=="NEO" && action.payload.neo){
+        state.neo = action.payload.neo;
+      }
     },
     closePopup: (state) => {
       state.isPopupOpen = false;
