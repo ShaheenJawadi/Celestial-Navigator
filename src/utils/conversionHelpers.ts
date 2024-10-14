@@ -32,7 +32,7 @@ export function dateToJulian(date: Date): number {
 
 
 
-export function julianToDate(julian: number): Date {
+export function julianToDate(julian: number): string {
     
     const julianDay = Math.floor(julian);
     const fractionalDay = julian - julianDay;
@@ -58,5 +58,42 @@ export function julianToDate(julian: number): Date {
     const seconds = Math.floor(dayFraction % 60);
 
  
-    return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+    return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds)).toUTCString();
+
 } 
+
+
+export const AU_TO_KM = 149597870.7;  
+export const KM_TO_MILES = 0.621371;  
+
+ 
+function convertAU(au: number , unit:"us" | "metric"="us"): { num: number; st: string } {
+  const kilometers = au * AU_TO_KM;
+
+  const miles = kilometers * KM_TO_MILES;
+
+  if(unit=="metric"){
+    return { num: kilometers, st: kilometers+"km" };
+  }
+    return { num: miles, st: kilometers + "miles" };
+ 
+}
+
+
+ 
+function convertKmToMiles(km: number) {
+   
+   
+      return { num: km*KM_TO_MILES, st: km*KM_TO_MILES+"km" };
+
+   
+   
+  }
+
+  function convertMilesToKm(miles: number ) {
+    return { num: miles/KM_TO_MILES, st: miles/KM_TO_MILES+"miles" };
+   
+  }
+  
+  
+
