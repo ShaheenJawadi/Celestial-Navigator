@@ -17,13 +17,14 @@ const DisplayData = ({ planetName }: { planetName: string }) => {
   const state = useSelector((state: RootState) => state.generalState);
   const dispatch = useDispatch<AppDispatch>();
 
+
   return (
     <>
       <div className="footage">
         <Image
           src={planetImage?.src||"earth"}
-          width={350}
-          height={350}
+          width={300}
+          height={planetName!="SATURN"? 300: 215}
           alt={planetImage?.alt|| planetName}
         />
         <small>Source</small>

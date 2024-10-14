@@ -10,8 +10,8 @@ const DisplayData = () => {
         <div className="footage">
           <Image
             src={ObjectsImages("sun")}
-            width={350}
-            height={350}
+            width={300}
+            height={300}
             alt="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html"
           />
           <small>Source</small>
