@@ -1,5 +1,6 @@
 import { planetType } from "@/types/planet";
-import { degreesToRadians } from "@/utils/keplerianElements";
+import { degreesToRadians } from "@/utils/conversionHelpers";
+ 
 import { IMG_FOLDER } from "@/utils/resourcePaths";
 
 
