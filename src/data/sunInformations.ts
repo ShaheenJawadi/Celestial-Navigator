@@ -2,7 +2,7 @@ import { planetInfoType } from "@/types/planet";
 /* source : https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html */
 
 export const sunInfo: planetInfoType = {
-    "Bulk Parameters": [
+    "Bulk Parameters": {data:[
 
         {
             label: "Mass",
@@ -30,8 +30,8 @@ export const sunInfo: planetInfoType = {
             metric: { value: "617.6", unit: "km/s" }
         },
 
-    ],
-    "Ratio to Earth": [{
+    ]},
+    "Ratio to Earth": {data:[{
         label: "Mass Ratio to Earth",
         us: { value: "332,900", unit: "ratio" },
         metric: { value: "332,900", unit: "ratio" }
@@ -55,8 +55,8 @@ export const sunInfo: planetInfoType = {
         label: "Escape Velocity Ratio to Earth",
         us: { value: "55.2", unit: "ratio" },
         metric: { value: "55.2", unit: "ratio" }
-    },],
-    "Rotational and Orbital parameters": [{
+    },]},
+    "Rotational and Orbital parameters": {data:[{
         label: "Sidereal Rotation Period  ",
         us: { value: "609.12", unit: "hrs" },
         metric: { value: "609.12", unit: "hrs" }
@@ -67,8 +67,8 @@ export const sunInfo: planetInfoType = {
         us: { value: "7.25", unit: "degrees" },
         metric: { value: "7.25", unit: "degrees" }
     },
-    ],
-    "Solar Atmosphere": [{
+    ]},
+    "Solar Atmosphere": {data:[{
         label: "Effective Temperature",
         us: { value: "5772", unit: "K" },
         metric: { value: "5772", unit: "K" }
@@ -87,5 +87,5 @@ export const sunInfo: planetInfoType = {
         label: "Helium Composition",
         us: { value: "8.889", unit: "%" },
         metric: { value: "8.889", unit: "%" }
-    }]
+    }]}
 };

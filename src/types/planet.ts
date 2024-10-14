@@ -29,9 +29,11 @@ export type PlanetProperty ={
     label: string;
     us: UnitSystem;
     metric: UnitSystem;
+    
 }
  
 export type planetInfoType = {
-    [s: string]: PlanetProperty[];   
+    [s: string]: {data:PlanetProperty[]};   
+ 
 };
  

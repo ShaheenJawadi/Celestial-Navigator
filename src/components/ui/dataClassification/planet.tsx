@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeUnitSystem } from "@/store/generalState";
 
 const DisplayData = ({ planetName }: { planetName: string }) => {
-  const currentPlanet: PlanetProperty[] = planetsInformation[planetName];
+  const currentPlanet: PlanetProperty[] = planetsInformation[planetName]?.data;
  
   const state = useSelector((state: RootState) => state.generalState);
   const dispatch = useDispatch<AppDispatch>();

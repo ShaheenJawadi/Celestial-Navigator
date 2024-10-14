@@ -16,7 +16,7 @@ const DisplayData = () => {
               <div className="tit">{key}</div>
               <div className="separator"></div>
             </div>
-            {sunInfo[key].map((planet, index) => {
+            {sunInfo[key]?.data.map((planet, index) => {
               return (
                 <div key={index} className="single">
                   <h4>

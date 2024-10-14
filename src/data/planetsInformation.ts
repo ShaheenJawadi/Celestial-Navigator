@@ -5,7 +5,7 @@ import { planetInfoType } from "@/types/planet";
 
 export const planetsInformation: planetInfoType =
 {
-    "MERCURY": [
+    "MERCURY":{data: [
         {
             "label": "Mass",
             "metric": {
@@ -226,8 +226,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "VENUS": [
+    ]},
+    "VENUS": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -448,8 +448,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "EARTH": [
+    ]},
+    "EARTH": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -670,8 +670,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "MOON": [
+    ]},
+    "MOON": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -892,8 +892,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "MARS": [
+    ]},
+    "MARS": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -1114,8 +1114,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "JUPITER": [
+    ]},
+    "JUPITER": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -1336,8 +1336,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "SATURN": [
+    ]},
+    "SATURN": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -1558,8 +1558,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "URANUS": [
+    ]},
+    "URANUS": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -1780,8 +1780,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "NEPTUNE": [
+    ]},
+    "NEPTUNE": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -2002,8 +2002,8 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ],
-    "PLUTO": [
+    ]},
+    "PLUTO": {data:[
         {
             "label": "Mass",
             "metric": {
@@ -2224,5 +2224,5 @@ export const planetsInformation: planetInfoType =
                 "unit": ""
             }
         }
-    ]
+    ]}
 }
