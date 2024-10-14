@@ -22,4 +22,5 @@ export type NEOTypes = {
   q: string;               // Perihelion distance (AU)
   ad: string;              // Aphelion distance (AU)
   tp: string;              // Time of perihelion passage (Julian Date) 
+  moid: string;               // earth min orbit(AU)
 };
