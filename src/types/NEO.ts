@@ -7,7 +7,7 @@ export type NEOTypes = {
   first_obs: string;       // First observation date (UTC)
   last_obs: string;        // Last observation date (UTC)
   n_obs_used: string;      // Number of observations used
-  class: string;       // object  class name
+  class: string;       // orbit  class name
   pdes: string;            // Primary designation
   /* ******************* */
 
