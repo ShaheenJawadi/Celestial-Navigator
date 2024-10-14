@@ -67,20 +67,21 @@ export const AU_TO_KM = 149597870.7;
 export const KM_TO_MILES = 0.621371;  
 
  
-function convertAU(au: number , unit:"us" | "metric"="us"): { num: number; st: string } {
+export function convertAU(val: number|string , unit:"us" | "metric"="us"): { num: number; st: string } {
+    const au = typeof val === 'string' ? parseFloat(val) : val;
   const kilometers = au * AU_TO_KM;
 
   const miles = kilometers * KM_TO_MILES;
 
   if(unit=="metric"){
-    return { num: kilometers, st: kilometers+"km" };
+    return { num: kilometers, st: kilometers+" km" };
   }
-    return { num: miles, st: kilometers + "miles" };
+    return { num: miles, st: miles + " miles" };
  
 }
 
-function convertUSToMetricDistances(g: number ,givenUnit:"us" | "metric"="us",  resUnit:"us" | "metric"="us"): { num: number; st: string } {
-   
+export function convertUSToMetricDistances(val: number|string ,givenUnit:"us" | "metric",  resUnit:"us" | "metric"="us"): { num: number; st: string } {
+    const g = typeof val === 'string' ? parseFloat(val) : val;
    
     if(givenUnit=="us" && resUnit=="metric"){
       return convertMilesToKm(g);
@@ -89,7 +90,7 @@ function convertUSToMetricDistances(g: number ,givenUnit:"us" | "metric"="us",  
       return convertKmToMiles(g);
     }
     else {
-        const unit = givenUnit=="us" ? "miles" : "km";
+        const unit = givenUnit=="us" ? " miles" : " km";
         return { num: g, st: g+" "+unit };
     }
    

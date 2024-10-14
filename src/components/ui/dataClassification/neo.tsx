@@ -1,14 +1,34 @@
 import { NEOTypes } from "@/types/NEO";
-import { dateToJulian, julianToDate } from "@/utils/conversionHelpers";
-
+import { convertAU, convertUSToMetricDistances, dateToJulian, julianToDate } from "@/utils/conversionHelpers";
+import { AppDispatch, RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { changeUnitSystem } from "@/store/generalState";
 const DisplayData = ({
   neoData,
 }: {
   neoData: { kind: string; objectData: NEOTypes };
 }) => {
   const { kind, objectData } = neoData;
+  const state = useSelector((state: RootState) => state.generalState);
+  const dispatch = useDispatch<AppDispatch>();
+
+
   return (
     <>
+    <div className="units">
+        <button
+          className={state.unitSystem == "us" ? "selected" : ""}
+          onClick={() => dispatch(changeUnitSystem("us"))}
+        >
+          US
+        </button>
+        <button
+          className={state.unitSystem == "metric" ? "selected" : ""}
+          onClick={() => dispatch(changeUnitSystem("metric"))}
+        >
+          Metric
+        </button>
+      </div>
       <div className="dataBox">
         <div className="single">
           <h4>Object kind:</h4>
@@ -71,8 +91,8 @@ const DisplayData = ({
             <h4>Diameter:</h4>
             <span>
               {objectData.diameter
-                ? neoData?.objectData?.diameter + " KM"
-                : "undefined"}
+                ? convertUSToMetricDistances(neoData?.objectData?.diameter ?? "0" ,"metric" , state.unitSystem).st 
+                : "Data not available"}
             </span>
           </div>
         </>
@@ -84,17 +104,18 @@ const DisplayData = ({
 
           <div className="single">
             <h4>Minimum Distance to Earth’s Orbit:</h4>
-            <span>{objectData.moid}</span>
+            <span>{convertAU(objectData.moid,state.unitSystem).st}</span>
           </div>
 
           <div className="single">
             <h4>Closest Distance to the Sun:</h4>
-            <span>{objectData.q}</span>
+            <span> {convertAU(objectData.q,state.unitSystem).st}</span>
           </div>
 
           <div className="single">
             <h4>Farthest Distance from the Sun:</h4>
-            <span>{objectData.ad}</span>
+            
+            <span> {convertAU(objectData.ad,state.unitSystem).st}</span>
           </div>
 
           <div className="single">
