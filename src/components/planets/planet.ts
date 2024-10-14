@@ -15,13 +15,14 @@ export class Planet {
   keplerianElements: keplerianElementsType;
   planetData: planetType;
   orbitLine: THREE.Line;
+  private camera: THREE.Camera;
   ring: THREE.Mesh | null = null; // Added for rings
 
   constructor(scene: THREE.Scene, data: planetType, camera: THREE.Camera, openPopup: () => void) {
     const { name, color, texture, radius, keplerianElements } = data;
     this.keplerianElements = keplerianElements;
     this.planetData = data;
-
+    this.camera = camera;
     const textureLoader = new THREE.TextureLoader();
     const texture3d = textureLoader.load(texture);
 
@@ -42,7 +43,7 @@ export class Planet {
 
     this.orbitLine = this.createOrbit();
     scene.add(this.orbitLine);
-    this.setupInteractions(scene, camera, openPopup);
+    this.setupInteractions(openPopup);
   }
   createRings(radius: number) {
 
@@ -83,7 +84,7 @@ export class Planet {
 
 
 
-  setupInteractions(scene: THREE.Scene, camera: THREE.Camera, openPopup: () => void) {
+  setupInteractions(  openPopup: () => void) {
     window.addEventListener('click', (event: MouseEvent) => {
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
@@ -91,7 +92,7 @@ export class Planet {
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 
-      raycaster.setFromCamera(mouse, camera);
+      raycaster.setFromCamera(mouse, this.camera);
 
       const intersects = raycaster.intersectObjects([this.mesh]);
 

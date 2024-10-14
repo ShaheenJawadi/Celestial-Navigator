@@ -7,6 +7,7 @@ interface PopupState {
   identifier: string |null;
   unitSystem: "us" | "metric";
   neo:{kind:string,objectData:NEOTypes} | null;
+  neoOrbitColor:string ;
 }
 
 const initialState: PopupState = {
@@ -15,6 +16,7 @@ const initialState: PopupState = {
   identifier: null,
   unitSystem: "us",
   neo:null,
+  neoOrbitColor:"#0866ff",
 
 };
 
@@ -38,9 +40,12 @@ const generalSlice = createSlice({
     },
     changeUnitSystem: (state, action: PayloadAction<"us" | "metric">) => {
       state.unitSystem = action.payload;
+    },
+    changeNeoOrbitColor: (state, action) => {
+      state.neoOrbitColor = action.payload;
     }
   },
 });
 
-export const { openPopup, closePopup ,changeUnitSystem } = generalSlice.actions;
+export const { openPopup, closePopup ,changeUnitSystem,changeNeoOrbitColor } = generalSlice.actions;
 export default generalSlice.reducer;

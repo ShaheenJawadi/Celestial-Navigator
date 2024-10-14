@@ -20,7 +20,7 @@ export class NEO {
     private camera: THREE.Camera;
     private currentOrbit: THREE.Line | null = null;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[], openPopup: (kind: string, objectData:NEOTypes) => void) {
+    constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[], openPopup: (kind: string, objectData:NEOTypes) => void , orbitColor: string) {
         this.scene = scene;
         this.neoDataList = neaDataList;
         this.phaDataList = PHAList;
@@ -35,7 +35,7 @@ export class NEO {
         this.mouse = new THREE.Vector2();
         this.camera = camera;
       //  window.addEventListener('click', this.onMouseClick.bind(this), false);
-        this.setupInteractions(scene, camera, openPopup);
+        this.setupInteractions(openPopup ,orbitColor);
     }
 
     private createNEOInstances(dataList: NEOTypes[], color: string, defaultSize: number) {
@@ -98,7 +98,7 @@ export class NEO {
     }
 
 
-    setupInteractions(scene: THREE.Scene, camera: THREE.Camera, openPopup: (kind: string,  objectData:NEOTypes) => void) {
+    setupInteractions( openPopup: (kind: string,  objectData:NEOTypes) => void ,orbitColor: string) {
         window.addEventListener('click', (event: MouseEvent) => {
             event.preventDefault();
             this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -138,7 +138,7 @@ export class NEO {
                 }
             }
             if(neoData){
-                this.drawOrbit(neoData);
+                this.drawOrbit(neoData , orbitColor);
             }     
         });
     }
@@ -146,7 +146,7 @@ export class NEO {
 
 
 
-    private drawOrbit(neo: NEOTypes) {
+    private drawOrbit(neo: NEOTypes , orbitColor: string) { 
 
         if (this.currentOrbit) {
             this.scene.remove(this.currentOrbit);
@@ -163,7 +163,7 @@ export class NEO {
         }
 
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xFFFFFF, opacity: 0.5, transparent: true });
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: orbitColor, opacity: 0.5, transparent: true });
         this.currentOrbit = new THREE.Line(orbitGeometry, orbitMaterial);
         this.scene.add(this.currentOrbit);
     }

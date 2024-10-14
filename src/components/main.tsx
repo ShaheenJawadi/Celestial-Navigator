@@ -6,8 +6,8 @@ import { Sun } from "./stars/sun";
 import { planetsList } from "@/data/planets";
 import { NEO } from "./NEO/neo";
 import { NEOTypes } from "@/types/NEO";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/store";
 import { openPopup } from "@/store/generalState";
 import { dateToJulian } from "@/utils/conversionHelpers";
  
@@ -21,6 +21,7 @@ type Params ={
 
 const Orrery = (params:Params) => {
   const dispatch = useDispatch<AppDispatch>()
+  const state = useSelector((state: RootState) => state.generalState);
   const  { NEAList, CometList, PHAList} = params;
 
   const mountRef = useRef<HTMLDivElement>(null);
@@ -42,7 +43,10 @@ const Orrery = (params:Params) => {
       (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup({target:"PLANET",identifier:planetData.name})),)
     );
 
-    const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList ,(kind:string , objectData:NEOTypes) => dispatch(openPopup({target:"NEO",identifier:objectData.full_name ,neo:{kind,objectData}})));
+    const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList ,
+      (kind:string , objectData:NEOTypes) => dispatch(openPopup({target:"NEO",identifier:objectData.full_name ,neo:{kind,objectData}})),
+    state.neoOrbitColor
+    );
     camera.far = 10000;
     camera.position.set(0, 100, 200);
 

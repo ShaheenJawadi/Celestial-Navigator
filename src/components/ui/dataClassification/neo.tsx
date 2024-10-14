@@ -7,10 +7,11 @@ import {
 } from "@/utils/conversionHelpers";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { changeUnitSystem } from "@/store/generalState";
+import { changeNeoOrbitColor, changeUnitSystem } from "@/store/generalState";
  
 import { useState } from "react";
 import { PopoverPicker } from "../PopupColorPicker";
+import { stat } from "fs";
 const DisplayData = ({
   neoData,
 }: {
@@ -19,7 +20,8 @@ const DisplayData = ({
   const { kind, objectData } = neoData;
   const state = useSelector((state: RootState) => state.generalState);
   const dispatch = useDispatch<AppDispatch>();
-  const [color, setColor] = useState("#aabbcc");
+  
+  const [color, setColor] = useState(state.neoOrbitColor);
   return (
     <>
       <div className="dataBox">
@@ -30,7 +32,7 @@ const DisplayData = ({
         </div>
         <div className="single">
             <h4>Orbit Color:</h4>
-            <span className="colorPicker"><PopoverPicker color={color} onChange={setColor}/></span>
+            <span className="colorPicker"><PopoverPicker color={state.neoOrbitColor} onChange={ (color:string)=>dispatch(changeNeoOrbitColor(color))}/></span>
           </div>
       </div>
       <div className="units">
