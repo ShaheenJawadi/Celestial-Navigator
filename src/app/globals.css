@@ -88,6 +88,15 @@ a {
   color: #fff;
 }
 
+.popupHolder .popup .footage{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+}
+
 .popupHolder .popup .headSection {
   display: flex;
   
