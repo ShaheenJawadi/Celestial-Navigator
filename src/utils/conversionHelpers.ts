@@ -79,19 +79,36 @@ function convertAU(au: number , unit:"us" | "metric"="us"): { num: number; st: s
  
 }
 
+function convertUSToMetricDistances(g: number ,givenUnit:"us" | "metric"="us",  resUnit:"us" | "metric"="us"): { num: number; st: string } {
+   
+   
+    if(givenUnit=="us" && resUnit=="metric"){
+      return convertMilesToKm(g);
+    }
+    if(givenUnit=="metric" && resUnit=="us"){
+      return convertKmToMiles(g);
+    }
+    else {
+        const unit = givenUnit=="us" ? "miles" : "km";
+        return { num: g, st: g+" "+unit };
+    }
+   
 
  
-function convertKmToMiles(km: number) {
+ 
+}
+ 
+function convertKmToMiles(km: number) : { num: number; st: string }{
    
    
-      return { num: km*KM_TO_MILES, st: km*KM_TO_MILES+"km" };
+      return { num: km*KM_TO_MILES, st: km*KM_TO_MILES+" km" };
 
    
    
   }
 
-  function convertMilesToKm(miles: number ) {
-    return { num: miles/KM_TO_MILES, st: miles/KM_TO_MILES+"miles" };
+  function convertMilesToKm(miles: number ) : { num: number; st: string } {
+    return { num: miles/KM_TO_MILES, st: miles/KM_TO_MILES+" miles" };
    
   }
   
