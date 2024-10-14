@@ -8,7 +8,7 @@ export type NEOTypes = {
   last_obs: string;        // Last observation date (UTC)
   n_obs_used: string;      // Number of observations used
   class: string;       // object  class name
-
+  pdes: string;            // Primary designation
   /* ******************* */
 
   e: string;               // Eccentricity
