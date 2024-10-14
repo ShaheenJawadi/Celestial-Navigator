@@ -1,3 +1,4 @@
+import { NEOTypes } from '@/types/NEO';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface PopupState {
@@ -5,6 +6,7 @@ interface PopupState {
   target :"SUN" | "PLANET" | "NEO" | null;
   identifier: string |null;
   unitSystem: "us" | "metric";
+  neo:{kind:string,objectData:NEOTypes} | null;
 }
 
 const initialState: PopupState = {
@@ -12,6 +14,7 @@ const initialState: PopupState = {
   target: null,
   identifier: null,
   unitSystem: "us",
+  neo:null,
 
 };
 
@@ -19,15 +22,16 @@ const generalSlice = createSlice({
   name: 'celestialNavigator',
   initialState,
   reducers: {
-    openPopup: (state , acttion) => {
+    openPopup: (state , action) => {
       state.isPopupOpen = true;
-      state.target = acttion.payload.target;
-      state.identifier = acttion.payload.identifier;
+      state.target = action.payload.target;
+      state.identifier = action.payload.identifier;
     },
     closePopup: (state) => {
       state.isPopupOpen = false;
       state.target=null ;
       state.identifier = null;
+      state.neo=null;
     },
     changeUnitSystem: (state, action: PayloadAction<"us" | "metric">) => {
       state.unitSystem = action.payload;

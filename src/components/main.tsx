@@ -10,8 +10,7 @@ import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/store";
 import { openPopup } from "@/store/generalState";
 import { julianDate } from "@/utils/keplerianElements";
-
-
+ 
 
 type Params ={
   NEAList: NEOTypes[];
@@ -42,7 +41,7 @@ const Orrery = (params:Params) => {
       (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup({target:"PLANET",identifier:planetData.name})),)
     );
 
-    const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList);
+    const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList ,(kind:string , objectData:NEOTypes) => dispatch(openPopup({target:"NEO",identifier:objectData.spkid ,neo:{kind,objectData}})));
     camera.far = 10000;
     camera.position.set(0, 100, 200);
 

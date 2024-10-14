@@ -35,10 +35,10 @@ export class Planet {
     this.mesh.receiveShadow = true;
 
     scene.add(this.mesh);
-      if(name === 'SATURN'){
-    this.createRings(radius);
+    if (name === 'SATURN') {
+      this.createRings(radius);
     }
- 
+
     this.orbitLine = this.createOrbit();
     scene.add(this.orbitLine);
     this.setupInteractions(scene, camera, openPopup);
@@ -49,7 +49,7 @@ export class Planet {
     const outerRadius = 2.41 * PLANET_SIZE_SCALE_FACTOR * radius;
     const textureLoader = new THREE.TextureLoader();
 
- 
+
 
     const geometry = new PlanetRingGeomtry(
       innerRadius,
