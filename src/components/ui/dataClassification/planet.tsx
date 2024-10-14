@@ -7,12 +7,23 @@ import { changeUnitSystem } from "@/store/generalState";
 
 const DisplayData = ({ planetName }: { planetName: string }) => {
   const currentPlanet: PlanetProperty[] = planetsInformation[planetName]?.data || [];
- 
+  const funFacts: string[] = planetsInformation[planetName]?.funfacts || [];
   const state = useSelector((state: RootState) => state.generalState);
   const dispatch = useDispatch<AppDispatch>();
 
   return (
     <>
+    <div className="subDataSep">
+              <div className="tit">Fun Facts</div>
+              <div className="separator"></div>
+            </div>
+      <div className="funFacts">
+        <ul>
+          {funFacts.map((fact, index)=>{
+            return(<li key={index}>{fact}</li>)
+          })}
+        </ul>
+      </div>
       <div className="units">
         <button
           className={state.unitSystem == "us" ? "selected" : ""}
