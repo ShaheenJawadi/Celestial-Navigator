@@ -49,25 +49,25 @@ export class Planet {
     const outerRadius = 2.41 * PLANET_SIZE_SCALE_FACTOR * radius;
     const textureLoader = new THREE.TextureLoader();
 
-    var thetaSegments = 42;
+ 
 
-    var geometry = new PlanetRingGeomtry(
+    const geometry = new PlanetRingGeomtry(
       innerRadius,
       outerRadius,
-      thetaSegments
+      42,
     );
     geometry.rotateX(Math.PI / 2);
     geometry.rotateZ(THREE.MathUtils.degToRad(27));
     const texture = textureLoader.load(SATURN_RING_TEXTURE);
 
 
-    var material = new THREE.MeshLambertMaterial({
+    const material = new THREE.MeshLambertMaterial({
       map: texture,
 
       side: THREE.DoubleSide,
     });
 
-    var ring = new THREE.Mesh(geometry, material);
+    const ring = new THREE.Mesh(geometry, material);
     ring.position.set(0, 0, 0.1 * PLANET_SIZE_SCALE_FACTOR);
 
 
