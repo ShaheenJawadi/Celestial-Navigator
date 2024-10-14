@@ -25,3 +25,38 @@ export function dateToJulian(date: Date): number {
     
     return julianDay + fractionalDay;
 }
+
+
+
+  
+
+
+
+export function julianToDate(julian: number): Date {
+    
+    const julianDay = Math.floor(julian);
+    const fractionalDay = julian - julianDay;
+
+  
+    const A = julianDay + 32044;
+    const B = Math.floor((4 * A + 3) / 146097);
+    const C = A - Math.floor((146097 * B) / 4);
+    
+    const D = Math.floor((4 * C + 3) / 1461);
+    const E = C - Math.floor((1461 * D) / 4);
+    const M = Math.floor((5 * E + 2) / 153);
+    
+   
+    const day = E - Math.floor((153 * M + 2) / 5) + 1;
+    const month = M + 3 - 12 * Math.floor(M / 10);
+    const year = 100 * B + D - 4800 + Math.floor(M / 10);
+
+ 
+    const dayFraction = fractionalDay * 24 * 60 * 60;  
+    const hours = Math.floor(dayFraction / 3600);
+    const minutes = Math.floor((dayFraction % 3600) / 60);
+    const seconds = Math.floor(dayFraction % 60);
+
+ 
+    return new Date(Date.UTC(year, month - 1, day, hours, minutes, seconds));
+} 
