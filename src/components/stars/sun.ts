@@ -1,4 +1,5 @@
-import { IMG_FOLDER } from '@/data/planets';
+ 
+import { IMG_FOLDER } from '@/utils/resourcePaths';
 import { SUN_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 

@@ -1,15 +1,33 @@
 import React from "react";
 
 import { sunInfo } from "@/data/sunInformations";
-
+import Image from "next/image";
+import { ObjectsImages } from "@/utils/resourcePaths";
 const DisplayData = () => {
   return (
     <>
-
-<div className="subDataSep">
-              <div className="tit">Fun Facts</div>
-              <div className="separator"></div>
-            </div>
+    
+        <div className="footage">
+          <Image
+            src={ObjectsImages("sun")}
+            width={300}
+            height={300}
+            alt="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html"
+          />
+          <small>Source</small>
+          <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html"
+            >
+              NASA Sun Fact Sheet
+            </a>
+        </div>
+ 
+      <div className="subDataSep">
+        <div className="tit">Fun Facts</div>
+        <div className="separator"></div>
+      </div>
       <div className="funFacts">
         <ul>
           <li>

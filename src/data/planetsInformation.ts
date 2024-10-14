@@ -1,4 +1,5 @@
 import { planetInfoType } from "@/types/planet";
+import { ObjectsImages } from "@/utils/resourcePaths";
 
 /* source : https://nssdc.gsfc.nasa.gov/planetary/factsheet/  */
 /* source : https://nssdc.gsfc.nasa.gov/planetary/factsheet/planet_table_british.html*/
@@ -6,7 +7,12 @@ import { planetInfoType } from "@/types/planet";
 export const planetsInformation: planetInfoType =
 {
     "MERCURY": {
-        funfacts: ["Mercury has no atmosphere, meaning temperatures can swing wildly from 430°C (800°F) during the day to -180°C (-290°F) at night.", "Mercury has ice! Despite being the closest planet to the Sun, scientists have found frozen water in permanently shadowed craters at its poles."], data: [
+        image:{
+            src: ObjectsImages("mercury"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/mercuryfact.html"
+        },
+       
+        funfacts:  ["Mercury has no atmosphere, meaning temperatures can swing wildly from 430°C (800°F) during the day to -180°C (-290°F) at night.", "Mercury has ice! Despite being the closest planet to the Sun, scientists have found frozen water in permanently shadowed craters at its poles."], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -230,7 +236,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "VENUS": {
-        funfacts: ["Venus is often called Earth’s “sister planet” because of its similar size and composition. However, its surface is hot enough to melt lead due to the greenhouse effect, making it the hottest planet in the Solar System.", "Venus rotates backwards compared to most planets, so the Sun rises in the west and sets in the east! Its day is longer than its year."], data: [
+        image:{
+            src: ObjectsImages("venus"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/venusfact.html"
+        },
+        funfacts:  ["Venus is often called Earth’s “sister planet” because of its similar size and composition. However, its surface is hot enough to melt lead due to the greenhouse effect, making it the hottest planet in the Solar System.", "Venus rotates backwards compared to most planets, so the Sun rises in the west and sets in the east! Its day is longer than its year."], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -454,7 +464,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "EARTH": {
-        funfacts: ["Earth is the only planet in the Solar System known to have liquid water on its surface, which is essential for life as we know it.", "Earth's atmosphere contains just the right amount of oxygen (21%) for us to breathe. If it were much higher, fires could start much more easily, and if lower, life as we know it couldn’t exist."], data: [
+        image:{
+            src: ObjectsImages("earth"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/earthfact.html"
+        },
+        funfacts:  ["Earth is the only planet in the Solar System known to have liquid water on its surface, which is essential for life as we know it.", "Earth's atmosphere contains just the right amount of oxygen (21%) for us to breathe. If it were much higher, fires could start much more easily, and if lower, life as we know it couldn’t exist."], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -678,7 +692,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "MOON": {
-        funfacts: [], data: [
+        image:{
+            src: ObjectsImages("moon"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/moonfact.html"
+        },
+        funfacts:  [], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -902,7 +920,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "MARS": {
-        funfacts: ["Mars has the tallest volcano in the Solar System, Olympus Mons, which is about three times the height of Mount Everest!", "Mars has seasons similar to Earth, but they last twice as long! This is because a Martian year is about 687 Earth days, meaning each season is more stretched out."], data: [
+        image:{
+            src: ObjectsImages("mars"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/marsfact.html"
+        },
+        funfacts:  ["Mars has the tallest volcano in the Solar System, Olympus Mons, which is about three times the height of Mount Everest!", "Mars has seasons similar to Earth, but they last twice as long! This is because a Martian year is about 687 Earth days, meaning each season is more stretched out."], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -1126,7 +1148,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "JUPITER": {
-        funfacts: ["Jupiter has 79 known moons, and its largest moon, Ganymede, is even bigger than Mercury! Ganymede is also the largest moon in the Solar System.", "Jupiter’s Great Red Spot is a giant storm that’s been raging for at least 350 years. It's so large that three Earths could fit inside it!"], data: [
+        image:{
+            src: ObjectsImages("jupiter"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/jupiterfact.html"
+        },
+        funfacts:  ["Jupiter has 79 known moons, and its largest moon, Ganymede, is even bigger than Mercury! Ganymede is also the largest moon in the Solar System.", "Jupiter’s Great Red Spot is a giant storm that’s been raging for at least 350 years. It's so large that three Earths could fit inside it!"], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -1350,7 +1376,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "SATURN": {
-        funfacts: ["If you could find a bathtub big enough, Saturn would float in it! Saturn’s density is lower than water, making it the only planet in the Solar System that would float.", "Saturn's rings are incredibly thin despite their size. They are only about 10 meters (30 feet) thick but stretch over 120,000 kilometers (75,000 miles) wide!"], data: [
+        image:{
+            src: ObjectsImages("saturn"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/saturnfact.html"
+        },
+        funfacts:  ["If you could find a bathtub big enough, Saturn would float in it! Saturn’s density is lower than water, making it the only planet in the Solar System that would float.", "Saturn's rings are incredibly thin despite their size. They are only about 10 meters (30 feet) thick but stretch over 120,000 kilometers (75,000 miles) wide!"], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -1574,7 +1604,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "URANUS": {
-        funfacts: ["Uranus is tipped over on its side, so it essentially rolls around the Sun! Its axis is tilted at 98 degrees, giving it extreme seasonal changes.", "Uranus is known as an 'ice giant' because its atmosphere contains a lot of icy materials like water, ammonia, and methane. The methane is what gives Uranus its distinctive blue-green color."], data: [
+        image:{
+            src: ObjectsImages("uranus"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/uranusfact.html"
+        },
+        funfacts:  ["Uranus is tipped over on its side, so it essentially rolls around the Sun! Its axis is tilted at 98 degrees, giving it extreme seasonal changes.", "Uranus is known as an 'ice giant' because its atmosphere contains a lot of icy materials like water, ammonia, and methane. The methane is what gives Uranus its distinctive blue-green color."], data: [
             {
                 "label": "Mass",
                 "metric": {
@@ -1798,7 +1832,11 @@ export const planetsInformation: planetInfoType =
         ]
     },
     "NEPTUNE": {
-        funfacts: ["Neptune is so far from the Sun that it takes 165 Earth years to complete one orbit. That means since its discovery in 1846, it’s only completed one full trip around the Sun!", "Neptune has the strongest winds in the Solar System, with speeds reaching up to 2,100 km/h (1,300 mph) — almost nine times faster than Earth's strongest hurricanes."], data: [
+        image:{
+            src: ObjectsImages("neptune"),
+            alt: "https://nssdc.gsfc.nasa.gov/planetary/factsheet/neptunefact.html"
+        },
+        funfacts:  ["Neptune is so far from the Sun that it takes 165 Earth years to complete one orbit. That means since its discovery in 1846, it’s only completed one full trip around the Sun!", "Neptune has the strongest winds in the Solar System, with speeds reaching up to 2,100 km/h (1,300 mph) — almost nine times faster than Earth's strongest hurricanes."], data: [
             {
                 "label": "Mass",
                 "metric": {
