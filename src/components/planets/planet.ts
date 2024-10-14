@@ -1,7 +1,8 @@
-import { SATURN_RING_TEXTURE } from '@/data/planets';
+ 
 import { keplerianElementsType, planetType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
 import { PlanetRingGeomtry } from '@/utils/planetRing';
+import { SATURN_RING_TEXTURE } from '@/utils/resourcePaths';
 import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 

@@ -1,10 +1,10 @@
 import { planetType } from "@/types/planet";
 import { degreesToRadians } from "@/utils/keplerianElements";
+import { IMG_FOLDER } from "@/utils/resourcePaths";
 
 
 
-export const IMG_FOLDER = "./textures/planets/"
-export const SATURN_RING_TEXTURE = IMG_FOLDER+"rings/saturn.png";
+
  
 
 export const planetsList: planetType[] = [
