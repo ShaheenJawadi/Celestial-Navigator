@@ -151,7 +151,7 @@ export class NEO {
         }
     
         const orbitPoints: THREE.Vector3[] = [];
-        const totalSegments = ORBIT_SEGMENTS;  
+        const totalSegments = 5000;  
     
         for (let i = 0; i <= totalSegments; i++) {
             const t = (i / totalSegments) * 365;  
