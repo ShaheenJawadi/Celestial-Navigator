@@ -1,8 +1,16 @@
 import { NEOTypes } from "@/types/NEO";
-import { convertAU, convertUSToMetricDistances, dateToJulian, julianToDate } from "@/utils/conversionHelpers";
+import {
+  convertAU,
+  convertUSToMetricDistances,
+  dateToJulian,
+  julianToDate,
+} from "@/utils/conversionHelpers";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
 import { changeUnitSystem } from "@/store/generalState";
+ 
+import { useState } from "react";
+import { PopoverPicker } from "../PopupColorPicker";
 const DisplayData = ({
   neoData,
 }: {
@@ -11,11 +19,21 @@ const DisplayData = ({
   const { kind, objectData } = neoData;
   const state = useSelector((state: RootState) => state.generalState);
   const dispatch = useDispatch<AppDispatch>();
-
-
+  const [color, setColor] = useState("#aabbcc");
   return (
     <>
-    <div className="units">
+      <div className="dataBox">
+        <div className="single">
+          <h4>Object kind:</h4>
+          <span>{kind}</span>
+       
+        </div>
+        <div className="single">
+            <h4>Orbit Color:</h4>
+            <span className="colorPicker"><PopoverPicker color={color} onChange={setColor}/></span>
+          </div>
+      </div>
+      <div className="units">
         <button
           className={state.unitSystem == "us" ? "selected" : ""}
           onClick={() => dispatch(changeUnitSystem("us"))}
@@ -30,10 +48,6 @@ const DisplayData = ({
         </button>
       </div>
       <div className="dataBox">
-        <div className="single">
-          <h4>Object kind:</h4>
-          <span>{kind}</span>
-        </div>
         <>
           <div className="subDataSep">
             <div className="tit">Identification Information</div>
@@ -91,7 +105,11 @@ const DisplayData = ({
             <h4>Diameter:</h4>
             <span>
               {objectData.diameter
-                ? convertUSToMetricDistances(neoData?.objectData?.diameter ?? "0" ,"metric" , state.unitSystem).st 
+                ? convertUSToMetricDistances(
+                    neoData?.objectData?.diameter ?? "0",
+                    "metric",
+                    state.unitSystem
+                  ).st
                 : "Data not available"}
             </span>
           </div>
@@ -104,24 +122,24 @@ const DisplayData = ({
 
           <div className="single">
             <h4>Minimum Distance to Earth’s Orbit:</h4>
-            <span>{convertAU(objectData.moid,state.unitSystem).st}</span>
+            <span>{convertAU(objectData.moid, state.unitSystem).st}</span>
           </div>
 
           <div className="single">
             <h4>Closest Distance to the Sun:</h4>
-            <span> {convertAU(objectData.q,state.unitSystem).st}</span>
+            <span> {convertAU(objectData.q, state.unitSystem).st}</span>
           </div>
 
           <div className="single">
             <h4>Farthest Distance from the Sun:</h4>
-            
-            <span> {convertAU(objectData.ad,state.unitSystem).st}</span>
+
+            <span> {convertAU(objectData.ad, state.unitSystem).st}</span>
           </div>
 
           <div className="single">
             <h4>Date of Closest Approach to Sun:</h4>
-           
-            <span>  {julianToDate(parseFloat(objectData.tp))}</span>
+
+            <span> {julianToDate(parseFloat(objectData.tp))}</span>
           </div>
         </>
 
