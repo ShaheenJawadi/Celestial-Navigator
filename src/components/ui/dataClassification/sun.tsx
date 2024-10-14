@@ -14,7 +14,14 @@ const DisplayData = () => {
             height={350}
             alt="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html"
           />
-          <small>Source : NASA </small>
+          <small>Source</small>
+          <a
+              rel="noopener noreferrer"
+              target="_blank"
+              href="https://nssdc.gsfc.nasa.gov/planetary/factsheet/sunfact.html"
+            >
+              NASA Sun Fact Sheet
+            </a>
         </div>
  
       <div className="subDataSep">

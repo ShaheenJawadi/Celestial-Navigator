@@ -36,6 +36,7 @@ export type planetInfoType = {
     [s: string]: {
         data?: PlanetProperty[],
         funfacts?: string[],
+        image?: {src?: string, alt?: string}
     };
 
 };
