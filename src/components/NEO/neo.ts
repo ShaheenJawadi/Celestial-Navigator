@@ -25,8 +25,8 @@ export class NEO {
         this.phaDataList = PHAList;
         this.cometDataList = CometList;
 
-        this.neoInstancedMesh = this.createNEOInstances(this.neoDataList, "#15FB2C", 0.15);
-        this.phaInstancedMesh = this.createNEOInstances(this.phaDataList, "#D1002D", 0.2);
+        this.neoInstancedMesh = this.createNEOInstances(this.neoDataList, "#15FB2C", 1);
+        this.phaInstancedMesh = this.createNEOInstances(this.phaDataList, "#D1002D", 1);
         this.cometInstancedMesh = this.createNEOInstances(this.cometDataList, "#D1C600", 1);
 
 
