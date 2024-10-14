@@ -25,15 +25,17 @@ type UnitSystem = {
 }
 
 
-export type PlanetProperty ={
+export type PlanetProperty = {
     label: string;
     us: UnitSystem;
     metric: UnitSystem;
-    
+
 }
- 
+
 export type planetInfoType = {
-    [s: string]: {data:PlanetProperty[]};   
- 
+    [s: string]: {
+        data?: PlanetProperty[],
+        funfacts?: string[],
+    };
+
 };
- 
