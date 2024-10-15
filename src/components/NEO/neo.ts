@@ -146,7 +146,7 @@ export class NEO {
 
 
 
-    private drawOrbit(neo: NEOTypes , orbitColor: string) { 
+    private drawOrbit1(neo: NEOTypes , orbitColor: string) { 
 
         if (this.currentOrbit) {
             this.scene.remove(this.currentOrbit);
@@ -154,8 +154,8 @@ export class NEO {
         }
 
         const orbitPoints: THREE.Vector3[] = [];
-        const totalSegments = 5000;
-
+        const totalSegments = 1000;
+        const orbitalPeriod = this.getOrbitalPeriod(this.keplerianElementsObject(neo).a); 
         for (let i = 0; i <= totalSegments; i++) {
             const t = (i / totalSegments) * 365;
             const position = calculateOrbitalPosition(t, this.keplerianElementsObject(neo));
@@ -168,8 +168,69 @@ export class NEO {
         this.scene.add(this.currentOrbit);
     }
 
+    private getOrbitalPeriod(a:number ): number {
+        // Get the Keplerian elements for the object
+       
+      
+        // The semi-major axis (a) is typically part of the Keplerian elements
+        const semiMajorAxis =  a; // Assuming 'a' is the semi-major axis in AU
+      
+        // Calculate the orbital period using Kepler's Third Law
+        const orbitalPeriodInYears = Math.pow(semiMajorAxis, 1.5);
+      
+        // Convert orbital period to days (1 year = 365 days)
+        const orbitalPeriodInDays = orbitalPeriodInYears * 365;
+      
+        return orbitalPeriodInDays;
+      }
+      
 
 
+      private drawOrbit(neo: NEOTypes, orbitColor: string) {
+
+        if (this.currentOrbit) {
+            this.scene.remove(this.currentOrbit);
+            this.currentOrbit.geometry.dispose();
+        }
+   
+        const orbitPoints: THREE.Vector3[] = [];    
+        const keplerianElements = this.keplerianElementsObject(neo);        
+        const totalSegments = this.calculateSegmentCount(keplerianElements.e, keplerianElements.a);            
+        const orbitalPeriod = this.getOrbitalPeriod(keplerianElements.a);            
+        let prevPosition = calculateOrbitalPosition(0, keplerianElements);
+        orbitPoints.push(prevPosition);    
+        for (let i = 1; i <= totalSegments; i++) {
+
+            const t = (i / totalSegments) * orbitalPeriod;             
+            const position = calculateOrbitalPosition(t, keplerianElements);
+            const distance = position.distanceTo(prevPosition);         
+            if (distance > 0.1) {   
+                const midT = (i - 0.5) / totalSegments * orbitalPeriod;
+                const midPosition = calculateOrbitalPosition(midT, keplerianElements);
+                orbitPoints.push(midPosition);
+            }
+    
+            orbitPoints.push(position);
+            prevPosition = position;
+        }
+        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
+        const orbitMaterial = new THREE.LineBasicMaterial({ color: orbitColor, opacity: 0.5, transparent: true });
+        this.currentOrbit = new THREE.Line(orbitGeometry, orbitMaterial);
+        this.scene.add(this.currentOrbit);
+    }
+    
+    
+
+    private calculateSegmentCount(eccentricity: number, semiMajorAxis: number): number {
+        let baseSegments = 800;
+        if (eccentricity > 0.3) {
+            baseSegments += Math.floor(eccentricity * 5000);   
+        }
+        if (semiMajorAxis > 5) {   
+            baseSegments += Math.floor(semiMajorAxis * 2000);  
+        }
+        return Math.min(baseSegments, 10000);   
+    }
 
 
 

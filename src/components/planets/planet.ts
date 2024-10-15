@@ -110,34 +110,40 @@ export class Planet {
   }
 
 
+ 
 
-  createOrbit() {
-    const { a, e, I, longPeri, longNode } = this.keplerianElements;
-    const orbitPoints = [];
+  private createOrbit( ) { 
 
-    for (let i = 0; i <= ORBIT_SEGMENTS; i++) {
-      const trueAnomaly = (i / ORBIT_SEGMENTS) * 2 * Math.PI;
-      const r = a * (1 - e * Math.cos(trueAnomaly));
+ 
 
-
-      const x = r * Math.cos(trueAnomaly + longPeri);
-      const y = r * Math.sin(trueAnomaly + longPeri);
-      const z = y * Math.sin(I);
-      const yInclined = y * Math.cos(I);
-
-
-      const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
-      const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
-
-      orbitPoints.push(new THREE.Vector3(xFinal * DISTANCE_SCALE_FACTOR, z * DISTANCE_SCALE_FACTOR, yFinal * DISTANCE_SCALE_FACTOR));
+    const orbitPoints: THREE.Vector3[] = [];
+    const totalSegments = 5000;
+    const orbitalPeriod = this.getOrbitalPeriod(); 
+    for (let i = 0; i <= totalSegments; i++) {
+        const t = (i / totalSegments) * orbitalPeriod;
+        const position = calculateOrbitalPosition(t, this.keplerianElements);
+        orbitPoints.push(position);
     }
 
     const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-    const orbitMaterial = new THREE.LineBasicMaterial({ color: this.planetData.color, linewidth: 0.1 });
-    const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+    const orbitMaterial = new THREE.LineBasicMaterial({ color: this.planetData.color, opacity: 0.5, transparent: true });
+   const currentOrbit = new THREE.Line(orbitGeometry, orbitMaterial);
+    return currentOrbit;
+}
 
-    return orbitLine;
-  }
+
+private getOrbitalPeriod( ): number {
+ 
+  const semiMajorAxis = this.keplerianElements.a;  
+ 
+  const orbitalPeriodInYears = Math.pow(semiMajorAxis, 1.5);
+ 
+  const orbitalPeriodInDays = orbitalPeriodInYears * 365;
+
+  return orbitalPeriodInDays;
+}
+
+
 }
 
 
