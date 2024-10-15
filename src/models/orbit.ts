@@ -3,14 +3,14 @@ import * as THREE from 'three';
 import { NEOTypes } from '@/types/NEO';
 import { keplerianElementsType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
+import { ObjectsType } from '@/types/general';
 
 export class Orbit {
     private keplerianElements: keplerianElementsType;
     private orbitColor: string;
-    private targetObject: "NEO" | "PLANET";
-    private objectRef: THREE.Object3D | null = null;
+    private targetObject: ObjectsType 
 
-    constructor(keplerianElements: keplerianElementsType, orbitColor: string, targetObject: "NEO" | "PLANET") {
+    constructor(keplerianElements: keplerianElementsType, orbitColor: string, targetObject: ObjectsType) {
         this.keplerianElements = keplerianElements;
         this.orbitColor = orbitColor;
         this.targetObject = targetObject;
@@ -37,15 +37,16 @@ export class Orbit {
 
 
     drawOrbit() {
-        if (this.targetObject === "NEO") {
-            return this.drawNeoOrbit();
-        } else {
+        if (this.targetObject === "PLANET") {
             return this.createPlanetOrbit();
+        } else {
+            return this.drawNeoOrbit();
         }
     }
 
 
     private drawNeoOrbit() {
+        console.log('drawing neo orbit');
         const keplerianElements = this.keplerianElements;
         const orbitPoints: THREE.Vector3[] = [];
         const totalSegments = this.calculateSegmentCount(keplerianElements.e, keplerianElements.a);
@@ -68,7 +69,9 @@ export class Orbit {
         }
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
         const orbitMaterial = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true });
-        return new THREE.Line(orbitGeometry, orbitMaterial);
+        const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+
+        return orbitLine;
 
     }
 

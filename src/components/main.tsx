@@ -8,8 +8,12 @@ import { NEO } from "../models/neo";
 import { NEOTypes } from "@/types/NEO";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { openPopup } from "@/store/generalState";
+import { openPopup, openPopupAndAddOrbit } from "@/store/generalState";
 import { dateToJulian } from "@/utils/conversionHelpers";
+import { stat } from "fs";
+import { ObjectsType } from "@/types/general";
+import { keplerianElementsType } from "@/types/planet";
+import { Orbit } from "@/models/orbit";
  
  
 
@@ -44,16 +48,22 @@ const Orrery = (params:Params) => {
     );
 
     const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList ,
-      (kind:string , objectData:NEOTypes) => dispatch(openPopup({target:"NEO",identifier:objectData.full_name ,neo:{kind,objectData}})),
-    state.neoOrbitColor
-    );
+      (kind:ObjectsType , objectData:NEOTypes , keplerianElements:keplerianElementsType) => dispatch(openPopupAndAddOrbit({target:"NEO",identifier:objectData.full_name ,neo:{kind,objectData , keplerianElements:keplerianElements}})));
     camera.far = 10000;
     camera.position.set(0, 100, 200);
 
-    const handleResize = () => {
-      sceneSetup.handleResize();
-    };
-    window.addEventListener("resize", handleResize);
+ 
+    window.addEventListener("resize", sceneSetup.handleResize);
+
+ 
+    state.orbits.forEach((orbit) => {
+      const orbitInstance = new Orbit(orbit.keplerianElements, orbit.orbitColor, orbit.targetObject);
+      const orbitObject = orbitInstance.drawOrbit();
+     
+        scene.add(orbitObject);     
+ 
+    });
+
 
     const animate = () => {
       requestAnimationFrame(animate);
@@ -72,9 +82,11 @@ const Orrery = (params:Params) => {
       if (mountRef.current) {
         mountRef.current.removeChild(renderer.domElement);
       }
-      window.removeEventListener("resize", handleResize);
+      window.removeEventListener("resize", sceneSetup.handleResize);
     };
-  }, []);
+  }, [state.orbits]);
+
+ 
 
   return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
 };

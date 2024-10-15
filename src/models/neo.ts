@@ -1,3 +1,4 @@
+import { ObjectsType } from '@/types/general';
 import { NEOTypes } from '@/types/NEO';
 import { keplerianElementsType } from '@/types/planet';
 import { degreesToRadians } from '@/utils/conversionHelpers';
@@ -5,9 +6,10 @@ import { calculateOrbitalPosition} from '@/utils/keplerianElements';
 import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { or } from 'three/webgpu';
+import { Orbit } from './orbit';
 
 
-export class NEO {
+export class NEO   {
     private scene: THREE.Scene;
     private neoInstancedMesh: THREE.InstancedMesh;
     private phaInstancedMesh: THREE.InstancedMesh;
@@ -20,7 +22,7 @@ export class NEO {
     private camera: THREE.Camera;
     private currentOrbit: THREE.Line | null = null;
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[], openPopup: (kind: string, objectData:NEOTypes) => void , orbitColor: string) {
+    constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[], openPopup: (kind: ObjectsType, objectData:NEOTypes , keplerianElements:keplerianElementsType) => void  ) {
         this.scene = scene;
         this.neoDataList = neaDataList;
         this.phaDataList = PHAList;
@@ -34,7 +36,7 @@ export class NEO {
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2();
         this.camera = camera; 
-        this.setupInteractions(openPopup ,orbitColor);
+        this.setupInteractions(openPopup  );
     }
 
     private createNEOInstances(dataList: NEOTypes[], color: string, defaultSize: number) {
@@ -71,7 +73,7 @@ export class NEO {
 
     private updateObjects(deltaTime: number, dataList: NEOTypes[], instancedMesh: THREE.InstancedMesh) {
         dataList.forEach((neoData, i) => {
-            const position = calculateOrbitalPosition(deltaTime, this.keplerianElementsObject(neoData));
+            const position = calculateOrbitalPosition(deltaTime, this.NeoTokeplerianElementsObject(neoData));
 
             const matrix = new THREE.Matrix4();
             matrix.setPosition(position.x, position.y, position.z);
@@ -84,7 +86,7 @@ export class NEO {
 
 
 
-    private keplerianElementsObject(neo: NEOTypes): keplerianElementsType {
+    public NeoTokeplerianElementsObject(neo: NEOTypes): keplerianElementsType {
 
         return {
             a: parseFloat(neo.a),
@@ -97,7 +99,7 @@ export class NEO {
     }
 
 
-    setupInteractions( openPopup: (kind: string,  objectData:NEOTypes) => void ,orbitColor: string) {
+    setupInteractions( openPopup: (kind: ObjectsType,  objectData:NEOTypes, keplerianElements:keplerianElementsType) => void  ) {
         window.addEventListener('click', (event: MouseEvent) => {
             event.preventDefault();
             this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
@@ -117,7 +119,8 @@ export class NEO {
                 if (instanceId !== undefined) {
                     console.log(instanceId);
                      neoData = this.neoDataList[instanceId];
-                     openPopup('Astroid', neoData);
+ 
+                     openPopup('ASTEROID', neoData , this.NeoTokeplerianElementsObject(neoData));
                 }
             } else if (phaIntersect.length > 0) {
             
@@ -125,7 +128,7 @@ export class NEO {
                 if (instanceId !== undefined) {
                     console.log(instanceId);
                       neoData = this.phaDataList[instanceId];
-                      openPopup('PHA', neoData);
+                      openPopup('PHA', neoData , this.NeoTokeplerianElementsObject(neoData));
                 }
             } else if (cometIntersect.length > 0) {
             
@@ -133,7 +136,7 @@ export class NEO {
                 if (instanceId !== undefined) {
                     console.log(instanceId);
                      neoData = this.cometDataList[instanceId];
-                     openPopup('Comet', neoData);
+                     openPopup('COMET', neoData , this.NeoTokeplerianElementsObject(neoData));
                 }
             }
                

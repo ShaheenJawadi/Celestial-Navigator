@@ -1,4 +1,7 @@
 import * as THREE from 'three';
+import { Orbit } from './orbit';
+import { or } from 'three/webgpu';
+import { OrbitType } from '@/types/general';
 
 export class SceneSetup {
   scene: THREE.Scene;
@@ -41,4 +44,5 @@ this.scene.add(ambientLight);
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
+ 
 }
