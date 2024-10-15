@@ -5,6 +5,7 @@ import { PlanetRingGeomtry } from '@/utils/planetRing';
 import { SATURN_RING_TEXTURE } from '@/utils/resourcePaths';
 import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
+import { Orbit } from './orbit';
 
 
 
@@ -41,7 +42,7 @@ export class Planet {
       this.createRings(radius);
     }
 
-    this.orbitLine = this.createOrbit();
+    this.orbitLine = new Orbit(keplerianElements, color, 'PLANET').drawOrbit();
     scene.add(this.orbitLine);
     this.setupInteractions(openPopup);
   }
@@ -112,37 +113,9 @@ export class Planet {
 
  
 
-  private createOrbit( ) { 
+
 
  
-
-    const orbitPoints: THREE.Vector3[] = [];
-    const totalSegments = 5000;
-    const orbitalPeriod = this.getOrbitalPeriod(); 
-    for (let i = 0; i <= totalSegments; i++) {
-        const t = (i / totalSegments) * orbitalPeriod;
-        const position = calculateOrbitalPosition(t, this.keplerianElements);
-        orbitPoints.push(position);
-    }
-
-    const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-    const orbitMaterial = new THREE.LineBasicMaterial({ color: this.planetData.color, opacity: 0.5, transparent: true });
-   const currentOrbit = new THREE.Line(orbitGeometry, orbitMaterial);
-    return currentOrbit;
-}
-
-
-private getOrbitalPeriod( ): number {
- 
-  const semiMajorAxis = this.keplerianElements.a;  
- 
-  const orbitalPeriodInYears = Math.pow(semiMajorAxis, 1.5);
- 
-  const orbitalPeriodInDays = orbitalPeriodInYears * 365;
-
-  return orbitalPeriodInDays;
-}
-
 
 }
 
