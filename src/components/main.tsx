@@ -1,10 +1,10 @@
 import { useEffect, useRef } from "react";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
-import { SceneSetup } from "./scene";
-import { Planet } from "./planets/planet";
-import { Sun } from "./stars/sun";
+import { SceneSetup } from "../models/scene";
+import { Planet } from "../models/planet";
+import { Sun } from "../models/sun";
 import { planetsList } from "@/data/planets";
-import { NEO } from "./NEO/neo";
+import { NEO } from "../models/neo";
 import { NEOTypes } from "@/types/NEO";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
