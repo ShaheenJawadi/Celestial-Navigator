@@ -35,6 +35,7 @@ export class Planet {
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
+    this.mesh.frustumCulled = true;
 
     scene.add(this.mesh);
     if (name === 'SATURN') {
@@ -73,7 +74,7 @@ export class Planet {
     ring.position.set(0, 0, 0.1 * PLANET_SIZE_SCALE_FACTOR);
 
 
-
+    ring.frustumCulled = true;
     this.mesh.add(ring);
   }
 

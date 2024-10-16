@@ -57,6 +57,7 @@ export class NEO   {
 
             instancedMesh.setMatrixAt(i, matrix);
         });
+        instancedMesh.frustumCulled = true;
 
         return instancedMesh;
     }

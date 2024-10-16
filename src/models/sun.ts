@@ -16,6 +16,7 @@ export class Sun {
     const geometry = new THREE.SphereGeometry(696340 * SUN_SCALE_FACTOR, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: texture });
     this.sun = new THREE.Mesh(geometry, material);
+    this.sun.frustumCulled  = true;
     scene.add(this.sun);
 
     const sunLight = new THREE.PointLight(0xffffff, 100000, 0);  

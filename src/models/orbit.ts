@@ -69,15 +69,15 @@ export class Orbit {
             lineWidth: 1,
             resolution: new THREE.Vector2(window.innerWidth, window.innerHeight)
         });
-        const instancedMesh = new THREE.InstancedMesh(geometry, material, maxOrbits);
+        this.instancedMesh = new THREE.InstancedMesh(geometry, material, maxOrbits);
 
         const dummyMatrix = new THREE.Matrix4();
         for (let i = 0; i < maxOrbits; i++) {
             dummyMatrix.identity();
-            instancedMesh.setMatrixAt(i, dummyMatrix);
+            this.instancedMesh.setMatrixAt(i, dummyMatrix);
         }
- 
-        scene.add(instancedMesh);
+        this.instancedMesh.frustumCulled = true;
+        scene.add(this.instancedMesh);
     }
 
     private createPlanetOrbitInstanced(scene: THREE.Scene, maxOrbits: number) {
@@ -108,6 +108,7 @@ export class Orbit {
             this.instancedMesh.setMatrixAt(i, dummyMatrix);
         }
 
+        this.instancedMesh.frustumCulled = true;
         scene.add(this.instancedMesh);
     }
 
