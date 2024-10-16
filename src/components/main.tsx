@@ -31,7 +31,8 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
   const neoManagerRef = useRef<NEO | null>(null);
   const planetsRef = useRef<Planet[]>([]);
   const orbitsRef = useRef<Orbit[]>([]); 
- 
+  
+
   const initializeScene = useCallback(() => {
     const { scene, camera, renderer } = sceneSetup.current;
  
@@ -98,7 +99,9 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
   const drawOrbits = useCallback(() => {
     const { scene } = sceneSetup.current;
 
- 
+    orbitsRef.current.forEach((orbit) => orbit.removeOrbit(scene));
+    orbitsRef.current = [];
+
     state.orbits.forEach((orbit) => {
       const orbitInstance = new Orbit(orbit.keplerianElements, orbit.orbitColor, orbit.targetObject);
       orbitInstance.drawOrbit(scene);

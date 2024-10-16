@@ -7,6 +7,7 @@ export class Orbit {
     private keplerianElements: keplerianElementsType;
     private orbitColor: string;
     private targetObject: ObjectsType;
+    private instancedMesh: THREE.InstancedMesh | null = null;
 
     constructor(keplerianElements: keplerianElementsType, orbitColor: string, targetObject: ObjectsType) {
         this.keplerianElements = keplerianElements;
@@ -75,7 +76,7 @@ export class Orbit {
             dummyMatrix.identity();
             instancedMesh.setMatrixAt(i, dummyMatrix);
         }
-
+ 
         scene.add(instancedMesh);
     }
 
@@ -99,14 +100,32 @@ export class Orbit {
 
         });
  
-        const instancedMesh = new THREE.InstancedMesh(geometry, material, maxOrbits);
+        this.instancedMesh = new THREE.InstancedMesh(geometry, material, maxOrbits);
 
         const dummyMatrix = new THREE.Matrix4();
         for (let i = 0; i < maxOrbits; i++) {
             dummyMatrix.identity();
-            instancedMesh.setMatrixAt(i, dummyMatrix);
+            this.instancedMesh.setMatrixAt(i, dummyMatrix);
         }
 
-        scene.add(instancedMesh);
+        scene.add(this.instancedMesh);
     }
+
+    removeOrbit(scene: THREE.Scene) {
+        if (this.instancedMesh) {
+            scene.remove(this.instancedMesh);  
+            this.instancedMesh.geometry.dispose();
+            if (Array.isArray(this.instancedMesh.material)) {
+                this.instancedMesh.material.forEach((material) => {
+                    if (material && typeof material.dispose === 'function') {
+                        material.dispose();
+                    }
+                });
+            } else {
+                this.instancedMesh.material.dispose(); 
+            }
+            this.instancedMesh = null;
+        }
+    }
+    
 }
