@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { keplerianElementsType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
 import { ObjectsType } from '@/types/general';
-
+import { MeshLineGeometry, MeshLineMaterial, raycast } from 'meshline'
 export class Orbit {
     private keplerianElements: keplerianElementsType;
     private orbitColor: string;
@@ -60,9 +60,15 @@ export class Orbit {
             prevPosition = position;
         }
 
-        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-        const material = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true  , side: THREE.DoubleSide  });
-        const instancedMesh = new THREE.InstancedMesh(orbitGeometry, material, maxOrbits);
+        const geometry = new MeshLineGeometry()
+        geometry.setPoints(orbitPoints);
+        const material = new MeshLineMaterial({
+            color: new THREE.Color(this.orbitColor),
+            opacity: 0.9,
+            lineWidth: 1,
+            resolution: new THREE.Vector2(window.innerWidth, window.innerHeight)
+        });
+        const instancedMesh = new THREE.InstancedMesh(geometry, material, maxOrbits);
 
         const dummyMatrix = new THREE.Matrix4();
         for (let i = 0; i < maxOrbits; i++) {
@@ -84,9 +90,16 @@ export class Orbit {
             orbitPoints.push(position);
         }
 
-        const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-        const material = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true,  side: THREE.DoubleSide  });
-        const instancedMesh = new THREE.InstancedMesh(orbitGeometry, material, maxOrbits);
+        const geometry = new MeshLineGeometry()
+        geometry.setPoints(orbitPoints);
+        const material = new MeshLineMaterial({
+            color: new THREE.Color(this.orbitColor), 
+            lineWidth: 0.5,  
+            resolution: new THREE.Vector2(window.innerWidth, window.innerHeight)
+
+        });
+ 
+        const instancedMesh = new THREE.InstancedMesh(geometry, material, maxOrbits);
 
         const dummyMatrix = new THREE.Matrix4();
         for (let i = 0; i < maxOrbits; i++) {
