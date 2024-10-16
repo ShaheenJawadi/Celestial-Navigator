@@ -6,7 +6,7 @@ import { SATURN_RING_TEXTURE } from '@/utils/resourcePaths';
 import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { Orbit } from './orbit';
-
+import { gsap } from 'gsap';
 
 
 
@@ -96,27 +96,55 @@ export class Planet {
       raycaster.setFromCamera(mouse, this.camera);
 
       const intersects = raycaster.intersectObjects([this.mesh]);
-
+    let intersectedObjectPosition    = 5; 
       if (intersects.length > 0) {
+        if (intersectedObjectPosition) {
+          this.onClickCamera( intersects[0].object);
+         // this.moveCameraTo(intersectedObjectPosition);
+      }  
+
+         /*  this.camera.position.copy(objectPosition);
+          this.camera.position.z -= this.planetData.radius*PLANET_SIZE_SCALE_FACTOR+250; // Adjust this value as necessary to position the camera at a distance
+          this.camera.lookAt(objectPosition); */
         openPopup();
       }
     });
   }
   update(deltaTime: number) {
 
-
-    // Update the planet position
+ 
     const position = calculateOrbitalPosition(deltaTime, this.keplerianElements);
     this.mesh.position.copy(position);
   }
-
-
  
-
-
-
  
+ onClickCamera = (mesh: THREE.Object3D<THREE.Object3DEventMap>) => {
+  const box = new THREE.Box3().setFromObject(mesh);
+  const center = new THREE.Vector3();
+  const size = new THREE.Vector3();
+  box.getCenter(center);  
+  box.getSize(size);      
 
+  const maxSize = Math.max(size.x, size.y, size.z);
+
+  const distance = maxSize * 2;  
+
+
+  const direction = new THREE.Vector3().subVectors(center, new THREE.Vector3(0, 0, 0)).normalize();
+
+  const newPosition = direction.multiplyScalar(distance).add(center);
+
+  gsap.to(this.camera.position, {
+      x: newPosition.x,
+      y: newPosition.y,
+      z: newPosition.z,
+      duration: 1,
+      onUpdate: () => {
+          this.camera.lookAt(center); 
+      }
+  });
+
+}
 }
 
 
