@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useCallback } from "react";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SceneSetup } from "../models/scene";
 import { Planet } from "../models/planet";
@@ -10,85 +10,116 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { openPopup, openPopupAndAddOrbit } from "@/store/generalState";
 import { dateToJulian } from "@/utils/conversionHelpers";
-import { stat } from "fs";
 import { ObjectsType } from "@/types/general";
 import { keplerianElementsType } from "@/types/planet";
 import { Orbit } from "@/models/orbit";
- 
-import * as THREE from 'three';
 
-type Params ={
+type Params = {
   NEAList: NEOTypes[];
   PHAList: NEOTypes[];
   CometList: NEOTypes[];
-}
+};
 
-const Orrery = (params:Params) => {
-  const dispatch = useDispatch<AppDispatch>()
+const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
+  const dispatch = useDispatch<AppDispatch>();
   const state = useSelector((state: RootState) => state.generalState);
-  const  { NEAList, CometList, PHAList} = params;
 
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneSetup = new SceneSetup();
-  const { scene, camera, renderer } = sceneSetup;
-/*   const axesHelper = new THREE.AxesHelper(500);
-  scene.add(axesHelper); */
-
-  useEffect(() => {
-    if (mountRef.current) {
+  const sceneSetup = useRef(new SceneSetup());  
+  const controlsRef = useRef<OrbitControls | null>(null);
+  const sunRef = useRef<Sun | null>(null);
+  const neoManagerRef = useRef<NEO | null>(null);
+  const planetsRef = useRef<Planet[]>([]);
+  const orbitsRef = useRef<Orbit[]>([]); 
+ 
+  const initializeScene = useCallback(() => {
+    const { scene, camera, renderer } = sceneSetup.current;
+ 
+    if (mountRef.current && !renderer.domElement.parentElement) {
       mountRef.current.appendChild(renderer.domElement);
     }
-    const sun = new Sun(scene , camera,() => dispatch(openPopup({target:"SUN",identifier:"SUN"})));
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
-    controls.enablePan = true;
-
-    const planets = planetsList.map(
-      (planetData) => new Planet(scene, planetData, camera,() => dispatch(openPopup({target:"PLANET",identifier:planetData.name})),)
+ 
+    sunRef.current = new Sun(scene, camera, () =>
+      dispatch(openPopup({ target: "SUN", identifier: "SUN" }))
     );
+    planetsRef.current = planetsList.map(
+      (planetData) =>
+        new Planet(scene, planetData, camera, () =>
+          dispatch(openPopup({ target: "PLANET", identifier: planetData.name }))
+        )
+    );
+ 
+    neoManagerRef.current = new NEO(
+      scene,
+      camera,
+      NEAList,
+      CometList,
+      PHAList,
+      (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) =>
+        dispatch(
+          openPopupAndAddOrbit({
+            target: "NEO",
+            identifier: objectData.full_name,
+            neo: { kind, objectData, keplerianElements },
+          })
+        )
+    );
+ 
+    if (!camera.userData.initialized) {
+      camera.position.set(0, 200, 500);  
+      camera.lookAt(0, 0, 0);
+      camera.userData.initialized = true; 
+    }
+ 
+    controlsRef.current = new OrbitControls(camera, renderer.domElement);
+    controlsRef.current.enableDamping = true;
+    controlsRef.current.dampingFactor = 0.05;
+    controlsRef.current.enablePan = true;
 
-    const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList ,
-      (kind:ObjectsType , objectData:NEOTypes , keplerianElements:keplerianElementsType) => dispatch(openPopupAndAddOrbit({target:"NEO",identifier:objectData.full_name ,neo:{kind,objectData , keplerianElements:keplerianElements}})));
-    camera.far = 10000; 
+    window.addEventListener("resize", sceneSetup.current.handleResize);
+  }, [dispatch, NEAList, CometList, PHAList]);
 
+ 
+  const animate = useCallback(() => {
+    const { scene, camera, renderer } = sceneSetup.current;
 
-    camera.position.set(0, 200, 500);  
-    camera.lookAt(0, 0, 0);  
-    window.addEventListener("resize", sceneSetup.handleResize);
+    const time = dateToJulian(new Date());
+ 
+    planetsRef.current.forEach((planet) => planet.update(time));
+    neoManagerRef.current?.update(time);
+ 
+    controlsRef.current?.update();
+ 
+    renderer.render(scene, camera);
+ 
+    requestAnimationFrame(animate);
+  }, []);
+ 
+  const drawOrbits = useCallback(() => {
+    const { scene } = sceneSetup.current;
 
  
     state.orbits.forEach((orbit) => {
       const orbitInstance = new Orbit(orbit.keplerianElements, orbit.orbitColor, orbit.targetObject);
-    orbitInstance.drawOrbit(scene );
-     
-           
- 
+      orbitInstance.drawOrbit(scene);
+      orbitsRef.current.push(orbitInstance);  
     });
-
-
-    const animate = () => {
-      requestAnimationFrame(animate);
-
-      const time = dateToJulian(new Date() );
-
-      planets.forEach((planet) => planet.update(time));
-      neoManager.update(time);
-      controls.update();
-      renderer.render(scene, camera);
-    };
-
+  }, [state.orbits]);
+ 
+  useEffect(() => {
+    initializeScene();
     animate();
+    drawOrbits();  
 
     return () => {
-      if (mountRef.current) {
+      const { renderer } = sceneSetup.current;
+      if (mountRef.current && renderer.domElement.parentElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
-      window.removeEventListener("resize", sceneSetup.handleResize);
-    };
-  }, [state.orbits]);
 
- 
+      window.removeEventListener("resize", sceneSetup.current.handleResize);
+    };
+  }, [initializeScene, animate, drawOrbits]);
 
   return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
 };
