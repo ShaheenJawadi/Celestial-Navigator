@@ -1,6 +1,4 @@
-// models/Orbit.ts
 import * as THREE from 'three';
-import { NEOTypes } from '@/types/NEO';
 import { keplerianElementsType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
 import { ObjectsType } from '@/types/general';
@@ -8,21 +6,19 @@ import { ObjectsType } from '@/types/general';
 export class Orbit {
     private keplerianElements: keplerianElementsType;
     private orbitColor: string;
-    private targetObject: ObjectsType 
+    private targetObject: ObjectsType;
 
     constructor(keplerianElements: keplerianElementsType, orbitColor: string, targetObject: ObjectsType) {
         this.keplerianElements = keplerianElements;
         this.orbitColor = orbitColor;
         this.targetObject = targetObject;
     }
-    private getOrbitalPeriod(): number {
 
+    private getOrbitalPeriod(): number {
         const semiMajorAxis = this.keplerianElements.a;
         const orbitalPeriodInYears = Math.pow(semiMajorAxis, 1.5);
-        const orbitalPeriodInDays = orbitalPeriodInYears * 365;
-        return orbitalPeriodInDays;
+        return orbitalPeriodInYears * 365;
     }
-
 
     private calculateSegmentCount(eccentricity: number, semiMajorAxis: number): number {
         let baseSegments = 800;
@@ -35,26 +31,23 @@ export class Orbit {
         return Math.min(baseSegments, 10000);
     }
 
-
-    drawOrbit() {
+    drawOrbit(scene: THREE.Scene, maxOrbits: number = 1) {
         if (this.targetObject === "PLANET") {
-            return this.createPlanetOrbit();
+            this.createPlanetOrbitInstanced(scene, maxOrbits);
         } else {
-            return this.drawNeoOrbit();
+            this.createNeoOrbitInstanced(scene, maxOrbits);
         }
     }
 
-
-    private drawNeoOrbit() {
-        console.log('drawing neo orbit');
+    private createNeoOrbitInstanced(scene: THREE.Scene, maxOrbits: number) {
         const keplerianElements = this.keplerianElements;
         const orbitPoints: THREE.Vector3[] = [];
         const totalSegments = this.calculateSegmentCount(keplerianElements.e, keplerianElements.a);
         const orbitalPeriod = this.getOrbitalPeriod();
         let prevPosition = calculateOrbitalPosition(0, keplerianElements);
+
         orbitPoints.push(prevPosition);
         for (let i = 1; i <= totalSegments; i++) {
-
             const t = (i / totalSegments) * orbitalPeriod;
             const position = calculateOrbitalPosition(t, keplerianElements);
             const distance = position.distanceTo(prevPosition);
@@ -63,27 +56,28 @@ export class Orbit {
                 const midPosition = calculateOrbitalPosition(midT, keplerianElements);
                 orbitPoints.push(midPosition);
             }
-
             orbitPoints.push(position);
             prevPosition = position;
         }
+
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true });
-        const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
+        const material = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true  , side: THREE.DoubleSide  });
+        const instancedMesh = new THREE.InstancedMesh(orbitGeometry, material, maxOrbits);
 
-        return orbitLine;
+        const dummyMatrix = new THREE.Matrix4();
+        for (let i = 0; i < maxOrbits; i++) {
+            dummyMatrix.identity();
+            instancedMesh.setMatrixAt(i, dummyMatrix);
+        }
 
+        scene.add(instancedMesh);
     }
 
-
-
-    private createPlanetOrbit() {
-
-
-
+    private createPlanetOrbitInstanced(scene: THREE.Scene, maxOrbits: number) {
         const orbitPoints: THREE.Vector3[] = [];
         const totalSegments = 5000;
         const orbitalPeriod = this.getOrbitalPeriod();
+
         for (let i = 0; i <= totalSegments; i++) {
             const t = (i / totalSegments) * orbitalPeriod;
             const position = calculateOrbitalPosition(t, this.keplerianElements);
@@ -91,10 +85,15 @@ export class Orbit {
         }
 
         const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-        const orbitMaterial = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true });
-        const currentOrbit = new THREE.Line(orbitGeometry, orbitMaterial);
-        return currentOrbit;
+        const material = new THREE.LineBasicMaterial({ color: this.orbitColor, opacity: 0.5, transparent: true,  side: THREE.DoubleSide  });
+        const instancedMesh = new THREE.InstancedMesh(orbitGeometry, material, maxOrbits);
+
+        const dummyMatrix = new THREE.Matrix4();
+        for (let i = 0; i < maxOrbits; i++) {
+            dummyMatrix.identity();
+            instancedMesh.setMatrixAt(i, dummyMatrix);
+        }
+
+        scene.add(instancedMesh);
     }
-
-
 }

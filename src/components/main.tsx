@@ -15,7 +15,7 @@ import { ObjectsType } from "@/types/general";
 import { keplerianElementsType } from "@/types/planet";
 import { Orbit } from "@/models/orbit";
  
- 
+import * as THREE from 'three';
 
 type Params ={
   NEAList: NEOTypes[];
@@ -31,7 +31,8 @@ const Orrery = (params:Params) => {
   const mountRef = useRef<HTMLDivElement>(null);
   const sceneSetup = new SceneSetup();
   const { scene, camera, renderer } = sceneSetup;
-
+/*   const axesHelper = new THREE.AxesHelper(500);
+  scene.add(axesHelper); */
 
   useEffect(() => {
     if (mountRef.current) {
@@ -49,18 +50,19 @@ const Orrery = (params:Params) => {
 
     const neoManager = new NEO(scene,camera, NEAList, CometList, PHAList ,
       (kind:ObjectsType , objectData:NEOTypes , keplerianElements:keplerianElementsType) => dispatch(openPopupAndAddOrbit({target:"NEO",identifier:objectData.full_name ,neo:{kind,objectData , keplerianElements:keplerianElements}})));
-    camera.far = 10000;
-    camera.position.set(0, 100, 200);
+    camera.far = 10000; 
 
- 
+
+    camera.position.set(0, 200, 500);  
+    camera.lookAt(0, 0, 0);  
     window.addEventListener("resize", sceneSetup.handleResize);
 
  
     state.orbits.forEach((orbit) => {
       const orbitInstance = new Orbit(orbit.keplerianElements, orbit.orbitColor, orbit.targetObject);
-      const orbitObject = orbitInstance.drawOrbit();
+    orbitInstance.drawOrbit(scene );
      
-        scene.add(orbitObject);     
+           
  
     });
 

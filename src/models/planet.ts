@@ -14,8 +14,7 @@ export class Planet {
   mesh: THREE.Mesh;
   currentTime: number = 0;
   keplerianElements: keplerianElementsType;
-  planetData: planetType;
-  orbitLine: THREE.Line;
+  planetData: planetType; 
   private camera: THREE.Camera;
   ring: THREE.Mesh | null = null; // Added for rings
 
@@ -42,8 +41,8 @@ export class Planet {
       this.createRings(radius);
     }
 
-    this.orbitLine = new Orbit(keplerianElements, color, 'PLANET').drawOrbit();
-    scene.add(this.orbitLine);
+    new Orbit(keplerianElements, color, 'PLANET' ).drawOrbit(scene)
+ 
     this.setupInteractions(openPopup);
   }
   createRings(radius: number) {
