@@ -119,11 +119,18 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
       if (mountRef.current && renderer.domElement.parentElement) {
         mountRef.current.removeChild(renderer.domElement);
       }
-
-      window.removeEventListener("resize", sceneSetup.current.handleResize);
+ 
     };
   }, [initializeScene, animate, drawOrbits]);
+  
+  useEffect(() => {
+    const handleResize = sceneSetup.current.handleResize;
+    window.addEventListener("resize", handleResize);
+  
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  
   return <div ref={mountRef} style={{ width: "100%", height: "100vh" }} />;
 };
 
