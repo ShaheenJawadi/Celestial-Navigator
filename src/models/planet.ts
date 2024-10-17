@@ -1,4 +1,4 @@
- 
+
 import { keplerianElementsType, planetType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
 import { PlanetRingGeomtry } from '@/utils/planetRing';
@@ -7,22 +7,21 @@ import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from 
 import * as THREE from 'three';
 import { Orbit } from './orbit';
 import { gsap } from 'gsap';
-
-
-
-export class Planet {
+import { CelestialObject } from './celestialObject';
+export class Planet  extends CelestialObject {
   mesh: THREE.Mesh;
   currentTime: number = 0;
   keplerianElements: keplerianElementsType;
   planetData: planetType; 
-  private camera: THREE.Camera;
-  ring: THREE.Mesh | null = null; // Added for rings
+  ring: THREE.Mesh | null = null;  
 
   constructor(scene: THREE.Scene, data: planetType, camera: THREE.Camera, openPopup: () => void) {
+
+    super(scene, camera); 
+
     const { name, color, texture, radius, keplerianElements } = data;
     this.keplerianElements = keplerianElements;
-    this.planetData = data;
-    this.camera = camera;
+    this.planetData = data; 
     const textureLoader = new THREE.TextureLoader();
     const texture3d = textureLoader.load(texture);
 
@@ -42,8 +41,8 @@ export class Planet {
       this.createRings(radius);
     }
 
-    new Orbit(keplerianElements, color, 'PLANET' ).drawOrbit(scene)
- 
+    new Orbit(keplerianElements, color, 'PLANET').drawOrbit(scene)
+
     this.setupInteractions(openPopup);
   }
   createRings(radius: number) {
@@ -77,74 +76,29 @@ export class Planet {
     ring.frustumCulled = true;
     this.mesh.add(ring);
   }
-
-
-
-
-
-
-
-
-  setupInteractions(  openPopup: () => void) {
+  setupInteractions(openPopup: () => void) {
     window.addEventListener('click', (event: MouseEvent) => {
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
-
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
       raycaster.setFromCamera(mouse, this.camera);
-
       const intersects = raycaster.intersectObjects([this.mesh]);
-    let intersectedObjectPosition    = 5; 
       if (intersects.length > 0) {
-        if (intersectedObjectPosition) {
-          this.onClickCamera( intersects[0].object);
-         // this.moveCameraTo(intersectedObjectPosition);
-      }  
-
-         /*  this.camera.position.copy(objectPosition);
-          this.camera.position.z -= this.planetData.radius*PLANET_SIZE_SCALE_FACTOR+250; // Adjust this value as necessary to position the camera at a distance
-          this.camera.lookAt(objectPosition); */
+        this.onClickCamera(intersects[0].object);
         openPopup();
       }
     });
   }
   update(deltaTime: number) {
 
- 
+
     const position = calculateOrbitalPosition(deltaTime, this.keplerianElements);
     this.mesh.position.copy(position);
   }
- 
- 
- onClickCamera = (mesh: THREE.Object3D<THREE.Object3DEventMap>) => {
-  const box = new THREE.Box3().setFromObject(mesh);
-  const center = new THREE.Vector3();
-  const size = new THREE.Vector3();
-  box.getCenter(center);  
-  box.getSize(size);      
 
-  const maxSize = Math.max(size.x, size.y, size.z);
+  
 
-  const distance = maxSize * 2;  
-
-
-  const direction = new THREE.Vector3().subVectors(center, new THREE.Vector3(0, 0, 0)).normalize();
-
-  const newPosition = direction.multiplyScalar(distance).add(center);
-
-  gsap.to(this.camera.position, {
-      x: newPosition.x,
-      y: newPosition.y,
-      z: newPosition.z,
-      duration: 1,
-      onUpdate: () => {
-          this.camera.lookAt(center); 
-      }
-  });
-
-}
 }
 
 

@@ -2,6 +2,8 @@
 import { keplerianElementsType } from '@/types/planet';
 import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
 import * as THREE from 'three';
+import { degreesToRadians } from './conversionHelpers';
+import { NEOTypes } from '@/types/NEO';
 
 const PERIHELION_THRESHOLD = 0.3;  // AU
  
@@ -59,3 +61,16 @@ export function calculateOrbitalPosition(julianDate: number, keplerianElements: 
     );
 }
 
+
+
+export function NeoTokeplerianElementsObject(neo: NEOTypes): keplerianElementsType {
+
+    return {
+        a: parseFloat(neo.a),
+        e: parseFloat(neo.e),
+        L: degreesToRadians(parseFloat(neo.ma) + parseFloat(neo.w) + parseFloat(neo.om)),
+        I: degreesToRadians(parseFloat(neo.i)),
+        longNode: degreesToRadians(parseFloat(neo.om)),
+        longPeri: degreesToRadians(parseFloat(neo.w))
+    };
+}
