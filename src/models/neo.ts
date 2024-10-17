@@ -19,6 +19,7 @@ export class NEO extends CelestialObject{
     private cometDataList: NEOTypes[];
     private raycaster: THREE.Raycaster;
     private mouse: THREE.Vector2;  
+    private initialized: boolean = false; 
 
     constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[], openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void) {
         
@@ -61,12 +62,14 @@ export class NEO extends CelestialObject{
     }
 
     public update(deltaTime: number) {
-
-        this.updateObjects(deltaTime, this.neoDataList, this.neoInstancedMesh);
-
-        this.updateObjects(deltaTime, this.phaDataList, this.phaInstancedMesh);
-
-        this.updateObjects(deltaTime, this.cometDataList, this.cometInstancedMesh);
+ 
+        if (!this.initialized) {
+            this.updateObjects(deltaTime, this.neoDataList, this.neoInstancedMesh);
+            this.updateObjects(deltaTime, this.phaDataList, this.phaInstancedMesh);
+            this.updateObjects(deltaTime, this.cometDataList, this.cometInstancedMesh);
+      
+            this.initialized = true;  // Only update once
+          }
     }
 
     private updateObjects(deltaTime: number, dataList: NEOTypes[], instancedMesh: THREE.InstancedMesh) {

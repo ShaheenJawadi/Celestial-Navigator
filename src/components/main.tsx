@@ -32,7 +32,7 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
   const planetsRef = useRef<Planet[]>([]);
   const orbitsRef = useRef<Orbit[]>([]); 
   
-
+  let lastFrameTime = 0;
   const initializeScene = useCallback(() => {
     const { scene, camera, renderer } = sceneSetup.current;
  
@@ -82,17 +82,18 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
 
  
   const animate = useCallback(() => {
-    const { scene, camera, renderer } = sceneSetup.current;
-
-    const time = dateToJulian(new Date());
- 
-    planetsRef.current.forEach((planet) => planet.update(time));
-    neoManagerRef.current?.update(time);
- 
-    controlsRef.current?.update();
- 
-    renderer.render(scene, camera);
- 
+    const now = performance.now();
+    if (now - lastFrameTime > 1000 / 30) { // Cap to 30 FPS
+      lastFrameTime = now;
+      const { scene, camera, renderer } = sceneSetup.current;
+  
+      const time = dateToJulian(new Date());
+      planetsRef.current.forEach((planet) => planet.update(time));
+      neoManagerRef.current?.update(time);
+  
+      controlsRef.current?.update();
+      renderer.render(scene, camera);
+    }
     requestAnimationFrame(animate);
   }, []);
  
