@@ -51,7 +51,7 @@ export class NEO extends CelestialObject{
 
             const matrix = new THREE.Matrix4();
             matrix.makeScale(size, size, size);
-            matrix.identity();
+        //    matrix.identity();
 
             instancedMesh.setMatrixAt(i, matrix);
         });
@@ -85,57 +85,93 @@ export class NEO extends CelestialObject{
     setupInteractions(openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void) {
         window.addEventListener('click', (event: MouseEvent) => {
             event.preventDefault();
+            event.stopPropagation();
+    
             this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
             this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-
+    
             this.raycaster.setFromCamera(this.mouse, this.camera);
-
+    
             const neoIntersect = this.raycaster.intersectObject(this.neoInstancedMesh, true);
             const phaIntersect = this.raycaster.intersectObject(this.phaInstancedMesh, true);
             const cometIntersect = this.raycaster.intersectObject(this.cometInstancedMesh, true);
             let neoData;
             let target: 'ASTEROID' | 'PHA' | 'COMET' | undefined;
-            let intersectedObjectPosition:  THREE.Object3D<THREE.Object3DEventMap>| undefined;
-
+            let intersectedObjectPosition: THREE.Object3D<THREE.Object3DEventMap> | undefined;
+    
+            // Handle NEO intersection
             if (neoIntersect.length > 0) {
-
                 const instanceId = neoIntersect[0].instanceId;
                 if (instanceId !== undefined) {
                     console.log(instanceId);
                     neoData = this.neoDataList[instanceId];
                     intersectedObjectPosition = neoIntersect[0].object;
                     target = 'ASTEROID';
+    
+                    if (intersectedObjectPosition instanceof THREE.InstancedMesh) {
+                        const matrix = new THREE.Matrix4();
+                        intersectedObjectPosition.getMatrixAt(instanceId, matrix);
+                        const position = new THREE.Vector3();
+                        position.setFromMatrixPosition(matrix);
+    
+                        console.log('Instance Position:', position);
+    
+                        // Call the onClickCamera function for NEOs
+                        this.onClickCamera(position, true);  // true flag indicates it's an NEO
+                    }
                 }
-            } else if (phaIntersect.length > 0) {
-
+            }
+            // Handle PHA intersection
+            else if (phaIntersect.length > 0) {
                 const instanceId = phaIntersect[0].instanceId;
                 if (instanceId !== undefined) {
                     console.log(instanceId);
                     neoData = this.phaDataList[instanceId];
                     intersectedObjectPosition = phaIntersect[0].object;
                     target = 'PHA';
-
+    
+                    if (intersectedObjectPosition instanceof THREE.InstancedMesh) {
+                        const matrix = new THREE.Matrix4();
+                        intersectedObjectPosition.getMatrixAt(instanceId, matrix);
+                        const position = new THREE.Vector3();
+                        position.setFromMatrixPosition(matrix);
+    
+                        console.log('PHA Instance Position:', position);
+    
+                        // Call the onClickCamera function for NEOs (PHA in this case)
+                        this.onClickCamera(position, true);  // true flag indicates it's an NEO
+                    }
                 }
-            } else if (cometIntersect.length > 0) {
-
+            }
+            // Handle Comet intersection
+            else if (cometIntersect.length > 0) {
                 const instanceId = cometIntersect[0].instanceId;
                 if (instanceId !== undefined) {
                     console.log(instanceId);
                     neoData = this.cometDataList[instanceId];
                     intersectedObjectPosition = cometIntersect[0].object;
                     target = 'COMET';
-
+    
+                    if (intersectedObjectPosition instanceof THREE.InstancedMesh) {
+                        const matrix = new THREE.Matrix4();
+                        intersectedObjectPosition.getMatrixAt(instanceId, matrix);
+                        const position = new THREE.Vector3();
+                        position.setFromMatrixPosition(matrix);
+    
+                        console.log('Comet Instance Position:', position);
+    
+                        // Call the onClickCamera function for NEOs (Comet in this case)
+                        this.onClickCamera(position, true);  // true flag indicates it's an NEO
+                    }
                 }
             }
+    
             if (neoData && target !== undefined) {
-                if (intersectedObjectPosition) { 
-                    this.onClickCamera(intersectedObjectPosition);
-                }
-                openPopup(target, neoData,  NeoTokeplerianElementsObject(neoData));
+                openPopup(target, neoData, NeoTokeplerianElementsObject(neoData));
             }
         });
     }
+    
 
     
 }
