@@ -4,8 +4,7 @@ import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
 import * as THREE from 'three';
 import { degreesToRadians } from './conversionHelpers';
 import { NEOTypes } from '@/types/NEO';
-
-const PERIHELION_THRESHOLD = 0.3;  // AU
+ 
  
 export function calculateOrbitalPosition(julianDate: number, keplerianElements: keplerianElementsType): THREE.Vector3 {
     const { a, e, I, longPeri, longNode, L } = keplerianElements;
@@ -43,16 +42,6 @@ export function calculateOrbitalPosition(julianDate: number, keplerianElements: 
     const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
     const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
  
-    // Adjust position if perihelion is below the threshold
-    if (perihelion < PERIHELION_THRESHOLD) {
-        // If below threshold, keep it at the threshold distance from the Sun
-        const adjustedR = PERIHELION_THRESHOLD; 
-        return new THREE.Vector3(
-            xFinal * (adjustedR / perihelion) * DISTANCE_SCALE_FACTOR,
-            z * DISTANCE_SCALE_FACTOR,
-            yFinal * (adjustedR / perihelion) * DISTANCE_SCALE_FACTOR
-        );
-    }
 
     return new THREE.Vector3(
         xFinal * DISTANCE_SCALE_FACTOR,
