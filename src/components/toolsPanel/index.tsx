@@ -9,13 +9,16 @@ import {
   mdiNotebook,
   mdiMeteor,
 } from "@mdi/js";
-import { useState } from "react";
+import { act, useState } from "react";
+import { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
+import { manageTools } from "@/store/generalState";
 
 
 
 const ToolsPanel = () => {
 
-
+    const dispatch = useDispatch<AppDispatch>();
     const [isFullScreen , setIsFullScreen]=useState(false);
     const toggleFullScreen = () => {
         const doc = document as any;
@@ -57,13 +60,17 @@ const ToolsPanel = () => {
             title: "inf",
           },*/
           {
-            icon: mdiCardSearchOutline,
-            title: "Search Object",
-          },
-          {
             icon: mdiNotebook,
             title: "Watchlist",
+            action: ()=> dispatch(manageTools({target:"drawer" , content:"watchList" , open:true}))
           },
+          {
+            icon: mdiCardSearchOutline,
+            title: "Search Object",
+            action: ()=> dispatch(manageTools({target:"drawer" , content:"search" , open:true}))
+            
+          },
+         
           {
             icon: mdiMeteor,
             title: "Potentially hazardous object",
@@ -71,15 +78,18 @@ const ToolsPanel = () => {
           {
             icon: mdiCog,
             title: "Settings",
+            action:dispatch(manageTools({target:"dialog" , content:"settings" , open:true}))
           },
           {
             icon: !isFullScreen ? mdiFullscreen : mdiFullscreenExit,
             title:!isFullScreen ? "Fullscreen" :"Exit Fullscreen",
+            action: toggleFullScreen
           },
           {
         
             icon: mdiInformationSlabCircle,
             title: "Informations",
+            action:dispatch(manageTools({target:"dialog" , content:"informations" , open:true}))
           },
          
         ];
@@ -88,7 +98,7 @@ const ToolsPanel = () => {
     <div className="toolsPanelHolder">
       <div className="toolsBtns">
         {listTools.map((tool) => (
-          <div className="single" onClick={toggleFullScreen}>
+          <div className="single" onClick={ tool.action}>
             <Icon className="icon" path={tool.icon} size={1} />
             <span className="popover">{tool.title}</span>
           </div>

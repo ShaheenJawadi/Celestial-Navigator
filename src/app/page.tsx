@@ -9,6 +9,8 @@ import { Popup } from "@/components/ui/popup";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { noRender } from "@/utils/focus";
 import ToolsPanel from "@/components/toolsPanel";
+import Dialog from "@/components/ui/dialog";
+import Drawer from "@/components/ui/drawer";
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
@@ -71,6 +73,8 @@ export default function Home() {
           <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
         )}
         <Popup />
+        <Dialog/>
+        <Drawer/>
       </Provider>
     </div>
   );

@@ -13,6 +13,9 @@ interface PopupState {
   neo:{kind:ObjectsType,objectData:NEOTypes , keplerianElements:keplerianElementsType} | null;
   neoOrbitColor:string ;
   orbits: OrbitType[];
+  dialog: { isOpen: boolean; content: string | null} | null;
+  drawer: { isOpen: boolean; content: string | null} | null;
+
 }
 
 const initialState: PopupState = {
@@ -20,16 +23,27 @@ const initialState: PopupState = {
   target: null,
   identifier: null,
   unitSystem: "us",
-  neo:null,
-  neoOrbitColor:"#0866ff",
+  neo: null,
+  neoOrbitColor: "#0866ff",
   orbits: [],
-
+  dialog: null,
+  drawer: null
 };
 
 const generalSlice = createSlice({
   name: 'celestialNavigator',
   initialState,
   reducers: {
+    manageTools: (state , action: PayloadAction<{target:"dialog"|"drawer" , content :string , open:boolean}>) => {
+      const {target , content , open} = action.payload;
+      const op ={isOpen : open , content: content};
+      if(target === "dialog"){
+        state.dialog = op;
+      }else if(target === "drawer"){
+        state.drawer = op;
+      }
+     
+    },
     openPopup: (state , action) => {
       state.isPopupOpen = true;
       state.target = action.payload.target;
@@ -69,5 +83,5 @@ export const openPopupAndAddOrbit = (payload: { target: string, identifier: stri
   };
 
 
-export const { openPopup, closePopup ,changeUnitSystem,changeNeoOrbitColor,addOrbit } = generalSlice.actions;
+export const { openPopup, closePopup ,changeUnitSystem,changeNeoOrbitColor,addOrbit,manageTools } = generalSlice.actions;
 export default generalSlice.reducer;
