@@ -52,6 +52,7 @@ const ToolsPanel = () => {
         {listTools.map((tool) => (
           <div className="single">
             <Icon className="icon" path={tool.icon} size={1} />
+            <span className="popover">{tool.title}</span>
           </div>
         ))}
         

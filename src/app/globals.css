@@ -262,8 +262,27 @@ color: #8d8d8d;
   height: 40px;
   width: 40px;
   border-radius: 5px 0 0 5px;
+  position: relative;
+  cursor: pointer;
 }
 .toolsPanelHolder .toolsBtns .single .icon{
   color: #ffffffe0;
   
+}
+.toolsPanelHolder .toolsBtns .single  .popover{
+  position: absolute;
+  top: 8px;
+  right: 100%;
+  background: #454545a3;
+  border-radius: 5px;
+  display: none;
+  padding: 5px;
+  z-index: 99;
+  margin-right: 5px;
+  color: #fff;
+}
+
+.toolsPanelHolder .toolsBtns .single:hover  .popover{
+  display: block; 
+   
 }
