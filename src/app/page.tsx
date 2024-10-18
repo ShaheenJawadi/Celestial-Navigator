@@ -6,8 +6,9 @@ import { Provider } from "react-redux";
 import store from "@/store";
 import Papa from "papaparse";
 import { Popup } from "@/components/ui/popup";
-import 'react-perfect-scrollbar/dist/css/styles.css';
+import "react-perfect-scrollbar/dist/css/styles.css";
 import { noRender } from "@/utils/focus";
+import ToolsPanel from "@/components/toolsPanel";
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
@@ -63,11 +64,13 @@ export default function Home() {
   return (
     <div>
       <Provider store={store}>
- 
-{
-  noRender ? <Orrery NEAList={[]} CometList={[]} PHAList={[]} /> : <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
-} 
-        <Popup/>
+      <ToolsPanel />
+        {noRender ? (
+          <Orrery NEAList={[]} CometList={[]} PHAList={[]} />
+        ) : (
+          <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
+        )}
+        <Popup />
       </Provider>
     </div>
   );

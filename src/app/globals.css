@@ -226,3 +226,23 @@ color: #8d8d8d;
   border-radius: 9px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
+
+
+/* ********************** */
+
+
+
+
+.toolsPanelHolder{ 
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 10px;
+  z-index: 99;
+  background: #fff;
+
+}
