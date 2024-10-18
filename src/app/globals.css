@@ -107,7 +107,7 @@ a {
 .popupHolder .popup .headSection  .close.icon{
   cursor: pointer;
   font-size: 20px;
-  color: #0a0a0a;
+  color: #d1d1d1;
 }
 
 .popupHolder .popup .headSection  .identifier{
@@ -240,9 +240,30 @@ color: #8d8d8d;
   height: 100%; 
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  padding: 10px;
-  z-index: 99;
-  background: #fff;
+  justify-content: center; 
+  z-index: 99; 
 
+}
+
+.toolsPanelHolder .toolsBtns {
+
+  flex-direction: column;
+  justify-content: center; 
+  display: flex;
+  gap: 4px;
+}
+
+
+.toolsPanelHolder .toolsBtns .single {
+  background: #0a3161a3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 5px 0 0 5px;
+}
+.toolsPanelHolder .toolsBtns .single .icon{
+  color: #ffffffe0;
+  
 }
