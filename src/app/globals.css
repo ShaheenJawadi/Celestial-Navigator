@@ -72,7 +72,7 @@ a {
 
 .popupHolder .popup{ 
   background: var(--t-background); 
-  min-height: 700px;
+ 
   max-height: 80%;
   width: 400px;
   border-radius: 10px;
@@ -289,8 +289,7 @@ color: #8d8d8d;
   left: 50%;
   transform: translate(-50%, -50%);
  
-  height: 60%;
-  min-height: 400px;
+  height: 60%; 
 
   max-height: 800px;
   min-width: 800px; 
@@ -311,6 +310,7 @@ color: #8d8d8d;
   position: absolute;
   top: 15px;
   right: 15px;
+  cursor: pointer;
 }
 
 /* *********** */
