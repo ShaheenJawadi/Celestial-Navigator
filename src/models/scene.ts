@@ -1,14 +1,14 @@
 import * as THREE from 'three';
 import { Orbit } from './orbit';
-import { or } from 'three/webgpu';
 import { OrbitType } from '@/types/general';
 
 export class SceneSetup {
+  private static instance: SceneSetup;
   scene: THREE.Scene;
   camera: THREE.PerspectiveCamera;
   renderer: THREE.WebGLRenderer;
 
-  constructor() {
+  private constructor() {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
       75,
@@ -19,17 +19,24 @@ export class SceneSetup {
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
     this.renderer.setSize(window.innerWidth, window.innerHeight);
-    this.renderer.shadowMap.enabled = true; 
-    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap; 
-
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5);  
-this.scene.add(ambientLight);
+    this.scene.add(ambientLight);
 
-document.addEventListener('fullscreenchange', this.handleResize.bind(this));
-document.addEventListener('webkitfullscreenchange', this.handleResize.bind(this));  
-document.addEventListener('mozfullscreenchange', this.handleResize.bind(this));     
-document.addEventListener('MSFullscreenChange', this.handleResize.bind(this));
+    console.log("SceneSetup constructor");
+    document.addEventListener('fullscreenchange', this.handleResize.bind(this));
+    document.addEventListener('webkitfullscreenchange', this.handleResize.bind(this));
+    document.addEventListener('mozfullscreenchange', this.handleResize.bind(this));
+    document.addEventListener('MSFullscreenChange', this.handleResize.bind(this));
+  }
+ 
+  public static getInstance(): SceneSetup {
+    if (!SceneSetup.instance) {
+      SceneSetup.instance = new SceneSetup();
+    }
+    return SceneSetup.instance;
   }
 
   getRenderer() {
@@ -48,13 +55,10 @@ document.addEventListener('MSFullscreenChange', this.handleResize.bind(this));
     if (!this.camera || !this.renderer) {
       console.error("resize prob");
       return;
-  }
+    }
 
-  this.camera.aspect = window.innerWidth / window.innerHeight;
-  this.camera.updateProjectionMatrix();
-  this.renderer.setSize(window.innerWidth, window.innerHeight);
-
-  
+    this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.updateProjectionMatrix();
+    this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
- 
 }

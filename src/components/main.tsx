@@ -25,7 +25,7 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
   const state = useSelector((state: RootState) => state.generalState);
 
   const mountRef = useRef<HTMLDivElement>(null);
-  const sceneSetup = useRef(new SceneSetup());  
+  const sceneSetup = useRef(SceneSetup.getInstance());  
   const controlsRef = useRef<OrbitControls | null>(null);
   const sunRef = useRef<Sun | null>(null);
   const neoManagerRef = useRef<NEO | null>(null);
