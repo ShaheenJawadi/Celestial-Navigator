@@ -31,7 +31,7 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
   const neoManagerRef = useRef<NEO | null>(null);
   const planetsRef = useRef<Planet[]>([]);
   const orbitsRef = useRef<Orbit[]>([]); 
-  
+  const handleResize = sceneSetup.current.handleResize;
   let lastFrameTime = 0;
   const initializeScene = useCallback(() => {
     const { scene, camera, renderer } = sceneSetup.current;
@@ -125,7 +125,7 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
   }, [initializeScene, animate, drawOrbits]);
   
   useEffect(() => {
-    const handleResize = sceneSetup.current.handleResize;
+  
     window.addEventListener("resize", handleResize);
   
     return () => window.removeEventListener("resize", handleResize);

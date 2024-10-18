@@ -25,6 +25,11 @@ export class SceneSetup {
 
     const ambientLight = new THREE.AmbientLight(0x404040, 0.5);  
 this.scene.add(ambientLight);
+
+document.addEventListener('fullscreenchange', this.handleResize.bind(this));
+document.addEventListener('webkitfullscreenchange', this.handleResize.bind(this));  
+document.addEventListener('mozfullscreenchange', this.handleResize.bind(this));     
+document.addEventListener('MSFullscreenChange', this.handleResize.bind(this));
   }
 
   getRenderer() {
@@ -40,9 +45,16 @@ this.scene.add(ambientLight);
   }
 
   handleResize() {
-    this.camera.aspect = window.innerWidth / window.innerHeight;
-    this.camera.updateProjectionMatrix();
-    this.renderer.setSize(window.innerWidth, window.innerHeight);
+    if (!this.camera || !this.renderer) {
+      console.error("resize prob");
+      return;
+  }
+
+  this.camera.aspect = window.innerWidth / window.innerHeight;
+  this.camera.updateProjectionMatrix();
+  this.renderer.setSize(window.innerWidth, window.innerHeight);
+
+  
   }
  
 }
