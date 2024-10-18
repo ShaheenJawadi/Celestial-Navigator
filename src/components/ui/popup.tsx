@@ -1,6 +1,6 @@
 "use client";
 import Icon from "@mdi/react";
-import { mdiArrowLeftThick } from "@mdi/js";
+import { mdiCloseBox } from "@mdi/js";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { closePopup } from "@/store/generalState";
@@ -26,13 +26,14 @@ export const Popup = () => {
           <div className="popupHolder">
             <div className="popup">
               <div className="headSection">
+             
+                <h2 className="identifier">{state.identifier}</h2>
                 <div
-                  className="close icon"
+                  className="close"
                   onClick={() => dispatch(closePopup())}
                 >
-                  <Icon path={mdiArrowLeftThick} size={1} />
+                  <Icon path={mdiCloseBox} size={1} />
                 </div>
-                <h2 className="identifier">{state.identifier}</h2>
               </div>
               <PerfectScrollbar>
                 {state.target === "SUN" ? <Sun /> : null}

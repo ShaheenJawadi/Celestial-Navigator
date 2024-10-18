@@ -3,6 +3,9 @@
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { stat } from "fs";
+import Icon from "@mdi/react";
+import { mdiArrowRightThick } from "@mdi/js";
+import { manageTools } from "@/store/generalState";
 
 const Drawer = () => {
   const state = useSelector((state: RootState) => state.generalState);
@@ -12,8 +15,17 @@ const Drawer = () => {
   return (
     <>
       {state.drawer?.isOpen ? (
-        <div>
-          <h1 color="#fff">Drawer{state.drawer.content}</h1>
+        <div className="drawerHolder">
+          <div>
+              <h1 >Drawer</h1>
+          </div>
+          <div
+                  className="close icon"
+                  onClick={() => dispatch(manageTools({ target: "drawer", content: null, open: false }))}
+                >
+                  <Icon path={mdiArrowRightThick} size={1} />
+                </div>
+        
         </div>
       ) : null}
     </>

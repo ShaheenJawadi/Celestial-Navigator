@@ -74,11 +74,12 @@ const ToolsPanel = () => {
           {
             icon: mdiMeteor,
             title: "Potentially hazardous object",
+            action: ()=> dispatch(manageTools({target:"drawer" , content:"pha" , open:true}))
           },
           {
             icon: mdiCog,
             title: "Settings",
-            action:dispatch(manageTools({target:"dialog" , content:"settings" , open:true}))
+            action:()=>dispatch(manageTools({target:"dialog" , content:"settings" , open:true}))
           },
           {
             icon: !isFullScreen ? mdiFullscreen : mdiFullscreenExit,
@@ -89,7 +90,7 @@ const ToolsPanel = () => {
         
             icon: mdiInformationSlabCircle,
             title: "Informations",
-            action:dispatch(manageTools({target:"dialog" , content:"informations" , open:true}))
+            action:()=>dispatch(manageTools({target:"dialog" , content:"informations" , open:true}))
           },
          
         ];
@@ -97,8 +98,8 @@ const ToolsPanel = () => {
   return (
     <div className="toolsPanelHolder">
       <div className="toolsBtns">
-        {listTools.map((tool) => (
-          <div className="single" onClick={ tool.action}>
+        {listTools.map((tool , index) => (
+          <div key={index} className="single" onClick={()=> tool.action && tool.action()}>
             <Icon className="icon" path={tool.icon} size={1} />
             <span className="popover">{tool.title}</span>
           </div>

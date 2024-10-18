@@ -26,7 +26,7 @@ const initialState: PopupState = {
   neo: null,
   neoOrbitColor: "#0866ff",
   orbits: [],
-  dialog: null,
+  dialog:null,
   drawer: null
 };
 
@@ -34,9 +34,11 @@ const generalSlice = createSlice({
   name: 'celestialNavigator',
   initialState,
   reducers: {
-    manageTools: (state , action: PayloadAction<{target:"dialog"|"drawer" , content :string , open:boolean}>) => {
+    manageTools: (state , action: PayloadAction<{target:"dialog"|"drawer" , content :string|null, open:boolean}>) => {
       const {target , content , open} = action.payload;
       const op ={isOpen : open , content: content};
+      state.drawer = {isOpen:false , content:null};
+      state.dialog = {isOpen:false , content:null};
       if(target === "dialog"){
         state.dialog = op;
       }else if(target === "drawer"){
