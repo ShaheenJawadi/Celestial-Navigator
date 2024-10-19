@@ -4,6 +4,7 @@
   --primary-color:#0A3161;
   --secondary-color:#B31942;
   --t-background:  #000000bf; 
+  --border:#ccc;
 }
 
  
@@ -26,13 +27,13 @@ button {
  
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  
+  background: #171717;
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
-  color: #0a0a0a;
+  color: #dcdcdc;
 }
 
 * {
@@ -79,7 +80,7 @@ a {
   padding: 5px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--border);
   color: #fff;
 }
 
@@ -97,7 +98,7 @@ a {
   
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border);
 }
 .popupHolder .popup .headSection  .close{
   cursor: pointer;
@@ -294,13 +295,12 @@ color: #8d8d8d;
   max-height: 800px;
   min-width: 800px; 
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: column; 
   padding: 10px;
   background: var(--t-background); 
   z-index: 99;
   backdrop-filter: blur(5px); 
-  border: 0.5px solid #ffffff;
+  border: 0.5px solid var(--border);
   border-radius: 10px; 
 
 }
@@ -313,6 +313,16 @@ color: #8d8d8d;
   cursor: pointer;
 }
 
+.dialogHolder  .header{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border);
+  padding: 5px;
+  padding-bottom: 5px;
+  padding-bottom: 15px; 
+}
 /* *********** */
 .drawerHolder{ 
   position: absolute;
@@ -324,13 +334,12 @@ color: #8d8d8d;
  
   min-width: 400px; 
   display: flex;
-  flex-direction: column;
-  justify-content: center;
+  flex-direction: column; 
   padding: 10px;
   background: var(--t-background); 
   z-index: 99;
   backdrop-filter: blur(5px); 
-  border-left: 0.3px solid #ffffff;
+  border-left: 0.3px solid var(--border);
   cursor: pointer;
 
 }
@@ -342,4 +351,16 @@ color: #8d8d8d;
   top: 15px;
   right: 15px;
   cursor: pointer;
+}
+
+
+.drawerHolder  .header{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border);
+  padding: 5px;
+  padding-bottom: 5px;
+  padding-bottom: 15px; 
 }

@@ -13,10 +13,12 @@ interface PopupState {
   neo:{kind:ObjectsType,objectData:NEOTypes , keplerianElements:keplerianElementsType} | null;
   neoOrbitColor:string ;
   orbits: OrbitType[];
-  dialog: { isOpen: boolean; content: string | null} | null;
-  drawer: { isOpen: boolean; content: string | null} | null;
+  dialog: { isOpen: boolean; content: DialogContent | null} | null;
+  drawer: { isOpen: boolean; content: DrawerContent | null} | null;
 
 }
+type DrawerContent = "WatchList" | "SearchObject"|null;
+type DialogContent = "Informations" | "Pho" | "Settings"|null;
 
 const initialState: PopupState = {
   isPopupOpen: false,
@@ -34,15 +36,15 @@ const generalSlice = createSlice({
   name: 'celestialNavigator',
   initialState,
   reducers: {
-    manageTools: (state , action: PayloadAction<{target:"dialog"|"drawer" , content :string|null, open:boolean}>) => {
+    manageTools: (state , action: PayloadAction<{target:"dialog"|"drawer" , content :DrawerContent|DialogContent|null, open:boolean}>) => {
       const {target , content , open} = action.payload;
       const op ={isOpen : open , content: content};
       state.drawer = {isOpen:false , content:null};
       state.dialog = {isOpen:false , content:null};
       if(target === "dialog"){
-        state.dialog = op;
+        state.dialog = {...op , content: content as DialogContent};
       }else if(target === "drawer"){
-        state.drawer = op;
+        state.drawer = {...op , content: content as DrawerContent};
       }
      
     },

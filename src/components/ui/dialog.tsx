@@ -1,12 +1,29 @@
 "use client";
 
 import { useDispatch, useSelector } from "react-redux";
-import { AppDispatch, RootState } from "@/store";
-import { stat } from "fs";
+import { AppDispatch, RootState } from "@/store"; 
 import Icon from "@mdi/react";
 import { mdiCloseBox } from "@mdi/js";
 import { manageTools } from "@/store/generalState";
+import dynamic from "next/dynamic";
+import PerfectScrollbar from "react-perfect-scrollbar";
+import {
+  mdiInformationSlabCircle,
+  mdiCog,
+  mdiMeteor,
+} from "@mdi/js";
+import { title } from "process";
 
+const Informations = dynamic(() => import("../toolsPanel/informations"), {
+  ssr: false,
+});
+const Pho = dynamic(() => import("../toolsPanel/pho"), {
+  ssr: false,
+});
+
+const Settings = dynamic(() => import("../toolsPanel/searchObject"), {
+  ssr: false,
+});
 const Dialog = () => {
   const state = useSelector((state: RootState) => state.generalState);
 
@@ -16,20 +33,46 @@ const Dialog = () => {
     <>
       {state.dialog?.isOpen ? (
         <div className="dialogHolder">
-          <div>
-              <h1 >Dialog</h1>
-          </div>
+         
           <div
-                  className="close icon"
-                  onClick={() => dispatch(manageTools({ target: "dialog", content: null, open: false }))}
-                >
-                  <Icon path={mdiCloseBox} size={1} />
-                </div>
-        
+            className="close icon"
+            onClick={() =>
+              dispatch(
+                manageTools({ target: "dialog", content: null, open: false })
+              )
+            }
+          >
+            <Icon path={mdiCloseBox} size={1} />
+          </div>
+          <div className="header">
+            <Icon path={headerData(state.dialog?.content)?.icon ?? ""} size={1.5} />
+            <h2> {headerData(state.dialog?.content)?.title}</h2>
+          </div>
+          <div>
+            <PerfectScrollbar>
+              <div>
+                {state.dialog?.content == "Informations" && <Informations />}
+                {state.dialog?.content == "Pho" && <Pho />}
+                {state.dialog?.content == "Settings" && <Settings />}
+              </div>
+            </PerfectScrollbar>
+          </div>
         </div>
       ) : null}
     </>
   );
+};
+
+const headerData = (s: any) => {
+  if (s == "Informations") {
+    return { icon: mdiInformationSlabCircle, title: "Informations" };
+  } else if (s == "Pho") {
+    return { icon: mdiMeteor, title: "Potentially hazardous object" };
+  } 
+  else if (s == "Settings") {
+    return { icon: mdiCog, title: "Settings" };
+  }
+  else return null;
 };
 
 export default Dialog;

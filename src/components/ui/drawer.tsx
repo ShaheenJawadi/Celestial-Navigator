@@ -2,10 +2,27 @@
 
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { stat } from "fs";
-import Icon from "@mdi/react";
-import { mdiArrowRightThick } from "@mdi/js";
+
+import Icon from "@mdi/react"; 
 import { manageTools } from "@/store/generalState";
+import PerfectScrollbar from "react-perfect-scrollbar";
+
+import dynamic from "next/dynamic";
+import {
+  mdiInformationSlabCircle,
+  mdiCog,
+  mdiArrowRightThick,
+  mdiFullscreenExit,
+  mdiCrosshairs,
+  mdiCardSearchOutline,
+  mdiNotebook,
+  mdiMeteor,
+} from "@mdi/js";
+
+const SearchObject = dynamic(() => import("../toolsPanel/searchObject"), { ssr: false });
+const WatchList = dynamic(() => import("../toolsPanel/watchList"), { ssr: false });
+
+
 
 const Drawer = () => {
   const state = useSelector((state: RootState) => state.generalState);
@@ -16,20 +33,42 @@ const Drawer = () => {
     <>
       {state.drawer?.isOpen ? (
         <div className="drawerHolder">
-          <div>
-              <h1 >Drawer</h1>
-          </div>
           <div
-                  className="close icon"
-                  onClick={() => dispatch(manageTools({ target: "drawer", content: null, open: false }))}
-                >
-                  <Icon path={mdiArrowRightThick} size={1} />
-                </div>
-        
+            className="close icon"
+            onClick={() =>
+              dispatch(
+                manageTools({ target: "drawer", content: null, open: false })
+              )
+            }
+          >
+            <Icon path={mdiArrowRightThick} size={1} />
+          </div>
+
+          <div className="header">
+            <Icon path={headerData(state.drawer?.content)?.icon ?? ""}  size={1.5} />
+            <h2> {headerData(state.drawer?.content)?.title}</h2>
+          </div>
+          <div>
+            <PerfectScrollbar>
+              <div>
+              {state.drawer?.content == "WatchList" && <WatchList />}
+              {state.drawer?.content == "SearchObject" && <SearchObject />}
+ 
+              </div>
+            </PerfectScrollbar>
+          </div>
         </div>
       ) : null}
     </>
   );
+};
+
+const headerData = (s: any) => { 
+  if (s == "WatchList") {
+   return { icon: mdiNotebook, title: "Watchlist" };
+  } else if (s == "SearchObject") {
+    return { icon: mdiCardSearchOutline, title: "Search Object" };
+  } else return null;
 };
 
 export default Drawer;

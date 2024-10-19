@@ -62,24 +62,24 @@ const ToolsPanel = () => {
           {
             icon: mdiNotebook,
             title: "Watchlist",
-            action: ()=> dispatch(manageTools({target:"drawer" , content:"watchList" , open:true}))
+            action: ()=> dispatch(manageTools({target:"drawer" , content:"WatchList" , open:true}))
           },
           {
             icon: mdiCardSearchOutline,
             title: "Search Object",
-            action: ()=> dispatch(manageTools({target:"drawer" , content:"search" , open:true}))
+            action: ()=> dispatch(manageTools({target:"drawer" , content:"SearchObject" , open:true}))
             
           },
          
           {
             icon: mdiMeteor,
             title: "Potentially hazardous object",
-            action: ()=> dispatch(manageTools({target:"drawer" , content:"pha" , open:true}))
+            action: ()=> dispatch(manageTools({target:"drawer" , content:"Pho" , open:true}))
           },
           {
             icon: mdiCog,
             title: "Settings",
-            action:()=>dispatch(manageTools({target:"dialog" , content:"settings" , open:true}))
+            action:()=>dispatch(manageTools({target:"dialog" , content:"Settings" , open:true}))
           },
           {
             icon: !isFullScreen ? mdiFullscreen : mdiFullscreenExit,
@@ -90,7 +90,7 @@ const ToolsPanel = () => {
         
             icon: mdiInformationSlabCircle,
             title: "Informations",
-            action:()=>dispatch(manageTools({target:"dialog" , content:"informations" , open:true}))
+            action:()=>dispatch(manageTools({target:"dialog" , content:"Informations" , open:true}))
           },
          
         ];
