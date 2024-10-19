@@ -440,3 +440,59 @@ color: #8d8d8d;
     top: 0;
     left: 30px;
    }
+
+
+   /* ********************** */
+
+
+   .searchForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px ;
+    width: 100%;
+  }
+  
+  .searchInput { 
+    padding: 10px 15px;
+    font-size: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px 0 0 10px;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+  
+  .searchInput:focus {
+    border-color: var(--secondary-color);
+  }
+  
+  .searchButton {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-size: 20px; 
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+    transition: background-color 0.3s;
+
+    padding: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    height: 47px;
+    width: 45px;
+    justify-content: center;
+    flex-direction: row;
+  }
+  
+  .searchButton:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .searchButton:focus {
+    outline: none;
+  }
+  
+
+
+  /* ******************* */
