@@ -6,13 +6,12 @@ import { AppDispatch, RootState } from "@/store";
 import { closePopup } from "@/store/generalState";
 import dynamic from "next/dynamic";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { NEOTypes } from "@/types/NEO";
 
-const Sun = dynamic(() => import("./dataClassification/sun"), { ssr: false });
-const Planet = dynamic(() => import("./dataClassification/planet"), {
+const Sun = dynamic(() => import("../dataClassification/sun"), { ssr: false });
+const Planet = dynamic(() => import("../dataClassification/planet"), {
   ssr: false,
 });
-const NEO = dynamic(() => import("./dataClassification/neo"), { ssr: false });
+const NEO = dynamic(() => import("../dataClassification/neo"), { ssr: false });
 
 export const Popup = () => {
   const state = useSelector((state: RootState) => state.generalState);

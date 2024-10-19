@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeNeoOrbitColor, changeUnitSystem } from "@/store/generalState";
  
 import { useState } from "react";
-import { PopoverPicker } from "../PopupColorPicker";
+import { PopoverPicker } from "../ui/PopupColorPicker";
 import { stat } from "fs";
 const DisplayData = ({
   neoData,
