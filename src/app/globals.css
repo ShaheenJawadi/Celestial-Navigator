@@ -126,15 +126,20 @@ a {
 }
 
 
-.popupHolder .popup  .dataBox{
+ .dataBox{
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding: 15px;
 
 }
+.dataBox.g{ 
+  gap: 1px; 
+  padding: 0;
 
-.popupHolder .popup .subDataSep{
+
+}
+.subDataSep{
 
   display: flex;
  align-items: center;
@@ -144,18 +149,18 @@ a {
 gap: 5px;
 }
 
-.popupHolder .popup   .subDataSep .tit{
+.subDataSep .tit{
 font-size: 15px;
 color: #8d8d8d;
 }
 
-.popupHolder .popup    .subDataSep .separator{
+.subDataSep .separator{
   flex: 1;
   background: #afafafaa;
   width: 100%;
   height: 2px;
 }
-.popupHolder .popup  .dataBox .single{
+  .dataBox .single{
 
 
   display: flex;
@@ -168,7 +173,7 @@ color: #8d8d8d;
 
 }
 
-.popupHolder .popup  .dataBox .single:not(:last-child)::after {
+.dataBox:not(.g) .single:not(:last-child)::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -289,9 +294,6 @@ color: #8d8d8d;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
- 
-  height: 60%; 
-
   max-height: 800px;
   min-width: 800px; 
   display: flex;
@@ -364,3 +366,77 @@ color: #8d8d8d;
   padding-bottom: 5px;
   padding-bottom: 15px; 
 }
+
+
+.drawerHolder .dataContent , .dialogHolder .dataContent{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+
+}
+/* *************** */
+
+.checkboxContainer {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+  padding-left: 30px;
+}
+
+.checkboxInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ccc;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.checkboxContainer:hover .checkmark {
+  background-color: #aaa;
+}
+
+.checkboxInput:checked ~ .checkmark {
+  background-color: var(--primary-color);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkboxInput:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkboxContainer .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+   .dataBox.colorsList .single h4{
+    min-width: 230px;
+   }
+
+   .dataBox.colorsList   .colorPicker .popover{
+    top: 0;
+    left: 30px;
+   }

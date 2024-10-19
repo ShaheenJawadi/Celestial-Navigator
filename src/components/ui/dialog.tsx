@@ -18,7 +18,7 @@ const Informations = dynamic(() => import("../toolsPanel/informations"), {
   ssr: false,
 });
 
-const Settings = dynamic(() => import("../toolsPanel/searchObject"), {
+const Settings = dynamic(() => import("../toolsPanel/settings"), {
   ssr: false,
 });
 const Dialog = () => {
@@ -45,15 +45,15 @@ const Dialog = () => {
             <Icon path={headerData(state.dialog?.content)?.icon ?? ""} size={1.5} />
             <h2> {headerData(state.dialog?.content)?.title}</h2>
           </div>
-          <div>
+         
             <PerfectScrollbar>
-              <div>
+              <div   className="dataContent">
                 {state.dialog?.content == "Informations" && <Informations />}
               
                 {state.dialog?.content == "Settings" && <Settings />}
               </div>
             </PerfectScrollbar>
-          </div>
+        
         </div>
       ) : null}
     </>

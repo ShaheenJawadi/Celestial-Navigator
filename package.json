@@ -11,7 +11,6 @@
   "dependencies": {
     "@mdi/js": "^7.4.47",
     "@mdi/react": "^1.6.1",
-    "@nextui-org/react": "^2.4.8",
     "@reduxjs/toolkit": "^2.2.8",
     "gsap": "^3.12.5",
     "meshline": "^3.3.1",
