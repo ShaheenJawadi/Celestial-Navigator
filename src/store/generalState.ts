@@ -17,8 +17,8 @@ interface PopupState {
   drawer: { isOpen: boolean; content: DrawerContent | null} | null;
 
 }
-type DrawerContent = "WatchList" | "SearchObject"|null;
-type DialogContent = "Informations" | "Pho" | "Settings"|null;
+type DrawerContent = "WatchList" | "Pho" | "SearchObject"|null;
+type DialogContent = "Informations" | "Settings"|null;
 
 const initialState: PopupState = {
   isPopupOpen: false,

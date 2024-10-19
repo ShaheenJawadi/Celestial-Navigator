@@ -61,7 +61,7 @@ const Drawer = () => {
               <div  className="dataContent">
                 {state.drawer?.content == "WatchList" && <WatchList />}
                 {state.drawer?.content == "SearchObject" && <SearchObject />}
-                {state.dialog?.content == "Pho" && <Pho />}
+                {state.drawer?.content == "Pho" && <Pho />}
               </div>
             </PerfectScrollbar>
           </div>
