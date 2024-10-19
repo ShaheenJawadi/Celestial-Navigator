@@ -17,9 +17,6 @@ import { title } from "process";
 const Informations = dynamic(() => import("../toolsPanel/informations"), {
   ssr: false,
 });
-const Pho = dynamic(() => import("../toolsPanel/pho"), {
-  ssr: false,
-});
 
 const Settings = dynamic(() => import("../toolsPanel/searchObject"), {
   ssr: false,
@@ -52,7 +49,7 @@ const Dialog = () => {
             <PerfectScrollbar>
               <div>
                 {state.dialog?.content == "Informations" && <Informations />}
-                {state.dialog?.content == "Pho" && <Pho />}
+              
                 {state.dialog?.content == "Settings" && <Settings />}
               </div>
             </PerfectScrollbar>
@@ -66,8 +63,6 @@ const Dialog = () => {
 const headerData = (s: any) => {
   if (s == "Informations") {
     return { icon: mdiInformationSlabCircle, title: "Informations" };
-  } else if (s == "Pho") {
-    return { icon: mdiMeteor, title: "Potentially hazardous object" };
   } 
   else if (s == "Settings") {
     return { icon: mdiCog, title: "Settings" };
