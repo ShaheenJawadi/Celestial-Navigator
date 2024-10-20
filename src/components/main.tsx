@@ -14,13 +14,11 @@ import { ObjectsType } from "@/types/general";
 import { keplerianElementsType } from "@/types/planet";
 import { Orbit } from "@/models/orbit";
 
-type Params = {
-  NEAList: NEOTypes[];
-  PHAList: NEOTypes[];
-  CometList: NEOTypes[];
+type Params = { 
+  mergedNeo: NEOTypes[]; 
 };
 
-const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
+const Orrery = ({ mergedNeo }: Params) => {
   const dispatch = useDispatch<AppDispatch>();
   const state = useSelector((state: RootState) => state.generalState);
 
@@ -43,19 +41,17 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
     sunRef.current = new Sun(scene, camera, () =>
       dispatch(openPopup({ target: "SUN", identifier: "SUN" }))
     );
-    planetsRef.current = planetsList.map(
+    planetsRef.current = planetsList?.map(
       (planetData) =>
         new Planet(scene, planetData, camera, () =>
-          dispatch(openPopup({ target: "PLANET", identifier: planetData.name }))
+          dispatch(openPopup({ target: "PLANET", identifier: planetData?.name }))
         )
     );
  
     neoManagerRef.current = new NEO(
       scene,
       camera,
-      NEAList,
-      CometList,
-      PHAList,
+      mergedNeo,
       (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) =>
         dispatch(
           openPopupAndAddOrbit({
@@ -78,7 +74,7 @@ const Orrery = ({ NEAList, CometList, PHAList }: Params) => {
     controlsRef.current.enablePan = true;
 
     window.addEventListener("resize", sceneSetup.current.handleResize);
-  }, [dispatch, NEAList, CometList, PHAList]);
+  }, [dispatch,mergedNeo]);
 
  
   const animate = useCallback(() => {

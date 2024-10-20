@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { NEOTypes } from "@/types/NEO";
 import { Provider } from "react-redux";
@@ -10,6 +10,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import { noRender } from "@/utils/focus";
 import ToolsPanel from "@/components/toolsPanel";
 import Dialog from "@/components/ui/dialog";
+
 import Drawer from "@/components/ui/drawer";
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
@@ -55,6 +56,17 @@ export default function Home() {
     fetchAllData();
   }, []);
 
+  const mergedNEO = useMemo(() => {
+    if (neas.length && phas.length && comets.length) {
+      return [
+        ...neas.map((item) => ({ ...item, neoKind: "ASTEROID" })),
+        ...phas.map((item) => ({ ...item, neoKind: "PHA" })),
+        ...comets.map((item) => ({ ...item, neoKind: "COMET" })),
+      ] as NEOTypes[];
+    }
+    return [];
+  }, [neas, phas, comets]);
+  
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -68,9 +80,13 @@ export default function Home() {
       <Provider store={store}>
       <ToolsPanel />
         {noRender ? (
-          <Orrery NEAList={[]} CometList={[]} PHAList={[]} />
+                 /*    <Orrery NEAList={[]} CometList={[]} PHAList={[]} /> */
+
+          <div style={{height:"100vh" ,width:"100vw"}}>noRender</div>
+          
+
         ) : (
-          <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
+          <Orrery mergedNeo={mergedNEO} />
         )}
         <Popup />
         <Dialog/>

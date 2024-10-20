@@ -12,61 +12,67 @@ import { CelestialObject } from './celestialObject';
 
 export class NEO extends CelestialObject{ 
     private neoInstancedMesh: THREE.InstancedMesh;
-    private phaInstancedMesh: THREE.InstancedMesh;
-    private cometInstancedMesh: THREE.InstancedMesh;
-    private neoDataList: NEOTypes[];
-    private phaDataList: NEOTypes[];
-    private cometDataList: NEOTypes[];
+    private mergedNeo: NEOTypes[];
     private raycaster: THREE.Raycaster;
     private mouse: THREE.Vector2;  
     private initialized: boolean = false; 
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, neaDataList: NEOTypes[], CometList: NEOTypes[], PHAList: NEOTypes[], openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void) {
+    constructor(scene: THREE.Scene, camera: THREE.Camera, mergedNeo: NEOTypes[], openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void) {
         
         super(scene, camera); 
-        this.neoDataList = neaDataList;
-        this.phaDataList = PHAList;
-        this.cometDataList = CometList;
+        this.mergedNeo = mergedNeo;
+       
 
-        this.neoInstancedMesh = this.createNEOInstances(this.neoDataList, "#15FB2C", 1);
-        this.phaInstancedMesh = this.createNEOInstances(this.phaDataList, "#D1002D", 1);
-        this.cometInstancedMesh = this.createNEOInstances(this.cometDataList, "#D1C600", 1);
-
+        this.neoInstancedMesh = this.createNEOInstances(this.mergedNeo); 
 
         this.raycaster = new THREE.Raycaster();
         this.mouse = new THREE.Vector2(); 
         this.setupInteractions(openPopup);
     }
 
-    private createNEOInstances(dataList: NEOTypes[], color: string, defaultSize: number) {
-        const geometry = new THREE.SphereGeometry(defaultSize, 4, 4);
-        const material = new THREE.MeshStandardMaterial({ color });
+    private createNEOInstances(dataList: NEOTypes[]) {
+        const geometry = new THREE.SphereGeometry(1, 4, 4);
+        const material = new THREE.MeshStandardMaterial();
         const count = dataList.length;
-
+    
         const instancedMesh = new THREE.InstancedMesh(geometry, material, count);
         this.scene.add(instancedMesh);
-
+    
+        const color = new THREE.Color();
+    
         dataList.forEach((neoData, i) => {
-            const size = neoData.diameter ? parseFloat(neoData.diameter) * PLANET_SIZE_SCALE_FACTOR : defaultSize;
-
-
+            const size = neoData.diameter ? parseFloat(neoData.diameter) * PLANET_SIZE_SCALE_FACTOR : 1;
+    
             const matrix = new THREE.Matrix4();
             matrix.makeScale(size, size, size);
-        //    matrix.identity();
-
+            matrix.setPosition(i * 2, 0, 0); 
             instancedMesh.setMatrixAt(i, matrix);
+     
+            let neoColor = "#15FB2C"; 
+            if (neoData.neoKind === "PHA") {
+                neoColor = "#D1002D";
+            } else if (neoData.neoKind === "COMET") {
+                neoColor = "#D1C600";
+            } 
+            color.set(neoColor);
+            instancedMesh.setColorAt(i,  color);
         });
-        instancedMesh.frustumCulled = true;
+       
+        if (instancedMesh.instanceColor) {
+            instancedMesh.instanceColor.needsUpdate = true;
+        }
 
+
+        instancedMesh.frustumCulled = true;
+    
         return instancedMesh;
     }
+    
 
     public update(deltaTime: number) {
  
         if (!this.initialized) {
-            this.updateObjects(deltaTime, this.neoDataList, this.neoInstancedMesh);
-            this.updateObjects(deltaTime, this.phaDataList, this.phaInstancedMesh);
-            this.updateObjects(deltaTime, this.cometDataList, this.cometInstancedMesh);
+            this.updateObjects(deltaTime, this.mergedNeo, this.neoInstancedMesh); 
       
             this.initialized = true;  // Only update once
           }
@@ -95,9 +101,7 @@ export class NEO extends CelestialObject{
     
             this.raycaster.setFromCamera(this.mouse, this.camera);
     
-            const neoIntersect = this.raycaster.intersectObject(this.neoInstancedMesh, true);
-            const phaIntersect = this.raycaster.intersectObject(this.phaInstancedMesh, true);
-            const cometIntersect = this.raycaster.intersectObject(this.cometInstancedMesh, true);
+            const neoIntersect = this.raycaster.intersectObject(this.neoInstancedMesh, true); 
             let neoData;
             let target: 'ASTEROID' | 'PHA' | 'COMET' | undefined;
             let intersectedObjectPosition: THREE.Object3D<THREE.Object3DEventMap> | undefined;
@@ -107,7 +111,7 @@ export class NEO extends CelestialObject{
                 const instanceId = neoIntersect[0].instanceId;
                 if (instanceId !== undefined) {
                     console.log(instanceId);
-                    neoData = this.neoDataList[instanceId];
+                    neoData = this.mergedNeo[instanceId];
                     intersectedObjectPosition = neoIntersect[0].object;
                     target = 'ASTEROID';
     
@@ -117,60 +121,15 @@ export class NEO extends CelestialObject{
                         const position = new THREE.Vector3();
                         position.setFromMatrixPosition(matrix);
     
-                        console.log('Instance Position:', position);
-    
-                        // Call the onClickCamera function for NEOs
-                        this.onClickCamera(position, true);  // true flag indicates it's an NEO
+                        console.log('Instance Position:', position); 
+                        this.onClickCamera(position, true);   
                     }
                 }
             }
-            // Handle PHA intersection
-            else if (phaIntersect.length > 0) {
-                const instanceId = phaIntersect[0].instanceId;
-                if (instanceId !== undefined) {
-                    console.log(instanceId);
-                    neoData = this.phaDataList[instanceId];
-                    intersectedObjectPosition = phaIntersect[0].object;
-                    target = 'PHA';
-    
-                    if (intersectedObjectPosition instanceof THREE.InstancedMesh) {
-                        const matrix = new THREE.Matrix4();
-                        intersectedObjectPosition.getMatrixAt(instanceId, matrix);
-                        const position = new THREE.Vector3();
-                        position.setFromMatrixPosition(matrix);
-    
-                        console.log('PHA Instance Position:', position);
-    
-                        // Call the onClickCamera function for NEOs (PHA in this case)
-                        this.onClickCamera(position, true);  // true flag indicates it's an NEO
-                    }
-                }
-            }
-            // Handle Comet intersection
-            else if (cometIntersect.length > 0) {
-                const instanceId = cometIntersect[0].instanceId;
-                if (instanceId !== undefined) {
-                    console.log(instanceId);
-                    neoData = this.cometDataList[instanceId];
-                    intersectedObjectPosition = cometIntersect[0].object;
-                    target = 'COMET';
-    
-                    if (intersectedObjectPosition instanceof THREE.InstancedMesh) {
-                        const matrix = new THREE.Matrix4();
-                        intersectedObjectPosition.getMatrixAt(instanceId, matrix);
-                        const position = new THREE.Vector3();
-                        position.setFromMatrixPosition(matrix);
-    
-                        console.log('Comet Instance Position:', position);
-    
-                        // Call the onClickCamera function for NEOs (Comet in this case)
-                        this.onClickCamera(position, true);  // true flag indicates it's an NEO
-                    }
-                }
-            }
+        
     
             if (neoData && target !== undefined) {
-                openPopup(target, neoData, NeoTokeplerianElementsObject(neoData));
+                openPopup(neoData.neoKind, neoData, NeoTokeplerianElementsObject(neoData));
             }
         });
     }

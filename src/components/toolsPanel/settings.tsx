@@ -23,7 +23,7 @@ const Settings = () => {
           </span>
         </div>
         <div className="single">
-          <h4>Astroid's color:</h4>
+          <h4>Asteroid's color:</h4>
           <span className="colorPicker">
             <PopoverPicker color={"#fff"} onChange={(color: string) => null} />
           </span>
@@ -65,7 +65,7 @@ const Settings = () => {
         <span className={"checkmark"}></span>
       </label>
       <label className={"checkboxContainer"}>
-        Astroids
+        Asteroids
         <input type="checkbox" className={"checkboxInput"} />
         <span className={"checkmark"}></span>
       </label>
