@@ -8,11 +8,12 @@ import { NEO } from "../models/neo";
 import { NEOTypes } from "@/types/NEO";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { openPopup, openPopupAndAddOrbit } from "@/store/generalState";
+import { openPopup, openPopupAndAddOrbit ,setInitialZoom,setZoomFactor} from "@/store/generalState";
 import { dateToJulian } from "@/utils/conversionHelpers";
 import { ObjectsType } from "@/types/general";
 import { keplerianElementsType } from "@/types/planet";
-import { Orbit } from "@/models/orbit";
+import { Orbit } from "@/models/orbit"; 
+import * as THREE from 'three';
 
 type Params = { 
   mergedNeo: NEOTypes[]; 
@@ -64,14 +65,24 @@ const Orrery = ({ mergedNeo }: Params) => {
  
     if (!camera.userData.initialized) {
       camera.position.set(0, 200, 500);  
-      camera.lookAt(0, 0, 0);
+      camera.lookAt(0, 0, 0); 
+      dispatch(setInitialZoom(camera.position.distanceTo(new THREE.Vector3(0, 0, 0))));
       camera.userData.initialized = true; 
     }
  
     controlsRef.current = new OrbitControls(camera, renderer.domElement);
-    controlsRef.current.enableDamping = true;
-    controlsRef.current.dampingFactor = 0.05;
-    controlsRef.current.enablePan = true;
+    controlsRef.current.enableDamping = true; 
+    controlsRef.current.dampingFactor = 0.5; 
+    controlsRef.current.enableZoom = true;
+    controlsRef.current?.addEventListener('change', () => {
+      const { camera } = sceneSetup.current;
+ 
+      const target = controlsRef.current?.target;
+      if (target) {
+        dispatch(setZoomFactor(camera.position.distanceTo(target)));
+      }
+     
+    });
 
     window.addEventListener("resize", sceneSetup.current.handleResize);
   }, [dispatch,mergedNeo]);

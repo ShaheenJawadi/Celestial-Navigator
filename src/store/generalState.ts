@@ -17,6 +17,9 @@ interface PopupState {
   drawer: { isOpen: boolean; content: DrawerContent | null } | null;
   objectsCount: { asteroid: number, pha: number, comet: number };
 
+  initialZoom: number;
+  currentZoomFactor: number,
+
 }
 type DrawerContent = "WatchList" | "Pho" | "SearchObject" | null;
 type DialogContent = "Informations" | "Settings" | null;
@@ -32,6 +35,8 @@ const initialState: PopupState = {
   dialog: null,
   drawer: null,
   objectsCount: { asteroid: 0, pha: 0, comet: 0 },
+  initialZoom: 500,
+  currentZoomFactor: 1,
 };
 
 const generalSlice = createSlice({
@@ -74,7 +79,14 @@ const generalSlice = createSlice({
       state.orbits.push({ ...action.payload, orbitColor: state.neoOrbitColor });
     },
     setObjectsCount: (state, action: PayloadAction<{ asteroid: number, pha: number, comet: number }>) => {
-      state.objectsCount=action.payload;
+      state.objectsCount = action.payload;
+    },
+
+    setInitialZoom: (state, action: PayloadAction<number>) => {
+      state.initialZoom = action.payload;
+    },
+    setZoomFactor: (state, action: PayloadAction<number>) => {
+      state.currentZoomFactor = action.payload / state.initialZoom;
     },
   },
 });
@@ -92,5 +104,13 @@ export const openPopupAndAddOrbit = (payload: { target: string, identifier: stri
   };
 
 
-export const { openPopup, closePopup, changeUnitSystem, changeNeoOrbitColor, addOrbit, manageTools,setObjectsCount } = generalSlice.actions;
+export const { openPopup,
+  closePopup,
+  changeUnitSystem,
+  changeNeoOrbitColor,
+  addOrbit,
+  manageTools,
+  setObjectsCount,
+  setInitialZoom,
+  setZoomFactor } = generalSlice.actions;
 export default generalSlice.reducer;
