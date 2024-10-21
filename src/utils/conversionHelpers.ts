@@ -102,14 +102,14 @@ export function convertUSToMetricDistances(val: number|string ,givenUnit:"us" | 
 function convertKmToMiles(km: number) : { num: number; st: string }{
    
    
-      return { num: km*KM_TO_MILES, st: km*KM_TO_MILES+" km" };
+      return { num: km*KM_TO_MILES, st: km*KM_TO_MILES+" miles" };
 
    
    
   }
 
   function convertMilesToKm(miles: number ) : { num: number; st: string } {
-    return { num: miles/KM_TO_MILES, st: miles/KM_TO_MILES+" miles" };
+    return { num: miles/KM_TO_MILES, st: miles/KM_TO_MILES+" km" };
    
   }
   

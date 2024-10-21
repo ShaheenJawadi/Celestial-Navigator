@@ -38,7 +38,7 @@ const DisplayScaling = () => {
             <div className="scalingLine"></div>
           </td>
           <td>
-            <div className="value">{convertUSToMetricDistances(sunScaling , "metric" , "metric").st}</div>
+            <div className="value">{convertUSToMetricDistances(sunScaling , "metric" ,state.unitSystem).st}</div>
           </td>
         </tr>
         <tr className="single">
@@ -49,7 +49,7 @@ const DisplayScaling = () => {
             <div className="scalingLine"></div>
           </td>
           <td>
-            <div className="value">{convertUSToMetricDistances(planetScaling , "metric" , "metric").st}</div>
+            <div className="value">{convertUSToMetricDistances(planetScaling , "metric" , state.unitSystem).st}</div>
           </td>
         </tr>
         <tr className="single">
@@ -60,7 +60,7 @@ const DisplayScaling = () => {
             <div className="scalingLine"></div>
           </td>
           <td>
-            <div className="value">{convertUSToMetricDistances(distanceScaling , "metric" , "metric").st}</div>
+            <div className="value">{convertUSToMetricDistances(distanceScaling , "metric" ,state.unitSystem).st}</div>
           </td>
         </tr>
       </table>

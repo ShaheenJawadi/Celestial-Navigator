@@ -26,7 +26,7 @@ const initialState: PopupState = {
   isPopupOpen: false,
   target: null,
   identifier: null,
-  unitSystem: "us",
+  unitSystem: "metric",
   neo: null,
   neoOrbitColor: "#0866ff",
   orbits: [],
