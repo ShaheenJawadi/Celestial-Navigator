@@ -499,7 +499,7 @@ color: #8d8d8d;
   bottom: 0;
   left: 0;
   padding: 10px;
-  background: var(--t-background);
+
   border-radius: 0 10px 0 0; 
   z-index: 99;
   color: #fff;
@@ -507,4 +507,52 @@ color: #8d8d8d;
   gap: 5px;
   opacity: 0.4;
   font-size: 14px;
+}
+
+/* *************** */
+
+.scalingPanel{
+  background: var(--t-background);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+  
+}
+.scalingPanel .single {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px;
+  cursor: pointer; 
+}
+.scalingPanel .single .scalingLine{
+  position: relative;
+  height: 4px;
+  background-color: #fff;
+  margin-bottom: 5px;
+  width: 150px; 
+}
+
+.scalingPanel .single .scalingLine:after ,.scalingPanel .single .scalingLine:before{
+  content: '';
+  position: absolute;
+  width: 10px; 
+  height: 2px; 
+  background-color: #fff; 
+}
+
+.scalingPanel .single .scalingLine:before {
+  left: -5px; 
+  top: 1px;
+  transform: rotate(90deg);
+}
+
+.scalingPanel .single .scalingLine:after {
+  right: -5px; 
+      top: 1px; 
+      transform: rotate(90deg); 
 }
