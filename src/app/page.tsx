@@ -20,6 +20,7 @@ export default function Home() {
   const [comets, setComets] = useState<NEOTypes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMerging, setIsMerging] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCSVData = async (filePath: string) => {
@@ -53,7 +54,7 @@ export default function Home() {
             comet: cometData.length,
           })
         );
-
+ 
         setLoading(false);
       } catch (error) {
         setError((error as Error).message);
@@ -65,17 +66,20 @@ export default function Home() {
   }, []);
 
   const mergedNEO = useMemo(() => {
-    if (neas.length && phas.length && comets.length) {
-      return [
+
+  
+      const merged = [
         ...neas.map((item) => ({ ...item, neoKind: "ASTEROID" })),
         ...phas.map((item) => ({ ...item, neoKind: "PHA" })),
         ...comets.map((item) => ({ ...item, neoKind: "COMET" })),
       ] as NEOTypes[];
-    }
-    return [];
+   setIsMerging(false)
+    return merged as NEOTypes[];
   }, [neas, phas, comets]);
 
-  if (loading) {
+ 
+
+  if (loading ||isMerging) {
     return <p>Loading...</p>;
   }
 
