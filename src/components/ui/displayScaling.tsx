@@ -1,13 +1,30 @@
 import { AU_TO_KM, convertUSToMetricDistances } from "@/utils/conversionHelpers";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+import {  useSelector } from "react-redux";
+import {  RootState } from "@/store";
+import { DISTANCE_SCALE_FACTOR, PLANET_SIZE_SCALE_FACTOR, SUN_SCALE_FACTOR } from "@/utils/scaling";
+ 
 
 const DisplayScaling = () => {
-    const SunInitialPixelScale = 149597370;
-    const PlanetInitialPixelScale = 299196390;
+    const state = useSelector((state: RootState) => state.generalState);
 
-  const [sunScaling, setSunScaling] = useState(149597370);
-  const [planetScaling, setPlanetScaling] = useState(299196390);
-  const [distanceScaling, setDistanceScaling] = useState(AU_TO_KM);
+ 
+
+  const [sunScaling, setSunScaling] = useState(0);
+  const [planetScaling, setPlanetScaling] = useState(0);
+  const [distanceScaling, setDistanceScaling] = useState(0);
+
+
+  useEffect(() => {
+     
+
+    setSunScaling(state.worldUnitsFor150px/SUN_SCALE_FACTOR);   
+    setPlanetScaling(state.worldUnitsFor150px / PLANET_SIZE_SCALE_FACTOR);  
+    setDistanceScaling((state.worldUnitsFor150px/ DISTANCE_SCALE_FACTOR)*AU_TO_KM);  
+  }, [state.worldUnitsFor150px]);
+
+
 
 
   return (

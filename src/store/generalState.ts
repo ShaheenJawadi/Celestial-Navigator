@@ -15,10 +15,8 @@ interface PopupState {
   orbits: OrbitType[];
   dialog: { isOpen: boolean; content: DialogContent | null } | null;
   drawer: { isOpen: boolean; content: DrawerContent | null } | null;
-  objectsCount: { asteroid: number, pha: number, comet: number };
-
-  initialZoom: number;
-  currentZoomFactor: number,
+  objectsCount: { asteroid: number, pha: number, comet: number }; 
+  worldUnitsFor150px: number;
 
 }
 type DrawerContent = "WatchList" | "Pho" | "SearchObject" | null;
@@ -34,9 +32,8 @@ const initialState: PopupState = {
   orbits: [],
   dialog: null,
   drawer: null,
-  objectsCount: { asteroid: 0, pha: 0, comet: 0 },
-  initialZoom: 500,
-  currentZoomFactor: 1,
+  objectsCount: { asteroid: 0, pha: 0, comet: 0 }, 
+  worldUnitsFor150px: 0,
 };
 
 const generalSlice = createSlice({
@@ -82,11 +79,20 @@ const generalSlice = createSlice({
       state.objectsCount = action.payload;
     },
 
-    setInitialZoom: (state, action: PayloadAction<number>) => {
-      state.initialZoom = action.payload;
-    },
-    setZoomFactor: (state, action: PayloadAction<number>) => {
-      state.currentZoomFactor = action.payload / state.initialZoom;
+ 
+
+    setLandMarkUnit: (state, action: PayloadAction<number>) => {
+
+ 
+      const fov = 90* (Math.PI / 180) ;   
+
+      const distance= action.payload; 
+
+      const aspectRatio = window.innerWidth / window.innerHeight;
+      const worldUnits = 2 * distance * Math.tan(fov / 2) *aspectRatio;   
+      const worldUnitsFor150px = (150 * worldUnits) / window.innerWidth;  
+  
+    state.worldUnitsFor150px=worldUnitsFor150px;
     },
   },
 });
@@ -105,12 +111,11 @@ export const openPopupAndAddOrbit = (payload: { target: string, identifier: stri
 
 
 export const { openPopup,
+  setLandMarkUnit,
   closePopup,
   changeUnitSystem,
   changeNeoOrbitColor,
   addOrbit,
   manageTools,
-  setObjectsCount,
-  setInitialZoom,
-  setZoomFactor } = generalSlice.actions;
+  setObjectsCount } = generalSlice.actions;
 export default generalSlice.reducer;

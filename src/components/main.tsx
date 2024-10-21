@@ -8,7 +8,7 @@ import { NEO } from "../models/neo";
 import { NEOTypes } from "@/types/NEO";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
-import { openPopup, openPopupAndAddOrbit ,setInitialZoom,setZoomFactor} from "@/store/generalState";
+import { openPopup, openPopupAndAddOrbit ,setLandMarkUnit} from "@/store/generalState";
 import { dateToJulian } from "@/utils/conversionHelpers";
 import { ObjectsType } from "@/types/general";
 import { keplerianElementsType } from "@/types/planet";
@@ -65,8 +65,8 @@ const Orrery = ({ mergedNeo }: Params) => {
  
     if (!camera.userData.initialized) {
       camera.position.set(0, 200, 500);  
-      camera.lookAt(0, 0, 0); 
-      dispatch(setInitialZoom(camera.position.distanceTo(new THREE.Vector3(0, 0, 0))));
+      camera.lookAt(0, 0, 0);   
+      dispatch(setLandMarkUnit( camera.position.length())); 
       camera.userData.initialized = true; 
     }
  
@@ -75,11 +75,12 @@ const Orrery = ({ mergedNeo }: Params) => {
     controlsRef.current.dampingFactor = 0.5; 
     controlsRef.current.enableZoom = true;
     controlsRef.current?.addEventListener('change', () => {
-      const { camera } = sceneSetup.current;
+       
  
       const target = controlsRef.current?.target;
       if (target) {
-        dispatch(setZoomFactor(camera.position.distanceTo(target)));
+        
+        dispatch(setLandMarkUnit(camera.position.length())); 
       }
      
     });
@@ -91,9 +92,10 @@ const Orrery = ({ mergedNeo }: Params) => {
   const animate = useCallback(() => {
     const now = performance.now();
     if (now - lastFrameTime > 1000 / 30) { // Cap to 30 FPS
-      lastFrameTime = now;
+      lastFrameTime = now; 
       const { scene, camera, renderer } = sceneSetup.current;
   
+    
       const time = dateToJulian(new Date());
       planetsRef.current.forEach((planet) => planet.update(time));
       neoManagerRef.current?.update(time);

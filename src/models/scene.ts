@@ -11,10 +11,8 @@ export class SceneSetup {
   private constructor() {
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(
-      75,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      100000
+      90,
+      window.innerWidth / window.innerHeight
     );
 
     this.renderer = new THREE.WebGLRenderer({ antialias: true });
