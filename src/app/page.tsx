@@ -5,13 +5,11 @@ import { NEOTypes } from "@/types/NEO";
 import { Provider } from "react-redux";
 import store from "@/store";
 import Papa from "papaparse";
-import { Popup } from "@/components/ui/popup";
+
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { noRender } from "@/utils/focus";
-import ToolsPanel from "@/components/toolsPanel";
-import Dialog from "@/components/ui/dialog";
+import UIPanels from "@/components/ui";
 
-import Drawer from "@/components/ui/drawer";
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
@@ -78,7 +76,7 @@ export default function Home() {
   return (
     <div>
       <Provider store={store}>
-      <ToolsPanel />
+      
         {noRender ? (
                  /*    <Orrery NEAList={[]} CometList={[]} PHAList={[]} /> */
 
@@ -88,9 +86,8 @@ export default function Home() {
         ) : (
           <Orrery mergedNeo={mergedNEO} />
         )}
-        <Popup />
-        <Dialog/>
-        <Drawer/>
+        <UIPanels />
+     
       </Provider>
     </div>
   );
