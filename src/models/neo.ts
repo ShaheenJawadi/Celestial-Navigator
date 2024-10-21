@@ -103,17 +103,15 @@ export class NEO extends CelestialObject{
     
             const neoIntersect = this.raycaster.intersectObject(this.neoInstancedMesh, true); 
             let neoData;
-            let target: 'ASTEROID' | 'PHA' | 'COMET' | undefined;
             let intersectedObjectPosition: THREE.Object3D<THREE.Object3DEventMap> | undefined;
     
             // Handle NEO intersection
             if (neoIntersect.length > 0) {
                 const instanceId = neoIntersect[0].instanceId;
-                if (instanceId !== undefined) {
-                    console.log(instanceId);
+                if (instanceId !== undefined) { 
                     neoData = this.mergedNeo[instanceId];
                     intersectedObjectPosition = neoIntersect[0].object;
-                    target = 'ASTEROID';
+ 
     
                     if (intersectedObjectPosition instanceof THREE.InstancedMesh) {
                         const matrix = new THREE.Matrix4();
@@ -128,7 +126,7 @@ export class NEO extends CelestialObject{
             }
         
     
-            if (neoData && target !== undefined) {
+            if (neoData  !== undefined) {
                 openPopup(neoData.neoKind, neoData, NeoTokeplerianElementsObject(neoData));
             }
         });
