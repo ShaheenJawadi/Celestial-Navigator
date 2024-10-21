@@ -492,7 +492,19 @@ color: #8d8d8d;
   .searchButton:focus {
     outline: none;
   }
-  
-
-
   /* ******************* */
+
+.objectsCount{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  background: var(--t-background);
+  border-radius: 0 10px 0 0; 
+  z-index: 99;
+  color: #fff;
+  display: flex;
+  gap: 5px;
+  opacity: 0.4;
+  font-size: 14px;
+}
