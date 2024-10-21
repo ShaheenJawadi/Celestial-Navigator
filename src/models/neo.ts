@@ -1,9 +1,8 @@
 import { ObjectsType } from '@/types/general';
 import { NEOTypes } from '@/types/NEO';
 import { keplerianElementsType } from '@/types/planet';
-import { degreesToRadians } from '@/utils/conversionHelpers';
 import { calculateOrbitalPosition, NeoTokeplerianElementsObject } from '@/utils/keplerianElements';
-import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
+import {PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { or } from 'three/webgpu';
 import { Orbit } from './orbit';

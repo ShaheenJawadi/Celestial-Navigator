@@ -3,12 +3,11 @@ import { keplerianElementsType, planetType } from '@/types/planet';
 import { calculateOrbitalPosition } from '@/utils/keplerianElements';
 import { PlanetRingGeomtry } from '@/utils/planetRing';
 import { SATURN_RING_TEXTURE } from '@/utils/resourcePaths';
-import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
+import {  PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { Orbit } from './orbit';
-import { gsap } from 'gsap';
 import { CelestialObject } from './celestialObject';
-import { dateToJulian, julianToDate } from '@/utils/conversionHelpers';
+import { dateToJulian } from '@/utils/conversionHelpers';
 export class Planet  extends CelestialObject {
   mesh: THREE.Mesh;
   currentTime: number = 0;
