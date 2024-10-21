@@ -2,17 +2,19 @@
 import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { NEOTypes } from "@/types/NEO";
-import { Provider } from "react-redux";
-import store from "@/store";
-import Papa from "papaparse";
 
+import Papa from "papaparse";
+import { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
 import "react-perfect-scrollbar/dist/css/styles.css";
 import { noRender } from "@/utils/focus";
 import UIPanels from "@/components/ui";
+import { setObjectsCount } from "@/store/generalState";
 
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
   const [neas, setNeas] = useState<NEOTypes[]>([]);
   const [phas, setPhas] = useState<NEOTypes[]>([]);
   const [comets, setComets] = useState<NEOTypes[]>([]);
@@ -44,6 +46,14 @@ export default function Home() {
         setNeas(neaData);
         setPhas(phaData);
         setComets(cometData);
+        dispatch(
+          setObjectsCount({
+            asteroid: neaData.length,
+            pha: phaData.length,
+            comet: cometData.length,
+          })
+        );
+
         setLoading(false);
       } catch (error) {
         setError((error as Error).message);
@@ -64,7 +74,7 @@ export default function Home() {
     }
     return [];
   }, [neas, phas, comets]);
-  
+
   if (loading) {
     return <p>Loading...</p>;
   }
@@ -75,20 +85,14 @@ export default function Home() {
 
   return (
     <div>
-      <Provider store={store}>
-      
-        {noRender ? (
-                 /*    <Orrery NEAList={[]} CometList={[]} PHAList={[]} /> */
+      {noRender ? (
+        /*    <Orrery NEAList={[]} CometList={[]} PHAList={[]} /> */
 
-          <div style={{height:"100vh" ,width:"100vw"}}>noRender</div>
-          
-
-        ) : (
-          <Orrery mergedNeo={mergedNEO} />
-        )}
-        <UIPanels />
-     
-      </Provider>
+        <div style={{ height: "100vh", width: "100vw" }}>noRender</div>
+      ) : (
+        <Orrery mergedNeo={mergedNEO} />
+      )}
+      <UIPanels />
     </div>
   );
 }
