@@ -5,9 +5,14 @@ import ToolsPanel from "@/components/toolsPanel";
 import ObjectsCount from "./objectsCount";
 import DisplayScaling from "./displayScaling";
 
+import Image from "next/image";
+
 const UIPanels = () => {
   return (
     <>
+      <div className="logoHolder">
+        <Image src={"./logo.svg"} width={75} height={60} alt={"logo "} />{" "}
+      </div>
       <DisplayScaling />
       <ObjectsCount />
       <ToolsPanel />
