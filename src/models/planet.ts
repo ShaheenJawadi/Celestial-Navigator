@@ -7,7 +7,7 @@ import {  PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { Orbit } from './orbit';
 import { CelestialObject } from './celestialObject';
-import { dateToJulian } from '@/utils/conversionHelpers';
+import { dateToJulian, degreesToRadians } from '@/utils/conversionHelpers';
 export class Planet  extends CelestialObject {
   mesh: THREE.Mesh;
   currentTime: number = 0;
@@ -93,25 +93,27 @@ export class Planet  extends CelestialObject {
   update(deltaTime: number) {
 
 
-    const position = calculateOrbitalPosition(deltaTime, this.getPlanetParams());
+    const position = calculateOrbitalPosition(deltaTime, this.getPlanetParams(deltaTime));
     this.mesh.position.copy(position);
-  }
 
-  
-  getPlanetParams(year:number =dateToJulian(new Date('2024-1-1'))) {
-    const T =( (year) - 2451545.0)/36525;
- 
+}
 
-    const {a,e,I,L,longPeri,longNode} = this.keplerianElements;
-    const {a:aRate,e:eRate,I:IRate,L:LRate,longPeri:longPeriRate,longNode:longNodeRate} = this.planetData.rates;
-    const newA = a + aRate*T;
-    const newE = e + eRate*T;
-    const newI = I + IRate*T;
-    const newL = L + LRate*T;
-    const newLongPeri = longPeri + longPeriRate*T;
-    const newLongNode = longNode + longNodeRate*T;
-    return {a:newA,e:newE,I:newI,L:newL,longPeri:newLongPeri,longNode:newLongNode};
-  }
+getPlanetParams(year: number ) {
+    const T = (year - 2451545.0) / 36525;
+
+    const { a, e, I, L, longPeri, longNode } = this.keplerianElements;
+    const { a: aRate, e: eRate, I: IRate, L: LRate, longPeri: longPeriRate, longNode: longNodeRate } = this.planetData.rates;
+
+    const newA = a + aRate * T;
+    const newE = e + eRate * T;
+    const newI = I + IRate * T;
+    const newL = L + LRate * T;
+    const newLongPeri = longPeri + longPeriRate * T;
+    const newLongNode = longNode + longNodeRate * T;
+
+    return { a: newA, e: newE, I: newI, L: newL, longPeri: newLongPeri, longNode: newLongNode };
+}
+
 
 }
 

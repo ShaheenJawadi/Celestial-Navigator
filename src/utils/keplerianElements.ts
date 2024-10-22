@@ -4,51 +4,62 @@ import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
 import * as THREE from 'three';
 import { degreesToRadians } from './conversionHelpers';
 import { NEOTypes } from '@/types/NEO';
- 
- 
+
 export function calculateOrbitalPosition(julianDate: number, keplerianElements: keplerianElementsType): THREE.Vector3 {
     const { a, e, I, longPeri, longNode, L } = keplerianElements;
 
-    const T0 = 2451545.0; // Julian Date for January 1, 2000 (UTC)
-    const daysSinceEpoch = julianDate - T0; // Days since epoch
+    // J2000 epoch
+    const T0 = 2451545.0; 
+    const daysSinceEpoch = julianDate - T0;
 
-    const n = Math.sqrt(1 / Math.pow(a, 3));  // Mean motion (in rad/day)
-    const M = (n * daysSinceEpoch) + L;  // Mean anomaly
+    // Mean motion (n), in radians per day
+    const n = Math.sqrt(1 / Math.pow(a, 3)); 
 
-    let E = M;  // Eccentric anomaly
-    const tolerance = 1e-6;
+    // Corrected Mean anomaly (M), making sure it is within 0 to 2π
+    const M = ((n * daysSinceEpoch + (L - longPeri)) % (2 * Math.PI) + 2 * Math.PI) % (2 * Math.PI);
+
+    // Solve Kepler's equation for Eccentric Anomaly (E)
+    let E = M;
+    const tolerance = 1e-10;
     let delta = 1;
 
-    // Solve Kepler's equation iteratively
+    // Iterate to solve for Eccentric Anomaly
     while (Math.abs(delta) > tolerance) {
         delta = E - e * Math.sin(E) - M;
         E -= delta / (1 - e * Math.cos(E));
     }
 
+    // True anomaly (ν or θ)
     const trueAnomaly = 2 * Math.atan2(
         Math.sqrt(1 + e) * Math.sin(E / 2),
         Math.sqrt(1 - e) * Math.cos(E / 2)
     );
 
-    const r = a * (1 - e * Math.cos(E));  // Distance from the Sun
-    const perihelion = a * (1 - e);  // Calculate perihelion distance
+    // Distance to the Sun (r)
+    const r = a * (1 - e * Math.cos(E));
 
-    const x = r * Math.cos(trueAnomaly + longPeri);
-    const y = r * Math.sin(trueAnomaly + longPeri);
+    // Orbital plane coordinates (perifocal)
+    const xOrbital = r * Math.cos(trueAnomaly);
+    const yOrbital = r * Math.sin(trueAnomaly);
 
-    const z = y * Math.sin(I);  // Inclination (Z-axis offset)
-    const yInclined = y * Math.cos(I);
+    // Rotation matrices to convert to 3D heliocentric coordinates
+    const cosI = Math.cos(I);
+    const sinI = Math.sin(I);
+    const cosNode = Math.cos(longNode);
+    const sinNode = Math.sin(longNode);
+    const cosPeri = Math.cos(longPeri);
+    const sinPeri = Math.sin(longPeri);
 
-    const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
-    const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
- 
+    // Transforming to heliocentric coordinates
+    const X = (cosNode * cosPeri - sinNode * sinPeri * cosI) * xOrbital
+        + (-cosNode * sinPeri - sinNode * cosPeri * cosI) * yOrbital;
+    const Y = (sinNode * cosPeri + cosNode * sinPeri * cosI) * xOrbital
+        + (-sinNode * sinPeri + cosNode * cosPeri * cosI) * yOrbital;
+    const Z = (sinPeri * sinI) * xOrbital + (cosPeri * sinI) * yOrbital;
 
-    return new THREE.Vector3(
-        xFinal * DISTANCE_SCALE_FACTOR,
-        z * DISTANCE_SCALE_FACTOR,
-        yFinal * DISTANCE_SCALE_FACTOR
-    );
+    return new THREE.Vector3(X * DISTANCE_SCALE_FACTOR, Z * DISTANCE_SCALE_FACTOR, Y * DISTANCE_SCALE_FACTOR);
 }
+ 
 
 
 
