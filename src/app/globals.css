@@ -54,7 +54,16 @@ a {
 }
 
 
-
+.logoHolder{
+  position:absolute;
+  top: 25px;
+  left: 25px;
+  opacity: 0.4;
+  cursor: pointer;
+}
+.logoHolder:hover{
+  opacity: 1;
+}
 
 .popupHolder{ 
   position: absolute;
@@ -73,8 +82,7 @@ a {
 
 .popupHolder .popup{ 
   background: var(--t-background); 
- 
-  max-height: 80%;
+  max-height: 70%;
   width: 400px;
   border-radius: 10px;
   padding: 5px;
