@@ -9,6 +9,6 @@ export type OrbitType = {
      keplerianElements: keplerianElementsType;
      orbitColor: string;
      targetObject: ObjectsType
-     objectRef: THREE.Object3D | null;
+     objectRef: any;
 
 }

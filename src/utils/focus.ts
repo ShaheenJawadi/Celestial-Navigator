@@ -1,1 +1,1 @@
-export  const noRender= true ;
+export  const noRender= false ;

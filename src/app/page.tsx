@@ -54,7 +54,7 @@ export default function Home() {
             comet: cometData.length,
           })
         );
- 
+
         setLoading(false);
       } catch (error) {
         setError((error as Error).message);
@@ -66,20 +66,16 @@ export default function Home() {
   }, []);
 
   const mergedNEO = useMemo(() => {
-
-  
-      const merged = [
-        ...neas.map((item) => ({ ...item, neoKind: "ASTEROID" })),
-        ...phas.map((item) => ({ ...item, neoKind: "PHA" })),
-        ...comets.map((item) => ({ ...item, neoKind: "COMET" })),
-      ] as NEOTypes[];
-   setIsMerging(false)
+    const merged = [
+      ...neas.map((item) => ({ ...item, neoKind: "ASTEROID" })),
+      ...phas.map((item) => ({ ...item, neoKind: "PHA" })),
+      ...comets.map((item) => ({ ...item, neoKind: "COMET" })),
+    ] as NEOTypes[];
+    setIsMerging(false);
     return merged as NEOTypes[];
   }, [neas, phas, comets]);
 
- 
-
-  if (loading ||isMerging) {
+  if (loading || isMerging) {
     return <p>Loading...</p>;
   }
 
@@ -90,8 +86,7 @@ export default function Home() {
   return (
     <div>
       {noRender ? (
-        /*    <Orrery NEAList={[]} CometList={[]} PHAList={[]} /> */
-
+ 
         <div style={{ height: "100vh", width: "100vw" }}>noRender</div>
       ) : (
         <Orrery mergedNeo={mergedNEO} />

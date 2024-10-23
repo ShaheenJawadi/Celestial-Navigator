@@ -73,7 +73,8 @@ const generalSlice = createSlice({
       state.neoOrbitColor = action.payload;
     },
     addOrbit: (state, action) => {
-      state.orbits.push({ ...action.payload, orbitColor: state.neoOrbitColor });
+ 
+      state.orbits=[{ ...action.payload, orbitColor: state.neoOrbitColor }];
     },
     setObjectsCount: (state, action: PayloadAction<{ asteroid: number, pha: number, comet: number }>) => {
       state.objectsCount = action.payload;
@@ -105,7 +106,7 @@ export const openPopupAndAddOrbit = (payload: { target: string, identifier: stri
 
     if (payload.target === "NEO" && payload.neo) {
       const neo = payload.neo;
-      dispatch(addOrbit({ keplerianElements: neo.keplerianElements, targetObject: neo.kind, objectRef: null }));
+      dispatch(addOrbit({ keplerianElements: neo.keplerianElements, targetObject: neo.kind, objectRef: neo.objectData.spkid }));
     }
   };
 
