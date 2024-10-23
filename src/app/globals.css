@@ -575,3 +575,64 @@ color: #8d8d8d;
       top: 1px; 
       transform: rotate(90deg); 
 }
+
+
+/* *******************************  */
+
+.timeTravelingHolder{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 99; 
+  opacity: 0.2;
+  font-size: 14px;
+  transition: opacity 0.4s ease;  
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.timeTravelingHolder:hover{
+  opacity: 0.7;
+}
+
+.timeTravelingHolder .timeTravelingBox {
+  background: var(--t-background);
+  padding: 15px;
+  border-radius: 10px 10px 0 0; 
+}
+.timeTravelingHolder .timeTravelingBox .targetDate  {
+
+display: flex;
+align-items: center;
+justify-content: center;
+justify-items: center;
+gap: 5px;
+
+}
+
+.timeTravelingHolder .timeTravelingBox .targetDate .t_date{
+
+  font-size: 30px;
+
+}
+
+.timeTravelingHolder .timeTravelingBox .targetDate .t_time{
+
+  font-size: 20px;
+
+}
+
+.timeTravelingHolder .timeTravelingBox   .btns{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.timeTravelingHolder .timeTravelingBox   .btns .singleBtn{
+  cursor: pointer; 
+}
+
+.timeTravelingHolder .timeTravelingBox   .btns .singleBtn:hover{ 
+  color:var(--primary-color) ;
+}

@@ -64,7 +64,7 @@ const Orrery = ({ mergedNeo }: Params) => {
     );
  
     if (!camera.userData.initialized) {
-      camera.position.set(0, 200, 500);  
+      camera.position.set(0, -150, 150);  
       camera.lookAt(0, 0, 0);   
       dispatch(setLandMarkUnit( camera.position.length())); 
       camera.userData.initialized = true; 
