@@ -10,9 +10,10 @@ import { CelestialObject } from './celestialObject';
 export class PlanetManager extends CelestialObject {
   planets: THREE.Mesh[] = []; 
   planetData: planetType[];
+  private static instance: PlanetManager;
 
-  constructor(scene: THREE.Scene, planetsData: planetType[], camera: THREE.Camera, openPopup: (name: string) => void) {
-    super(scene, camera);
+ private constructor(scene: THREE.Scene, planetsData: planetType[], camera: THREE.Camera, openPopup: (name: string) => void) {
+    super(scene, camera); 
  
     this.planetData = planetsData;
  
@@ -108,5 +109,14 @@ export class PlanetManager extends CelestialObject {
     const newLongNode = longNode + longNodeRate * T;
 
     return { a: newA, e: newE, I: newI, L: newL, longPeri: newLongPeri, longNode: newLongNode };
+  }
+
+
+
+  public static getInstance(scene: THREE.Scene, planetsData: planetType[], camera: THREE.Camera, openPopup: (name: string) => void): PlanetManager {
+    if (!PlanetManager.instance) {
+      PlanetManager.instance = new PlanetManager(scene, planetsData, camera, openPopup);
+    }
+    return PlanetManager.instance;
   }
 }

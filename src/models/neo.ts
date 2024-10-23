@@ -10,13 +10,15 @@ import { CelestialObject } from './celestialObject';
 
 
 export class NEO extends CelestialObject{ 
+
+    private static instance: NEO;
     private neoInstancedMesh: THREE.InstancedMesh;
     private mergedNeo: NEOTypes[];
     private raycaster: THREE.Raycaster;
     private mouse: THREE.Vector2;  
     private initialized: boolean = false; 
 
-    constructor(scene: THREE.Scene, camera: THREE.Camera, mergedNeo: NEOTypes[], openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void) {
+   private constructor(scene: THREE.Scene, camera: THREE.Camera, mergedNeo: NEOTypes[], openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void) {
         
         super(scene, camera); 
         this.mergedNeo = mergedNeo;
@@ -131,7 +133,12 @@ export class NEO extends CelestialObject{
         });
     }
     
-
+    public static getInstance(scene: THREE.Scene, camera: THREE.Camera, mergedNeo: NEOTypes[], openPopup: (kind: ObjectsType, objectData: NEOTypes, keplerianElements: keplerianElementsType) => void): NEO {
+        if (!NEO.instance) {
+            NEO.instance = new NEO(scene, camera, mergedNeo, openPopup);
+        }
+        return NEO.instance;
+      }
     
 }
 

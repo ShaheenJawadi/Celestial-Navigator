@@ -39,17 +39,17 @@ const Orrery = ({ mergedNeo }: Params) => {
       mountRef.current.appendChild(renderer.domElement);
     }
  
-    sunRef.current = new Sun(scene, camera, () =>
+    sunRef.current =  Sun.getInstance(scene, camera, () =>
       dispatch(openPopup({ target: "SUN", identifier: "SUN" }))
     );
-    planetsRef.current = new PlanetManager(
+    planetsRef.current =   PlanetManager.getInstance(
       scene,
       planetsList,   
       camera,
       (name: string) => dispatch(openPopup({ target: "PLANET", identifier: name }))
     );
  
-    neoManagerRef.current = new NEO(
+    neoManagerRef.current =  NEO.getInstance(
       scene,
       camera,
       mergedNeo,

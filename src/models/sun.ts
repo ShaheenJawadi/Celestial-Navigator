@@ -6,7 +6,9 @@ import * as THREE from 'three';
 export class Sun {
   sun: THREE.Mesh;
 
-  constructor(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void) {
+  private static instance: Sun;
+
+ private constructor(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void) {
 
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load(IMG_FOLDER+"sun.jpg");
@@ -60,5 +62,12 @@ export class Sun {
 
   getMesh() {
     return this.sun;
+  }
+
+  public static getInstance(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void): Sun {
+    if (!Sun.instance) {
+      Sun.instance = new Sun(scene,camera, openPopup);
+    }
+    return Sun.instance;
   }
 }
