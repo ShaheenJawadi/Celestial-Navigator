@@ -8,16 +8,28 @@ import { degreesToRadians } from './conversionHelpers';
 const GM = 1.32712440018e20; // Gravitational parameter for the Sun in m^3/s^2
 
 export function planetPosition(  keplerianElements: keplerianElementsType): THREE.Vector3 {
-    const {longPeri, L } = keplerianElements;
+    const {a,e,longPeri, L } = keplerianElements;
        // Calculate mean anomaly
        const meanAnomaly = degreesToRadians(L - longPeri);
 
-    return calculateOrbitalPosition(keplerianElements,meanAnomaly);
+
+       const eccentricAnomaly = solveEccentricAnomaly(meanAnomaly, e);
+
+       // Calculate the true anomaly
+       const trueAnomaly = 2 * Math.atan2(
+           Math.sqrt(1 + e) * Math.sin(eccentricAnomaly / 2),
+           Math.sqrt(1 - e) * Math.cos(eccentricAnomaly / 2)
+       );
+   
+       // Distance from the focus (sun) to the planet at the given time
+       const r = a * (1 - e * Math.cos(eccentricAnomaly));
+
+    return calculateOrbitalPosition(keplerianElements,r, trueAnomaly);
 }
 
 
 export function objectPosition( julianDate:number, keplerianElements: keplerianElementsType): THREE.Vector3 {
-    const { a,longPeri,  L } = keplerianElements;
+    const { a, e,longPeri,  L } = keplerianElements;
 
     // Calculate time since epoch (J2000)
     const T = (julianDate - 2451545.0) * 86400; // Time difference in seconds
@@ -25,17 +37,6 @@ export function objectPosition( julianDate:number, keplerianElements: keplerianE
     // Calculate mean anomaly at current time
     const meanMotion = calculateMeanMotion(a); // Mean motion in rad/s
     const meanAnomaly = (degreesToRadians(L - longPeri) + meanMotion * T) % (2 * Math.PI); // M = M0 + n * t
-
-
-    return calculateOrbitalPosition(keplerianElements,meanAnomaly);
-
-}
-function calculateOrbitalPosition(  keplerianElements: keplerianElementsType , meanAnomaly:number): THREE.Vector3 {
-    const { a, e, I, longPeri, longNode, L } = keplerianElements;
-
- 
-
-    // Solve for eccentric anomaly using Newton's method
     const eccentricAnomaly = solveEccentricAnomaly(meanAnomaly, e);
 
     // Calculate the true anomaly
@@ -46,6 +47,17 @@ function calculateOrbitalPosition(  keplerianElements: keplerianElementsType , m
 
     // Distance from the focus (sun) to the planet at the given time
     const r = a * (1 - e * Math.cos(eccentricAnomaly));
+
+    return calculateOrbitalPosition(keplerianElements,r , trueAnomaly);
+
+}
+export function calculateOrbitalPosition(  keplerianElements: keplerianElementsType , r:number ,trueAnomaly:number ): THREE.Vector3 {
+    const {  I, longPeri, longNode } = keplerianElements;
+
+ 
+
+    // Solve for eccentric anomaly using Newton's method
+
 
     // Position in orbital plane (x', y')
     const xPrime = r * Math.cos(trueAnomaly);
