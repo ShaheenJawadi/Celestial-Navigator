@@ -1,6 +1,6 @@
 
 import { keplerianElementsType, planetType } from '@/types/planet';
-import { calculateOrbitalPosition } from '@/utils/keplerianElements';
+import { planetPosition } from '@/utils/keplerianElements';
 import { PlanetRingGeomtry } from '@/utils/planetRing';
 import { SATURN_RING_TEXTURE } from '@/utils/resourcePaths';
 import {  PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
@@ -93,7 +93,7 @@ export class Planet  extends CelestialObject {
   update(deltaTime: number) {
 
 
-    const position = calculateOrbitalPosition(deltaTime, this.getPlanetParams(deltaTime));
+    const position = planetPosition( this.getPlanetParams(deltaTime));
     this.mesh.position.copy(position);
 
 }

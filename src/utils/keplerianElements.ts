@@ -5,12 +5,35 @@ import * as THREE from 'three';
 import { NEOTypes } from '@/types/NEO';
 import { degreesToRadians } from './conversionHelpers';
 
+const GM = 1.32712440018e20; // Gravitational parameter for the Sun in m^3/s^2
 
-export function calculateOrbitalPosition(  keplerianElements: keplerianElementsType): THREE.Vector3 {
+export function planetPosition(  keplerianElements: keplerianElementsType): THREE.Vector3 {
+    const {longPeri, L } = keplerianElements;
+       // Calculate mean anomaly
+       const meanAnomaly = degreesToRadians(L - longPeri);
+
+    return calculateOrbitalPosition(keplerianElements,meanAnomaly);
+}
+
+
+export function objectPosition( julianDate:number, keplerianElements: keplerianElementsType): THREE.Vector3 {
+    const { a,longPeri,  L } = keplerianElements;
+
+    // Calculate time since epoch (J2000)
+    const T = (julianDate - 2451545.0) * 86400; // Time difference in seconds
+
+    // Calculate mean anomaly at current time
+    const meanMotion = calculateMeanMotion(a); // Mean motion in rad/s
+    const meanAnomaly = (degreesToRadians(L - longPeri) + meanMotion * T) % (2 * Math.PI); // M = M0 + n * t
+
+
+    return calculateOrbitalPosition(keplerianElements,meanAnomaly);
+
+}
+function calculateOrbitalPosition(  keplerianElements: keplerianElementsType , meanAnomaly:number): THREE.Vector3 {
     const { a, e, I, longPeri, longNode, L } = keplerianElements;
 
-    // Calculate mean anomaly
-    const meanAnomaly = degreesToRadians(L - longPeri);
+ 
 
     // Solve for eccentric anomaly using Newton's method
     const eccentricAnomaly = solveEccentricAnomaly(meanAnomaly, e);
@@ -44,7 +67,7 @@ export function calculateOrbitalPosition(  keplerianElements: keplerianElementsT
             + (Math.cos(argPeri_rad) * Math.sin(I_rad)) * yPrime;
 
     // Return as a THREE.Vector3
-    return new THREE.Vector3(x*100, y*100, z*100);
+    return new THREE.Vector3(x*DISTANCE_SCALE_FACTOR, y*DISTANCE_SCALE_FACTOR, z*DISTANCE_SCALE_FACTOR);
 }
 
 // Solve Kepler's Equation using Newton's Method to find the Eccentric Anomaly
@@ -58,6 +81,12 @@ function solveEccentricAnomaly(M: number, e: number, tolerance: number = 1e-6): 
     return E;
 }
 
+
+function calculateMeanMotion(a: number): number {
+    // Convert AU to meters for a
+    const a_meters = a * 1.496e11; // 1 AU = 1.496e11 meters
+    return Math.sqrt(GM / Math.pow(a_meters, 3)); // Mean motion in rad/s
+}
 
  
 

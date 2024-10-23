@@ -1,7 +1,7 @@
 import { ObjectsType } from '@/types/general';
 import { NEOTypes } from '@/types/NEO';
 import { keplerianElementsType } from '@/types/planet';
-import { calculateOrbitalPosition, NeoTokeplerianElementsObject } from '@/utils/keplerianElements';
+import { objectPosition,NeoTokeplerianElementsObject } from '@/utils/keplerianElements';
 import {PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { or } from 'three/webgpu';
@@ -79,7 +79,7 @@ export class NEO extends CelestialObject{
 
     private updateObjects(deltaTime: number, dataList: NEOTypes[], instancedMesh: THREE.InstancedMesh) {
         dataList.forEach((neoData, i) => {
-            const position = calculateOrbitalPosition(deltaTime, NeoTokeplerianElementsObject(neoData));
+            const position = objectPosition(deltaTime, NeoTokeplerianElementsObject(neoData));
 
             const matrix = new THREE.Matrix4();
             matrix.setPosition(position.x, position.y, position.z);
