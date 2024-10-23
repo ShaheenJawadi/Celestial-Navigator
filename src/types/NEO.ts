@@ -1,4 +1,9 @@
 export type NEOTypes = {
+  /* ******************* */
+  neoKind:"ASTEROID" | "PHA" | "COMET";
+
+  /* ******************* */
+
   spkid: string;           // SPK-ID: Unique identifier for the object
   full_name: string;       // Object full name
   orbit_id: string;        // Orbit ID

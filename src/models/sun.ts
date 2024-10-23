@@ -6,7 +6,9 @@ import * as THREE from 'three';
 export class Sun {
   sun: THREE.Mesh;
 
-  constructor(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void) {
+  private static instance: Sun;
+
+ private constructor(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void) {
 
     const textureLoader = new THREE.TextureLoader();
     const texture = textureLoader.load(IMG_FOLDER+"sun.jpg");
@@ -16,6 +18,7 @@ export class Sun {
     const geometry = new THREE.SphereGeometry(696340 * SUN_SCALE_FACTOR, 32, 32);
     const material = new THREE.MeshBasicMaterial({ map: texture });
     this.sun = new THREE.Mesh(geometry, material);
+    this.sun.frustumCulled  = true;
     scene.add(this.sun);
 
     const sunLight = new THREE.PointLight(0xffffff, 100000, 0);  
@@ -59,5 +62,12 @@ export class Sun {
 
   getMesh() {
     return this.sun;
+  }
+
+  public static getInstance(scene: THREE.Scene,camera: THREE.Camera,  openPopup: () => void): Sun {
+    if (!Sun.instance) {
+      Sun.instance = new Sun(scene,camera, openPopup);
+    }
+    return Sun.instance;
   }
 }

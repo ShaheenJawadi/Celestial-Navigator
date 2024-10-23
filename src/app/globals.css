@@ -1,17 +1,13 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
-  --primary-color:#0A3161;
-  --secondary-color:#B31942;
+  --primary-color:#0b3d91;
+  --secondary-color:#fc3d21;
+  --t-background:  #000000bf; 
+  --border:#ccc;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+ 
 html,
 body {
   max-width: 100vw;
@@ -31,13 +27,13 @@ button {
  
 
 body {
-  color: var(--foreground);
-  background: var(--background);
+  
+  background: #171717;
   font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   position: relative;
-  color: #0a0a0a;
+  color: #dcdcdc;
 }
 
 * {
@@ -58,7 +54,16 @@ a {
 }
 
 
-
+.logoHolder{
+  position:absolute;
+  top: 25px;
+  left: 25px;
+  opacity: 0.4;
+  cursor: pointer;
+}
+.logoHolder:hover{
+  opacity: 1;
+}
 
 .popupHolder{ 
   position: absolute;
@@ -76,15 +81,14 @@ a {
 
 
 .popupHolder .popup{ 
-  background: #000000bf; 
-  min-height: 700px;
-  max-height: 80%;
+  background: var(--t-background); 
+  max-height: 70%;
   width: 400px;
   border-radius: 10px;
   padding: 5px;
   display: flex;
   flex-direction: column;
-  border: 1px solid #ffffff;
+  border: 1px solid var(--border);
   color: #fff;
 }
 
@@ -102,12 +106,12 @@ a {
   
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid var(--border);
 }
-.popupHolder .popup .headSection  .close.icon{
+.popupHolder .popup .headSection  .close{
   cursor: pointer;
   font-size: 20px;
-  color: #0a0a0a;
+  color: #ff0000;
 }
 
 .popupHolder .popup .headSection  .identifier{
@@ -130,15 +134,20 @@ a {
 }
 
 
-.popupHolder .popup  .dataBox{
+ .dataBox{
   display: flex;
   flex-direction: column;
   gap: 15px;
   padding: 15px;
 
 }
+.dataBox.g{ 
+  gap: 1px; 
+  padding: 0;
 
-.popupHolder .popup .subDataSep{
+
+}
+.subDataSep{
 
   display: flex;
  align-items: center;
@@ -148,18 +157,18 @@ a {
 gap: 5px;
 }
 
-.popupHolder .popup   .subDataSep .tit{
+.subDataSep .tit{
 font-size: 15px;
 color: #8d8d8d;
 }
 
-.popupHolder .popup    .subDataSep .separator{
+.subDataSep .separator{
   flex: 1;
   background: #afafafaa;
   width: 100%;
   height: 2px;
 }
-.popupHolder .popup  .dataBox .single{
+  .dataBox .single{
 
 
   display: flex;
@@ -172,7 +181,7 @@ color: #8d8d8d;
 
 }
 
-.popupHolder .popup  .dataBox .single:not(:last-child)::after {
+.dataBox:not(.g) .single:not(:last-child)::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -199,4 +208,431 @@ color: #8d8d8d;
 
 .popupHolder .popup .funFacts ul li{
   margin-bottom: 10px;
+}
+
+
+/* ************* */
+
+
+.colorPicker .picker {
+  z-index: 99;
+  position: relative;
+}
+
+.colorPicker .swatch {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  border: 3px solid #fff;
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+}
+
+.colorPicker .popover {
+  position: absolute;
+  top: calc(100% + 2px);
+  left: 0;
+  border-radius: 9px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+
+/* ********************** */
+
+
+
+
+.toolsPanelHolder{ 
+  position: absolute;
+  top: 0;
+  right: 0;
+  height: 100%; 
+  display: flex;
+  flex-direction: column;
+  justify-content: center; 
+  z-index: 99; 
+
+}
+
+.toolsPanelHolder .toolsBtns {
+
+  flex-direction: column;
+  justify-content: center; 
+  display: flex;
+  gap: 4px;
+}
+
+
+.toolsPanelHolder .toolsBtns .single {
+  background: #0a3161a3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 40px;
+  width: 40px;
+  border-radius: 5px 0 0 5px;
+  position: relative;
+  cursor: pointer;
+}
+.toolsPanelHolder .toolsBtns .single .icon{
+  color: #ffffffe0;
+  
+}
+.toolsPanelHolder .toolsBtns .single  .popover{
+  position: absolute;
+  top: 8px;
+  right: 100%;
+  background: #454545a3;
+  border-radius: 5px;
+  display: none;
+  padding: 5px;
+  z-index: 99;
+  margin-right: 5px;
+  color: #fff;
+}
+
+.toolsPanelHolder .toolsBtns .single:hover  .popover{
+  display: block; 
+   
+}
+
+/* ********************* */
+.dialogHolder{ 
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-height: 800px;
+  min-width: 800px; 
+  display: flex;
+  flex-direction: column; 
+  padding: 10px;
+  background: var(--t-background); 
+  z-index: 99;
+  backdrop-filter: blur(5px); 
+  border: 0.5px solid var(--border);
+  border-radius: 10px; 
+
+}
+
+.dialogHolder .close{
+  color: #ff0000;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+.dialogHolder  .header{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border);
+  padding: 5px;
+  padding-bottom: 5px;
+  padding-bottom: 15px; 
+}
+/* *********** */
+.drawerHolder{ 
+  position: absolute;
+  top: 0;
+  right: 0;
+ 
+ 
+  height: 100%;
+ 
+  min-width: 400px; 
+  display: flex;
+  flex-direction: column; 
+  padding: 10px;
+  background: var(--t-background); 
+  z-index: 99;
+  backdrop-filter: blur(5px); 
+  border-left: 0.3px solid var(--border);
+  cursor: pointer;
+
+}
+
+
+.drawerHolder .close{
+  color: #ffffff;
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  cursor: pointer;
+}
+
+
+.drawerHolder  .header{
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  flex-direction: row;
+  border-bottom: 1px solid var(--border);
+  padding: 5px;
+  padding-bottom: 5px;
+  padding-bottom: 15px; 
+}
+
+
+.drawerHolder .dataContent , .dialogHolder .dataContent{
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 15px;
+
+}
+/* *************** */
+
+.checkboxContainer {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+  padding-left: 30px;
+}
+
+.checkboxInput {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #ccc;
+  border-radius: 4px;
+  transition: 0.3s;
+}
+
+.checkboxContainer:hover .checkmark {
+  background-color: #aaa;
+}
+
+.checkboxInput:checked ~ .checkmark {
+  background-color: var(--primary-color);
+}
+
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+.checkboxInput:checked ~ .checkmark:after {
+  display: block;
+}
+
+.checkboxContainer .checkmark:after {
+  left: 6px;
+  top: 2px;
+  width: 6px;
+  height: 12px;
+  border: solid #fff;
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+   .dataBox.colorsList .single h4{
+    min-width: 230px;
+   }
+
+   .dataBox.colorsList   .colorPicker .popover{
+    top: 0;
+    left: 30px;
+   }
+
+
+   /* ********************** */
+
+
+   .searchForm {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px ;
+    width: 100%;
+  }
+  
+  .searchInput { 
+    padding: 10px 15px;
+    font-size: 20px;
+    border: 2px solid var(--primary-color);
+    border-radius: 10px 0 0 10px;
+    transition: border-color 0.3s;
+    outline: none;
+  }
+  
+  .searchInput:focus {
+    border-color: var(--secondary-color);
+  }
+  
+  .searchButton {
+    background-color: var(--primary-color);
+    border: none;
+    color: white;
+    font-size: 20px; 
+    cursor: pointer;
+    border-radius: 0 10px 10px 0;
+    transition: background-color 0.3s;
+
+    padding: 0;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    height: 47px;
+    width: 45px;
+    justify-content: center;
+    flex-direction: row;
+  }
+  
+  .searchButton:hover {
+    background-color: var(--secondary-color);
+  }
+  
+  .searchButton:focus {
+    outline: none;
+  }
+  /* ******************* */
+
+.objectsCount{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+
+  border-radius: 0 10px 0 0; 
+  z-index: 99;
+  color: #fff;
+  display: flex;
+  gap: 5px;
+  opacity: 0.2;
+  font-size: 14px;
+  transition: opacity 0.4s ease;  
+  cursor: pointer;
+}
+.objectsCount:hover{
+  opacity: 0.7;
+}
+
+/* *************** */
+
+.scalingPanel{
+  background: var(--t-background);
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  z-index: 99;
+  padding: 5px;
+  border-radius: 5px 0 0 0 ;
+  opacity: 0.2;
+  transition: opacity 0.4s ease;  
+  font-size: 13px;
+}
+.scalingPanel:hover{
+  opacity: 0.7;
+}
+.scalingPanel .single {
+  
+  padding: 5px;
+  cursor: pointer; 
+}
+.scalingPanel .single .scalingLine{
+  position: relative;
+  height: 4px;
+  margin: 10px;
+  background-color: #fff;
+  margin-bottom: 5px;
+  width: 150px; 
+  
+}
+
+.scalingPanel .single .scalingLine:after ,.scalingPanel .single .scalingLine:before{
+  content: '';
+  position: absolute;
+  width: 10px; 
+  height: 2px; 
+  background-color: #fff; 
+}
+
+.scalingPanel .single .scalingLine:before {
+  left: -5px; 
+  top: 1px;
+  transform: rotate(90deg);
+}
+
+.scalingPanel .single .scalingLine:after {
+  right: -5px; 
+      top: 1px; 
+      transform: rotate(90deg); 
+}
+
+
+/* *******************************  */
+
+.timeTravelingHolder{
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 99; 
+  opacity: 0.2;
+  font-size: 14px;
+  transition: opacity 0.4s ease;  
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+.timeTravelingHolder:hover{
+  opacity: 0.7;
+}
+
+.timeTravelingHolder .timeTravelingBox {
+  background: var(--t-background);
+  padding: 15px;
+  border-radius: 10px 10px 0 0; 
+}
+.timeTravelingHolder .timeTravelingBox .targetDate  {
+
+display: flex;
+align-items: center;
+justify-content: center;
+justify-items: center;
+gap: 5px;
+
+}
+
+.timeTravelingHolder .timeTravelingBox .targetDate .t_date{
+
+  font-size: 30px;
+
+}
+
+.timeTravelingHolder .timeTravelingBox .targetDate .t_time{
+
+  font-size: 20px;
+
+}
+
+.timeTravelingHolder .timeTravelingBox   .btns{
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.timeTravelingHolder .timeTravelingBox   .btns .singleBtn{
+  cursor: pointer; 
+}
+
+.timeTravelingHolder .timeTravelingBox   .btns .singleBtn:hover{ 
+  color:var(--primary-color) ;
 }
