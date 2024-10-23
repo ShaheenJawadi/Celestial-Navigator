@@ -1,27 +1,27 @@
- 
+
 import { keplerianElementsType, planetType } from '@/types/planet';
-import { calculateOrbitalPosition } from '@/utils/keplerianElements';
+import { planetPosition } from '@/utils/keplerianElements';
 import { PlanetRingGeomtry } from '@/utils/planetRing';
 import { SATURN_RING_TEXTURE } from '@/utils/resourcePaths';
-import { DISTANCE_SCALE_FACTOR, ORBIT_SEGMENTS, PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
+import {  PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
-
-
-
-
-export class Planet {
+import { Orbit } from './orbit';
+import { CelestialObject } from './celestialObject';
+import { dateToJulian} from '@/utils/conversionHelpers';
+export class Planet  extends CelestialObject {
   mesh: THREE.Mesh;
   currentTime: number = 0;
   keplerianElements: keplerianElementsType;
-  planetData: planetType;
-  orbitLine: THREE.Line;
-  ring: THREE.Mesh | null = null; // Added for rings
+  planetData: planetType; 
+  ring: THREE.Mesh | null = null;  
 
   constructor(scene: THREE.Scene, data: planetType, camera: THREE.Camera, openPopup: () => void) {
+
+    super(scene, camera); 
+
     const { name, color, texture, radius, keplerianElements } = data;
     this.keplerianElements = keplerianElements;
-    this.planetData = data;
-
+    this.planetData = data; 
     const textureLoader = new THREE.TextureLoader();
     const texture3d = textureLoader.load(texture);
 
@@ -34,15 +34,16 @@ export class Planet {
     this.mesh = new THREE.Mesh(geometry, material);
     this.mesh.castShadow = true;
     this.mesh.receiveShadow = true;
+    this.mesh.frustumCulled = true;
 
     scene.add(this.mesh);
     if (name === 'SATURN') {
       this.createRings(radius);
     }
 
-    this.orbitLine = this.createOrbit();
-    scene.add(this.orbitLine);
-    this.setupInteractions(scene, camera, openPopup);
+    new Orbit(keplerianElements, color, 'PLANET').drawOrbit(scene)
+
+    this.setupInteractions(openPopup);
   }
   createRings(radius: number) {
 
@@ -72,30 +73,19 @@ export class Planet {
     ring.position.set(0, 0, 0.1 * PLANET_SIZE_SCALE_FACTOR);
 
 
-
+    ring.frustumCulled = true;
     this.mesh.add(ring);
   }
-
-
-
-
-
-
-
-
-  setupInteractions(scene: THREE.Scene, camera: THREE.Camera, openPopup: () => void) {
+  setupInteractions(openPopup: () => void) {
     window.addEventListener('click', (event: MouseEvent) => {
       const raycaster = new THREE.Raycaster();
       const mouse = new THREE.Vector2();
-
       mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
       mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-
-      raycaster.setFromCamera(mouse, camera);
-
+      raycaster.setFromCamera(mouse, this.camera);
       const intersects = raycaster.intersectObjects([this.mesh]);
-
       if (intersects.length > 0) {
+        this.onClickCamera(intersects[0].object);
         openPopup();
       }
     });
@@ -103,40 +93,28 @@ export class Planet {
   update(deltaTime: number) {
 
 
-    // Update the planet position
-    const position = calculateOrbitalPosition(deltaTime, this.keplerianElements);
+    const position = planetPosition( this.getPlanetParams(deltaTime));
     this.mesh.position.copy(position);
-  }
+
+}
+
+getPlanetParams(year: number ) {
+    const T = (year - 2451545.0) / 36525;
+
+    const { a, e, I, L, longPeri, longNode } = this.keplerianElements;
+    const { a: aRate, e: eRate, I: IRate, L: LRate, longPeri: longPeriRate, longNode: longNodeRate } = this.planetData.rates;
+
+    const newA = a + aRate * T;
+    const newE = e + eRate * T;
+    const newI = I + IRate * T;
+    const newL = L + LRate * T;
+    const newLongPeri = longPeri + longPeriRate * T;
+    const newLongNode = longNode + longNodeRate * T;
+
+    return { a: newA, e: newE, I: newI, L: newL, longPeri: newLongPeri, longNode: newLongNode };
+}
 
 
-
-  createOrbit() {
-    const { a, e, I, longPeri, longNode } = this.keplerianElements;
-    const orbitPoints = [];
-
-    for (let i = 0; i <= ORBIT_SEGMENTS; i++) {
-      const trueAnomaly = (i / ORBIT_SEGMENTS) * 2 * Math.PI;
-      const r = a * (1 - e * Math.cos(trueAnomaly));
-
-
-      const x = r * Math.cos(trueAnomaly + longPeri);
-      const y = r * Math.sin(trueAnomaly + longPeri);
-      const z = y * Math.sin(I);
-      const yInclined = y * Math.cos(I);
-
-
-      const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
-      const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
-
-      orbitPoints.push(new THREE.Vector3(xFinal * DISTANCE_SCALE_FACTOR, z * DISTANCE_SCALE_FACTOR, yFinal * DISTANCE_SCALE_FACTOR));
-    }
-
-    const orbitGeometry = new THREE.BufferGeometry().setFromPoints(orbitPoints);
-    const orbitMaterial = new THREE.LineBasicMaterial({ color: this.planetData.color, linewidth: 0.1 });
-    const orbitLine = new THREE.Line(orbitGeometry, orbitMaterial);
-
-    return orbitLine;
-  }
 }
 
 

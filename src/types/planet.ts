@@ -6,6 +6,7 @@ export type planetType = {
     radius: number;
 
     keplerianElements: keplerianElementsType
+    rates: keplerianElementsType
 }
 
 export type keplerianElementsType = {

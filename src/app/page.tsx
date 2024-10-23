@@ -1,20 +1,26 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import dynamic from "next/dynamic";
 import { NEOTypes } from "@/types/NEO";
-import { Provider } from "react-redux";
-import store from "@/store";
+
 import Papa from "papaparse";
-import { Popup } from "@/components/ui/popup";
-import 'react-perfect-scrollbar/dist/css/styles.css';
+import { AppDispatch } from "@/store";
+import { useDispatch } from "react-redux";
+import "react-perfect-scrollbar/dist/css/styles.css";
+import { noRender } from "@/utils/focus";
+import UIPanels from "@/components/ui";
+import { setObjectsCount } from "@/store/generalState";
+
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
 export default function Home() {
+  const dispatch = useDispatch<AppDispatch>();
   const [neas, setNeas] = useState<NEOTypes[]>([]);
   const [phas, setPhas] = useState<NEOTypes[]>([]);
   const [comets, setComets] = useState<NEOTypes[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
+  const [isMerging, setIsMerging] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchCSVData = async (filePath: string) => {
@@ -41,6 +47,14 @@ export default function Home() {
         setNeas(neaData);
         setPhas(phaData);
         setComets(cometData);
+        dispatch(
+          setObjectsCount({
+            asteroid: neaData.length,
+            pha: phaData.length,
+            comet: cometData.length,
+          })
+        );
+
         setLoading(false);
       } catch (error) {
         setError((error as Error).message);
@@ -51,7 +65,17 @@ export default function Home() {
     fetchAllData();
   }, []);
 
-  if (loading) {
+  const mergedNEO = useMemo(() => {
+    const merged = [
+      ...neas.map((item) => ({ ...item, neoKind: "ASTEROID" })),
+      ...phas.map((item) => ({ ...item, neoKind: "PHA" })),
+      ...comets.map((item) => ({ ...item, neoKind: "COMET" })),
+    ] as NEOTypes[];
+    setIsMerging(false);
+    return merged as NEOTypes[];
+  }, [neas, phas, comets]);
+
+  if (loading || isMerging) {
     return <p>Loading...</p>;
   }
 
@@ -61,10 +85,13 @@ export default function Home() {
 
   return (
     <div>
-      <Provider store={store}>
-        <Orrery NEAList={neas} CometList={comets} PHAList={phas} />
-        <Popup/>
-      </Provider>
+      {noRender ? (
+ 
+        <div style={{ height: "100vh", width: "100vw" }}>noRender</div>
+      ) : (
+        <Orrery mergedNeo={mergedNEO} />
+      )}
+      <UIPanels />
     </div>
   );
 }

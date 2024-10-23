@@ -1,18 +1,17 @@
 "use client";
 import Icon from "@mdi/react";
-import { mdiArrowLeftThick } from "@mdi/js";
+import { mdiCloseBox } from "@mdi/js";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/store";
 import { closePopup } from "@/store/generalState";
 import dynamic from "next/dynamic";
 import PerfectScrollbar from "react-perfect-scrollbar";
-import { NEOTypes } from "@/types/NEO";
 
-const Sun = dynamic(() => import("./dataClassification/sun"), { ssr: false });
-const Planet = dynamic(() => import("./dataClassification/planet"), {
+const Sun = dynamic(() => import("../dataClassification/sun"), { ssr: false });
+const Planet = dynamic(() => import("../dataClassification/planet"), {
   ssr: false,
 });
-const NEO = dynamic(() => import("./dataClassification/neo"), { ssr: false });
+const NEO = dynamic(() => import("../dataClassification/neo"), { ssr: false });
 
 export const Popup = () => {
   const state = useSelector((state: RootState) => state.generalState);
@@ -26,13 +25,14 @@ export const Popup = () => {
           <div className="popupHolder">
             <div className="popup">
               <div className="headSection">
+             
+                <h2 className="identifier">{state.identifier}</h2>
                 <div
-                  className="close icon"
+                  className="close"
                   onClick={() => dispatch(closePopup())}
                 >
-                  <Icon path={mdiArrowLeftThick} size={1} />
+                  <Icon path={mdiCloseBox} size={1} />
                 </div>
-                <h2 className="identifier">{state.identifier}</h2>
               </div>
               <PerfectScrollbar>
                 {state.target === "SUN" ? <Sun /> : null}

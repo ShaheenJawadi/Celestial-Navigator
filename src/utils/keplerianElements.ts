@@ -1,90 +1,116 @@
  
 import { keplerianElementsType } from '@/types/planet';
 import { DISTANCE_SCALE_FACTOR  } from '@/utils/scaling';
-import * as THREE from 'three';
+import * as THREE from 'three'; 
+import { NEOTypes } from '@/types/NEO';
+import { degreesToRadians } from './conversionHelpers';
 
-const PERIHELION_THRESHOLD = 0.3;  // AU
+const GM = 1.32712440018e20; // Gravitational parameter for the Sun in m^3/s^2
+
+export function planetPosition(  keplerianElements: keplerianElementsType): THREE.Vector3 {
+    const {a,e,longPeri, L } = keplerianElements;
+       // Calculate mean anomaly
+       const meanAnomaly = degreesToRadians(L - longPeri);
+
+
+       const eccentricAnomaly = solveEccentricAnomaly(meanAnomaly, e);
+
+       // Calculate the true anomaly
+       const trueAnomaly = 2 * Math.atan2(
+           Math.sqrt(1 + e) * Math.sin(eccentricAnomaly / 2),
+           Math.sqrt(1 - e) * Math.cos(eccentricAnomaly / 2)
+       );
+   
+       // Distance from the focus (sun) to the planet at the given time
+       const r = a * (1 - e * Math.cos(eccentricAnomaly));
+
+    return calculateOrbitalPosition(keplerianElements,r, trueAnomaly);
+}
+
+
+export function objectPosition( julianDate:number, keplerianElements: keplerianElementsType): THREE.Vector3 {
+    const { a, e,longPeri,  L } = keplerianElements;
+
+    // Calculate time since epoch (J2000)
+    const T = (julianDate - 2451545.0) * 86400; // Time difference in seconds
+
+    // Calculate mean anomaly at current time
+    const meanMotion = calculateMeanMotion(a); // Mean motion in rad/s
+    const meanAnomaly = (degreesToRadians(L - longPeri) + meanMotion * T) % (2 * Math.PI); // M = M0 + n * t
+    const eccentricAnomaly = solveEccentricAnomaly(meanAnomaly, e);
+
+    // Calculate the true anomaly
+    const trueAnomaly = 2 * Math.atan2(
+        Math.sqrt(1 + e) * Math.sin(eccentricAnomaly / 2),
+        Math.sqrt(1 - e) * Math.cos(eccentricAnomaly / 2)
+    );
+
+    // Distance from the focus (sun) to the planet at the given time
+    const r = a * (1 - e * Math.cos(eccentricAnomaly));
+
+    return calculateOrbitalPosition(keplerianElements,r , trueAnomaly);
+
+}
+export function calculateOrbitalPosition(  keplerianElements: keplerianElementsType , r:number ,trueAnomaly:number ): THREE.Vector3 {
+    const {  I, longPeri, longNode } = keplerianElements;
+
  
-export function calculateOrbitalPosition(julianDate: number, keplerianElements: keplerianElementsType): THREE.Vector3 {
-    const { a, e, I, longPeri, longNode, L } = keplerianElements;
 
-    const T0 = 2451545.0; // Julian Date for January 1, 2000 (UTC)
-    const daysSinceEpoch = julianDate - T0; // Days since epoch
+    // Solve for eccentric anomaly using Newton's method
 
-    const n = Math.sqrt(1 / Math.pow(a, 3));  // Mean motion (in rad/day)
-    const M = (n * daysSinceEpoch) + L;  // Mean anomaly
 
-    let E = M;  // Eccentric anomaly
-    const tolerance = 1e-6;
+    // Position in orbital plane (x', y')
+    const xPrime = r * Math.cos(trueAnomaly);
+    const yPrime = r * Math.sin(trueAnomaly);
+
+    // Inclination, longitude of ascending node, and argument of periapsis to rotate to 3D
+    const I_rad = degreesToRadians(I);                // Inclination
+    const longNode_rad = degreesToRadians(longNode);  // Longitude of ascending node
+    const argPeri_rad = degreesToRadians(longPeri - longNode); // Argument of periapsis
+    
+    // Calculate the 3D position using rotation matrices
+    const x = (Math.cos(longNode_rad) * Math.cos(argPeri_rad) - Math.sin(longNode_rad) * Math.sin(argPeri_rad) * Math.cos(I_rad)) * xPrime
+            + (-Math.cos(longNode_rad) * Math.sin(argPeri_rad) - Math.sin(longNode_rad) * Math.cos(argPeri_rad) * Math.cos(I_rad)) * yPrime;
+    
+    const y = (Math.sin(longNode_rad) * Math.cos(argPeri_rad) + Math.cos(longNode_rad) * Math.sin(argPeri_rad) * Math.cos(I_rad)) * xPrime
+            + (-Math.sin(longNode_rad) * Math.sin(argPeri_rad) + Math.cos(longNode_rad) * Math.cos(argPeri_rad) * Math.cos(I_rad)) * yPrime;
+
+    const z = (Math.sin(argPeri_rad) * Math.sin(I_rad)) * xPrime
+            + (Math.cos(argPeri_rad) * Math.sin(I_rad)) * yPrime;
+
+    // Return as a THREE.Vector3
+    return new THREE.Vector3(x*DISTANCE_SCALE_FACTOR, y*DISTANCE_SCALE_FACTOR, z*DISTANCE_SCALE_FACTOR);
+}
+
+// Solve Kepler's Equation using Newton's Method to find the Eccentric Anomaly
+function solveEccentricAnomaly(M: number, e: number, tolerance: number = 1e-6): number {
+    let E = M; // Start with mean anomaly as the first guess
     let delta = 1;
-
-    // Solve Kepler's equation iteratively
     while (Math.abs(delta) > tolerance) {
         delta = E - e * Math.sin(E) - M;
-        E -= delta / (1 - e * Math.cos(E));
+        E = E - delta / (1 - e * Math.cos(E));
     }
-
-    const trueAnomaly = 2 * Math.atan2(
-        Math.sqrt(1 + e) * Math.sin(E / 2),
-        Math.sqrt(1 - e) * Math.cos(E / 2)
-    );
-
-    const r = a * (1 - e * Math.cos(E));  // Distance from the Sun
-    const perihelion = a * (1 - e);  // Calculate perihelion distance
-
-    const x = r * Math.cos(trueAnomaly + longPeri);
-    const y = r * Math.sin(trueAnomaly + longPeri);
-
-    const z = y * Math.sin(I);  // Inclination (Z-axis offset)
-    const yInclined = y * Math.cos(I);
-
-    const xFinal = x * Math.cos(longNode) - yInclined * Math.sin(longNode);
-    const yFinal = x * Math.sin(longNode) + yInclined * Math.cos(longNode);
- 
-    // Adjust position if perihelion is below the threshold
-    if (perihelion < PERIHELION_THRESHOLD) {
-        // If below threshold, keep it at the threshold distance from the Sun
-        const adjustedR = PERIHELION_THRESHOLD; 
-        return new THREE.Vector3(
-            xFinal * (adjustedR / perihelion) * DISTANCE_SCALE_FACTOR,
-            z * DISTANCE_SCALE_FACTOR,
-            yFinal * (adjustedR / perihelion) * DISTANCE_SCALE_FACTOR
-        );
-    }
-
-    return new THREE.Vector3(
-        xFinal * DISTANCE_SCALE_FACTOR,
-        z * DISTANCE_SCALE_FACTOR,
-        yFinal * DISTANCE_SCALE_FACTOR
-    );
-}
-
-  
-
- 
-export function degreesToRadians(degrees: number): number {
-    return degrees * (Math.PI / 180);
+    return E;
 }
 
 
-export function julianDate(date: Date): number {
-    const year = date.getUTCFullYear();
-    const month = date.getUTCMonth() + 1; // getUTCMonth() is 0-indexed
-    const day = date.getUTCDate();
-    const hour = date.getUTCHours();
-    const minute = date.getUTCMinutes();
-    const second = date.getUTCSeconds();
+function calculateMeanMotion(a: number): number {
+    // Convert AU to meters for a
+    const a_meters = a * 1.496e11; // 1 AU = 1.496e11 meters
+    return Math.sqrt(GM / Math.pow(a_meters, 3)); // Mean motion in rad/s
+}
 
-    // Calculate the Julian Date
-    const A = Math.floor((14 - month) / 12);
-    const y = year + 4800 - A;
-    const m = month + 12 * A - 3;
+ 
 
-    const julianDay = day + Math.floor((153 * m + 2) / 5) +
-        365 * y + Math.floor(y / 4) - Math.floor(y / 100) + Math.floor(y / 400) - 32045;
 
-    // Add fractional day
-    const fractionalDay = (hour / 24) + (minute / 1440) + (second / 86400);
-    
-    return julianDay + fractionalDay;
+export function NeoTokeplerianElementsObject(neo: NEOTypes): keplerianElementsType {
+
+    return {
+        a: parseFloat(neo.a),
+        e: parseFloat(neo.e),
+        L: parseFloat(neo.ma) + parseFloat(neo.w) + parseFloat(neo.om),
+        I:parseFloat(neo.i),
+        longNode: parseFloat(neo.om),
+        longPeri: parseFloat(neo.w)
+    };
 }
