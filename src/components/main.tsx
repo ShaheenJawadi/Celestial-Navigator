@@ -1,7 +1,7 @@
 import { useEffect, useRef, useCallback } from "react";
 import { OrbitControls } from "three/addons/controls/OrbitControls.js";
 import { SceneSetup } from "../models/scene";
-import { Planet } from "../models/planet";
+import { PlanetManager } from "../models/planet";
 import { Sun } from "../models/sun";
 import { planetsList } from "@/data/planets";
 import { NEO } from "../models/neo";
@@ -28,7 +28,7 @@ const Orrery = ({ mergedNeo }: Params) => {
   const controlsRef = useRef<OrbitControls | null>(null);
   const sunRef = useRef<Sun | null>(null);
   const neoManagerRef = useRef<NEO | null>(null);
-  const planetsRef = useRef<Planet[]>([]);
+  const planetsRef = useRef<PlanetManager|null>(null);
   const orbitsRef = useRef<Orbit[]>([]); 
   const handleResize = sceneSetup.current.handleResize;
   let lastFrameTime = 0;
@@ -42,11 +42,11 @@ const Orrery = ({ mergedNeo }: Params) => {
     sunRef.current = new Sun(scene, camera, () =>
       dispatch(openPopup({ target: "SUN", identifier: "SUN" }))
     );
-    planetsRef.current = planetsList?.map(
-      (planetData) =>
-        new Planet(scene, planetData, camera, () =>
-          dispatch(openPopup({ target: "PLANET", identifier: planetData?.name }))
-        )
+    planetsRef.current = new PlanetManager(
+      scene,
+      planetsList,   
+      camera,
+      (name: string) => dispatch(openPopup({ target: "PLANET", identifier: name }))
     );
  
     neoManagerRef.current = new NEO(
@@ -88,16 +88,16 @@ const Orrery = ({ mergedNeo }: Params) => {
     window.addEventListener("resize", sceneSetup.current.handleResize);
   }, [dispatch,mergedNeo]);
 
- 
+
   const animate = useCallback(() => {
-    const now = performance.now();
+     const now = performance.now();
     if (now - lastFrameTime > 1000 / 30) { // Cap to 30 FPS
       lastFrameTime = now; 
       const { scene, camera, renderer } = sceneSetup.current;
   
     
-      const time = dateToJulian(new Date());
-      planetsRef.current.forEach((planet) => planet.update(time));
+      const time = dateToJulian(new Date()); 
+      planetsRef.current?.update(time); 
       neoManagerRef.current?.update(time);
   
       controlsRef.current?.update();
