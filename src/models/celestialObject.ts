@@ -1,9 +1,6 @@
 import { gsap } from 'gsap';
 import * as THREE from 'three';
-
-import { keplerianElementsType, planetType } from '@/types/planet';
-import { calculateOrbitalPosition } from '@/utils/keplerianElements';
-import { Orbit } from './orbit';
+ 
 
 export class CelestialObject { 
   protected camera: THREE.Camera;

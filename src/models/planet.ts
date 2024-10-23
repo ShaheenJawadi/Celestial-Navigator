@@ -7,7 +7,7 @@ import {  PLANET_SIZE_SCALE_FACTOR } from '@/utils/scaling';
 import * as THREE from 'three';
 import { Orbit } from './orbit';
 import { CelestialObject } from './celestialObject';
-import { dateToJulian, degreesToRadians } from '@/utils/conversionHelpers';
+import { dateToJulian} from '@/utils/conversionHelpers';
 export class Planet  extends CelestialObject {
   mesh: THREE.Mesh;
   currentTime: number = 0;
