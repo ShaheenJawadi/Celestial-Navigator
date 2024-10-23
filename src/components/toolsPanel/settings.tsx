@@ -11,25 +11,25 @@ const Settings = () => {
           <div className="separator"></div>
         </div>
         <div className="single">
-          <h4>NEO default orbits's color:</h4>
+          <h4>{"NEO default orbits's color:"}</h4>
           <span className="colorPicker">
             <PopoverPicker color={"#fff"} onChange={(color: string) => null} />
           </span>
         </div>
         <div className="single">
-          <h4>Comet's color:</h4>
+          <h4>{"Comet's color:"}</h4>
           <span className="colorPicker">
             <PopoverPicker color={"#fff"} onChange={(color: string) => null} />
           </span>
         </div>
         <div className="single">
-          <h4>Asteroid's color:</h4>
+          <h4>{"Asteroid's color:"}</h4>
           <span className="colorPicker">
             <PopoverPicker color={"#fff"} onChange={(color: string) => null} />
           </span>
         </div>
         <div className="single">
-          <h4>PHA's color:</h4>
+          <h4>{"PHA's color:"}</h4>
           <span className="colorPicker">
             <PopoverPicker color={"#fff"} onChange={(color: string) => null} />
           </span>
@@ -48,7 +48,7 @@ const Settings = () => {
         </label>
 
         <label className={"checkboxContainer"}>
-          Display planet's orbit
+          {"Display planet's orbit"}
           <input type="checkbox" className={"checkboxInput"} />
           <span className={"checkmark"}></span>
         </label>
