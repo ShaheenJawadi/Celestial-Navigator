@@ -6,6 +6,7 @@ import { ObjectsType, OrbitType } from '@/types/general';
 import { keplerianElementsType } from '@/types/planet';
 import { dateToJulian } from '@/utils/conversionHelpers';
 
+
 interface PopupState {
   isPopupOpen: boolean;
   target: "SUN" | "PLANET" | "NEO" | null;
@@ -50,7 +51,7 @@ const initialState: PopupState = {
   currentDate:dateToJulian(new Date()),
   targetDate:dateToJulian(new Date()),
   isPaused: false,  
-  isLive: false,  
+  isLive: true,  
   timeDirection: 1,  
   timeSpeed: 0.1, 
 
@@ -102,6 +103,11 @@ const generalSlice = createSlice({
 
 
 
+
+
+
+
+
     setLandMarkUnit: (state, action: PayloadAction<number>) => {
 
 
@@ -116,24 +122,30 @@ const generalSlice = createSlice({
       state.worldUnitsFor150px = worldUnitsFor150px;
     },
 
-    togglePause: (state) => {
+    togglePause: (state) => { 
+
       state.isPaused = !state.isPaused; 
     },
     setTimeDirection: (state, action: PayloadAction<number>) => {
+ 
+    
       state.timeDirection = action.payload;  
       state.timeSpeed=state.timeSpeed;
-    },
-    setTimeSpeed: (state, action: PayloadAction<number>) => {
-      state.timeSpeed = action.payload; 
-    },
 
+    state.isLive = false;
+    },
+ 
 
     setCurrentTime: (state, action: PayloadAction<number>) => {
 
-      state.currentDate = action.payload;
-      console.log("currentDate",state.currentDate);
+      state.currentDate = action.payload; 
 
-    }
+    },
+
+    setLive: (state) => {  
+      state.isLive = true;
+ 
+    },
 
   },
 });
@@ -160,7 +172,7 @@ export const { openPopup,
   manageTools,
   setObjectsCount,
    togglePause,
-  setTimeDirection,
-  setTimeSpeed,
-  setCurrentTime } = generalSlice.actions;
+  setTimeDirection, 
+  setCurrentTime,
+  setLive } = generalSlice.actions;
 export default generalSlice.reducer;

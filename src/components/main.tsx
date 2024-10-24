@@ -135,7 +135,7 @@ const Orrery = ({ mergedNeo }: Params) => {
     renderer.render(scene, camera);
     /* 
   requestAnimationFrame(animate);  // Continue the animation loop */
-  }, [isPaused, timeDirection, timeSpeed]);
+  }, [isPaused, timeDirection, timeSpeed , isLive]);
 
   useEffect(() => {
     const intervalId = setInterval(() => {
