@@ -12,3 +12,8 @@ export type OrbitType = {
      objectRef: any;
 
 }
+
+export type TimeTravelingStepsType={
+     step: number;
+     label: string;
+}

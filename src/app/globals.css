@@ -614,15 +614,11 @@ font-weight: 700;
 
 .timeTravelingHolder .timeTravelingBox .targetDate .t_date{
 
-  font-size: 30px;
+  font-size: 25px;
 
 }
 
-.timeTravelingHolder .timeTravelingBox .targetDate .t_time{
-
-  font-size: 20px;
-
-}
+ 
 
 .timeTravelingHolder .timeTravelingBox   .btns{
   display: flex;

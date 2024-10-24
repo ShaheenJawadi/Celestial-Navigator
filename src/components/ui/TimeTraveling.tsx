@@ -26,7 +26,7 @@ const TimeTraveling = () => {
           
           <div className="live" onClick={()=>dispatch(setLive())}> <span></span> {isLive && "Live"}</div>
           {
-            !isLive &&<div className="steps">+ 1 year /sec</div>
+            !isLive &&<div className="steps">{timeDirection>0 ?"+":"-"} {timeSpeed.label}/sec</div>
           }
           
   

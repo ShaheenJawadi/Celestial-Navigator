@@ -131,29 +131,24 @@ const generalSlice = createSlice({
       state.isPaused = !state.isPaused;
     },
     setTimeDirection: (state, action: PayloadAction<number>) => {
-      if (action.payload == state.timeDirection) {
-        let newStepIndex = 0;
-        if (action.payload > 0) {
+      let newStepIndex = 0;
+      if (!state.isLive) {
+        if (action.payload == state.timeDirection) { 
           newStepIndex = state.timeTravelingStepsIndex + 1;
+   
+        }
 
-        }
         else {
-          newStepIndex = state.timeTravelingStepsIndex - 1;
-        }
-        if (newStepIndex < 0 || newStepIndex > timeTravelingSteps.length) {
           state.timeTravelingStepsIndex = 0;
         }
-        else {
-          state.timeTravelingStepsIndex = newStepIndex;
-        }
       }
 
-      else {
-        state.timeTravelingStepsIndex = 0;
+      if (newStepIndex < 0 || newStepIndex >= timeTravelingSteps.length) {
+        newStepIndex = 0;
       }
-
+  
       state.timeDirection = action.payload;
-      
+      state.timeTravelingStepsIndex = newStepIndex;
       state.timeSpeed = timeTravelingSteps[state.timeTravelingStepsIndex];
 
       state.isLive = false;
@@ -168,6 +163,7 @@ const generalSlice = createSlice({
 
     setLive: (state) => {
       state.isLive = true;
+      state.isPaused = false;
 
     },
 
