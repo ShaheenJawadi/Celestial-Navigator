@@ -4,6 +4,7 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch } from '.';
 import { ObjectsType, OrbitType } from '@/types/general';
 import { keplerianElementsType } from '@/types/planet';
+import { dateToJulian } from '@/utils/conversionHelpers';
 
 interface PopupState {
   isPopupOpen: boolean;
@@ -15,9 +16,18 @@ interface PopupState {
   orbits: OrbitType[];
   dialog: { isOpen: boolean; content: DialogContent | null } | null;
   drawer: { isOpen: boolean; content: DrawerContent | null } | null;
-  objectsCount: { asteroid: number, pha: number, comet: number }; 
+  objectsCount: { asteroid: number, pha: number, comet: number };
   worldUnitsFor150px: number;
 
+
+
+
+
+  isPaused: boolean;  
+  timeDirection: number;  
+  timeSpeed: number;  
+  targetDate: number;
+  isLive: boolean;  
 }
 type DrawerContent = "WatchList" | "Pho" | "SearchObject" | null;
 type DialogContent = "Informations" | "Settings" | null;
@@ -32,8 +42,16 @@ const initialState: PopupState = {
   orbits: [],
   dialog: null,
   drawer: null,
-  objectsCount: { asteroid: 0, pha: 0, comet: 0 }, 
+  objectsCount: { asteroid: 0, pha: 0, comet: 0 },
   worldUnitsFor150px: 0,
+
+
+
+  targetDate:dateToJulian(new Date()),
+  isPaused: true,  
+  isLive: true,  
+  timeDirection: 1,  
+  timeSpeed: 0.1, 
 };
 
 const generalSlice = createSlice({
@@ -73,28 +91,40 @@ const generalSlice = createSlice({
       state.neoOrbitColor = action.payload;
     },
     addOrbit: (state, action) => {
- 
-      state.orbits=[{ ...action.payload, orbitColor: state.neoOrbitColor }];
+
+      state.orbits = [{ ...action.payload, orbitColor: state.neoOrbitColor }];
     },
     setObjectsCount: (state, action: PayloadAction<{ asteroid: number, pha: number, comet: number }>) => {
       state.objectsCount = action.payload;
     },
 
- 
+
 
     setLandMarkUnit: (state, action: PayloadAction<number>) => {
 
- 
-      const fov = 90* (Math.PI / 180) ;   
 
-      const distance= action.payload; 
+      const fov = 90 * (Math.PI / 180);
+
+      const distance = action.payload;
 
       const aspectRatio = window.innerWidth / window.innerHeight;
-      const worldUnits = 2 * distance * Math.tan(fov / 2) *aspectRatio;   
-      const worldUnitsFor150px = (150 * worldUnits) / window.innerWidth;  
-  
-    state.worldUnitsFor150px=worldUnitsFor150px;
+      const worldUnits = 2 * distance * Math.tan(fov / 2) * aspectRatio;
+      const worldUnitsFor150px = (150 * worldUnits) / window.innerWidth;
+
+      state.worldUnitsFor150px = worldUnitsFor150px;
     },
+
+    togglePause: (state) => {
+      state.isPaused = true; 
+    },
+    setTimeDirection: (state, action: PayloadAction<number>) => {
+      state.timeDirection = action.payload;  
+      state.timeSpeed=state.timeSpeed;
+    },
+    setTimeSpeed: (state, action: PayloadAction<number>) => {
+      state.timeSpeed = action.payload; 
+    },
+
   },
 });
 
@@ -118,5 +148,8 @@ export const { openPopup,
   changeNeoOrbitColor,
   addOrbit,
   manageTools,
-  setObjectsCount } = generalSlice.actions;
+  setObjectsCount,
+   togglePause,
+  setTimeDirection,
+  setTimeSpeed } = generalSlice.actions;
 export default generalSlice.reducer;
