@@ -7,12 +7,12 @@ import DisplayScaling from "./displayScaling";
 
 import Image from "next/image";
 import TimeTraveling from "./TimeTraveling";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const UIPanels = () => {
   return (
     <>
-
-  
       <div className="logoHolder">
         <Image src={"./logo.svg"} width={75} height={60} alt={"logo "} />{" "}
       </div>
@@ -24,6 +24,7 @@ const UIPanels = () => {
       <Drawer />
 
       <TimeTraveling />
+      <ToastContainer position="top-right" />
     </>
   );
 };

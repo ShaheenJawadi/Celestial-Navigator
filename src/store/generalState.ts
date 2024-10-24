@@ -5,7 +5,9 @@ import { AppDispatch } from '.';
 import { ObjectsType, OrbitType, TimeTravelingStepsType } from '@/types/general';
 import { keplerianElementsType } from '@/types/planet';
 import { dateToJulian } from '@/utils/conversionHelpers';
-import { timeTravelingSteps } from '@/utils/scaling';
+import { maxDate, minDate, timeTravelingSteps } from '@/utils/scaling';
+import { toast } from 'react-toastify';
+
 
 
 interface PopupState {
@@ -113,55 +115,68 @@ const generalSlice = createSlice({
 
 
     setLandMarkUnit: (state, action: PayloadAction<number>) => {
-
-
       const fov = 90 * (Math.PI / 180);
-
       const distance = action.payload;
-
       const aspectRatio = window.innerWidth / window.innerHeight;
       const worldUnits = 2 * distance * Math.tan(fov / 2) * aspectRatio;
       const worldUnitsFor150px = (150 * worldUnits) / window.innerWidth;
-
       state.worldUnitsFor150px = worldUnitsFor150px;
     },
 
     togglePause: (state) => {
-
       state.isPaused = !state.isPaused;
     },
     setTimeDirection: (state, action: PayloadAction<number>) => {
       let newStepIndex = 0;
       if (!state.isLive) {
-        if (action.payload == state.timeDirection) { 
+        if (action.payload == state.timeDirection) {
           newStepIndex = state.timeTravelingStepsIndex + 1;
-   
         }
-
         else {
           state.timeTravelingStepsIndex = 0;
         }
       }
-
       if (newStepIndex < 0 || newStepIndex >= timeTravelingSteps.length) {
         newStepIndex = 0;
       }
-  
       state.timeDirection = action.payload;
       state.timeTravelingStepsIndex = newStepIndex;
       state.timeSpeed = timeTravelingSteps[state.timeTravelingStepsIndex];
-
       state.isLive = false;
     },
 
 
     setCurrentTime: (state, action: PayloadAction<number>) => {
 
-      state.currentDate = action.payload;
+      if (action.payload < minDate || action.payload > maxDate) {
+
+        if (action.payload < minDate) {
+          state.currentDate = minDate;
+        }
+        else {
+          state.currentDate = maxDate;
+        }
+        toast.warn('🔭 Date must be between 1800 AD and 2050 AD for valid Keplerian elements.', {
+          position: "top-left",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "colored",
+        });
+        state.isPaused = true;
+      }
+      else {
+        state.currentDate = action.payload;
+      }
+
 
     },
 
     setLive: (state) => {
+
       state.isLive = true;
       state.isPaused = false;
 

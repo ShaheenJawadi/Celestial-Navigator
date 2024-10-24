@@ -18,6 +18,7 @@ import { dateToJulian } from "@/utils/conversionHelpers";
 import { ObjectsType } from "@/types/general";
 import { keplerianElementsType } from "@/types/planet";
 import { Orbit } from "@/models/orbit"; 
+import { minDate, maxDate } from "@/utils/scaling";
 
 type Params = {
   mergedNeo: NEOTypes[];
@@ -36,7 +37,7 @@ const Orrery = ({ mergedNeo }: Params) => {
   const orbitsRef = useRef<Orbit[]>([]);
   const handleResize = sceneSetup.current.handleResize; 
 
-  const { isPaused, timeDirection, timeSpeed , isLive } = useSelector(
+  const { isPaused, timeDirection, timeSpeed , isLive , currentDate } = useSelector(
     (state: RootState) => state.generalState
   );
 
@@ -119,7 +120,7 @@ const Orrery = ({ mergedNeo }: Params) => {
       else { 
 
         const YEAR_TO_JULIAN = 365.25; 
-        const timeIncrement = timeDirection * timeSpeed * deltaTime;  
+        const timeIncrement = timeDirection * timeSpeed.step * deltaTime;  
         const julianIncrement = timeIncrement * YEAR_TO_JULIAN;  
         currentJulianDateRef.current += julianIncrement; 
       
@@ -127,6 +128,17 @@ const Orrery = ({ mergedNeo }: Params) => {
       dispatch(setCurrentTime(currentJulianDateRef.current))
     
     } 
+    else {
+      if (currentJulianDateRef.current < minDate || currentJulianDateRef.current > maxDate)
+         { if(currentJulianDateRef.current < minDate)
+           { currentJulianDateRef.current = minDate; }
+           else
+           { currentJulianDateRef.current = maxDate; }
+
+
+          }
+      
+    }
     planetsRef.current?.update(currentJulianDateRef.current);
     neoManagerRef.current?.update(currentJulianDateRef.current);
  

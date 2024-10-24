@@ -36,3 +36,5 @@ export const timeTravelingSteps: TimeTravelingStepsType[] = [{
     label: "3 years",
 }];
 
+export const maxDate = 2469807.5000000;
+export const minDate = 2378496.5000000;
