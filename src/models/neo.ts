@@ -72,11 +72,11 @@ export class NEO extends CelestialObject{
 
     public update(deltaTime: number) {
  
-        if (!this.initialized) {
+       /*  if (!this.initialized) { */
             this.updateObjects(deltaTime, this.mergedNeo, this.neoInstancedMesh); 
       
-            this.initialized = true;  // Only update once
-          }
+         /*    this.initialized = true;  // Only update once
+          } */
     }
 
     private updateObjects(deltaTime: number, dataList: NEOTypes[], instancedMesh: THREE.InstancedMesh) {
