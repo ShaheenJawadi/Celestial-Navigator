@@ -27,6 +27,7 @@ interface PopupState {
   timeDirection: number;  
   timeSpeed: number;  
   targetDate: number;
+  currentDate: number;
   isLive: boolean;  
 }
 type DrawerContent = "WatchList" | "Pho" | "SearchObject" | null;
@@ -46,12 +47,13 @@ const initialState: PopupState = {
   worldUnitsFor150px: 0,
 
 
-
+  currentDate:dateToJulian(new Date()),
   targetDate:dateToJulian(new Date()),
-  isPaused: true,  
-  isLive: true,  
+  isPaused: false,  
+  isLive: false,  
   timeDirection: 1,  
   timeSpeed: 0.1, 
+
 };
 
 const generalSlice = createSlice({
@@ -115,7 +117,7 @@ const generalSlice = createSlice({
     },
 
     togglePause: (state) => {
-      state.isPaused = true; 
+      state.isPaused = !state.isPaused; 
     },
     setTimeDirection: (state, action: PayloadAction<number>) => {
       state.timeDirection = action.payload;  
@@ -124,6 +126,14 @@ const generalSlice = createSlice({
     setTimeSpeed: (state, action: PayloadAction<number>) => {
       state.timeSpeed = action.payload; 
     },
+
+
+    setCurrentTime: (state, action: PayloadAction<number>) => {
+
+      state.currentDate = action.payload;
+      console.log("currentDate",state.currentDate);
+
+    }
 
   },
 });
@@ -151,5 +161,6 @@ export const { openPopup,
   setObjectsCount,
    togglePause,
   setTimeDirection,
-  setTimeSpeed } = generalSlice.actions;
+  setTimeSpeed,
+  setCurrentTime } = generalSlice.actions;
 export default generalSlice.reducer;
