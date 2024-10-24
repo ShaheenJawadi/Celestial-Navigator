@@ -2,9 +2,10 @@
 import { NEOTypes } from '@/types/NEO';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { AppDispatch } from '.';
-import { ObjectsType, OrbitType } from '@/types/general';
+import { ObjectsType, OrbitType, TimeTravelingStepsType } from '@/types/general';
 import { keplerianElementsType } from '@/types/planet';
 import { dateToJulian } from '@/utils/conversionHelpers';
+import { timeTravelingSteps } from '@/utils/scaling';
 
 
 interface PopupState {
@@ -24,12 +25,13 @@ interface PopupState {
 
 
 
-  isPaused: boolean;  
-  timeDirection: number;  
-  timeSpeed: number;  
+  isPaused: boolean;
+  timeDirection: number;
+  timeSpeed: TimeTravelingStepsType;
   targetDate: number;
   currentDate: number;
-  isLive: boolean;  
+  isLive: boolean;
+  timeTravelingStepsIndex: number;
 }
 type DrawerContent = "WatchList" | "Pho" | "SearchObject" | null;
 type DialogContent = "Informations" | "Settings" | null;
@@ -48,12 +50,14 @@ const initialState: PopupState = {
   worldUnitsFor150px: 0,
 
 
-  currentDate:dateToJulian(new Date()),
-  targetDate:dateToJulian(new Date()),
-  isPaused: false,  
-  isLive: true,  
-  timeDirection: 1,  
-  timeSpeed: 0.1, 
+  currentDate: dateToJulian(new Date()),
+  targetDate: dateToJulian(new Date()),
+  isPaused: false,
+  isLive: true,
+  timeDirection: 1,
+  timeTravelingStepsIndex: 0,
+  timeSpeed: timeTravelingSteps[0],
+
 
 };
 
@@ -122,29 +126,49 @@ const generalSlice = createSlice({
       state.worldUnitsFor150px = worldUnitsFor150px;
     },
 
-    togglePause: (state) => { 
+    togglePause: (state) => {
 
-      state.isPaused = !state.isPaused; 
+      state.isPaused = !state.isPaused;
     },
     setTimeDirection: (state, action: PayloadAction<number>) => {
- 
-    
-      state.timeDirection = action.payload;  
-      state.timeSpeed=state.timeSpeed;
+      if (action.payload == state.timeDirection) {
+        let newStepIndex = 0;
+        if (action.payload > 0) {
+          newStepIndex = state.timeTravelingStepsIndex + 1;
 
-    state.isLive = false;
+        }
+        else {
+          newStepIndex = state.timeTravelingStepsIndex - 1;
+        }
+        if (newStepIndex < 0 || newStepIndex > timeTravelingSteps.length) {
+          state.timeTravelingStepsIndex = 0;
+        }
+        else {
+          state.timeTravelingStepsIndex = newStepIndex;
+        }
+      }
+
+      else {
+        state.timeTravelingStepsIndex = 0;
+      }
+
+      state.timeDirection = action.payload;
+      
+      state.timeSpeed = timeTravelingSteps[state.timeTravelingStepsIndex];
+
+      state.isLive = false;
     },
- 
+
 
     setCurrentTime: (state, action: PayloadAction<number>) => {
 
-      state.currentDate = action.payload; 
+      state.currentDate = action.payload;
 
     },
 
-    setLive: (state) => {  
+    setLive: (state) => {
       state.isLive = true;
- 
+
     },
 
   },
@@ -171,8 +195,8 @@ export const { openPopup,
   addOrbit,
   manageTools,
   setObjectsCount,
-   togglePause,
-  setTimeDirection, 
+  togglePause,
+  setTimeDirection,
   setCurrentTime,
   setLive } = generalSlice.actions;
 export default generalSlice.reducer;
