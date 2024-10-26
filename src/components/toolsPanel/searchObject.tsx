@@ -62,11 +62,13 @@ const SingleSearchGrid = ({ kind }: { kind: string }) => {
         </div>
       </div>
       <div className="utils">
-        <div>
+        <div className="btn">
           <Icon path={mdiNotebookPlus} size={1} />
+          <span className="popover">{"Add to WatchList"}</span>
         </div>
-        <div>
+        <div className="btn">
         <Icon path={mdiEyeArrowLeft} size={1} />
+        <span className="popover">{"View Object"}</span>
         </div>
       </div>
     </div>

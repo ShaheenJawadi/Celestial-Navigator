@@ -305,7 +305,7 @@ color: #8d8d8d;
   color: #ffffffe0;
   
 }
-.toolsPanelHolder .toolsBtns .single  .popover{
+  .popover{
   position: absolute;
   top: 8px;
   right: 100%;
@@ -318,7 +318,7 @@ color: #8d8d8d;
   color: #fff;
 }
 
-.toolsPanelHolder .toolsBtns .single:hover  .popover{
+*:hover>.popover{
   display: block; 
    
 }
@@ -574,6 +574,9 @@ color: #8d8d8d;
     position: absolute;
     top: 0;
     right: 4px;
+  }
+  .searchObject  .objList .singleObj .utils .btn{
+    position: relative;
   }
  
   /* ******************* */
