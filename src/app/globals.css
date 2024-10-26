@@ -480,7 +480,7 @@ color: #8d8d8d;
    /* ********************** */
 
 
-   .searchForm {
+   .searchObject  .searchForm {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -488,7 +488,7 @@ color: #8d8d8d;
     width: 100%;
   }
   
-  .searchInput { 
+  .searchObject  .searchInput { 
     padding: 10px 15px;
     font-size: 20px;
     border: 2px solid var(--primary-color);
@@ -497,11 +497,11 @@ color: #8d8d8d;
     outline: none;
   }
   
-  .searchInput:focus {
+  .searchObject  .searchInput:focus {
     border-color: var(--secondary-color);
   }
   
-  .searchButton {
+  .searchObject  .searchButton {
     background-color: var(--primary-color);
     border: none;
     color: white;
@@ -520,13 +520,44 @@ color: #8d8d8d;
     flex-direction: row;
   }
   
-  .searchButton:hover {
+  .searchObject  .searchButton:hover {
     background-color: var(--secondary-color);
   }
   
-  .searchButton:focus {
+  .searchObject  .searchButton:focus {
     outline: none;
   }
+
+  .searchObject  .objList{
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-top: 10px;
+
+  }
+
+  .searchObject  .objList .singleObj{
+  
+    padding: 15px;
+     border: 1px solid;
+    border-radius: 5px;
+    background-color: #15FB2C45;
+    border-color: #15FB2C;
+
+
+  }
+ 
+  .searchObject  .objList .singleObj.PHA{
+    background-color: #D1002D45;
+    border-color: #D1002D;
+  }
+  .searchObject  .objList .singleObj.COMET{
+    background-color: #D1C60045;
+    border-color: #D1C600;
+  }
+
+
+ 
   /* ******************* */
 
 .objectsCount{
