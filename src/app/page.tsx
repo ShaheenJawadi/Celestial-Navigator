@@ -10,6 +10,7 @@ import "react-perfect-scrollbar/dist/css/styles.css";
 import { noRender } from "@/utils/focus";
 import UIPanels from "@/components/ui";
 import { setObjectsCount } from "@/store/generalState";
+import Loading from "@/components/loading";
 
 const Orrery = dynamic(() => import("../components/main"), { ssr: false });
 
@@ -76,7 +77,7 @@ export default function Home() {
   }, [neas, phas, comets]);
 
   if (loading || isMerging) {
-    return <p>Loading...</p>;
+    return <Loading/>;
   }
 
   if (error) {
