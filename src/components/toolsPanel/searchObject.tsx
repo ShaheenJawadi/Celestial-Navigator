@@ -34,59 +34,37 @@ const SearchObject = () => {
       </small>
 
       <div className="objList">
-        <div className="singleObj">
-          <div className="dataBox g">
-            <div className="single">
-              <h4>SPK-ID:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-            <div className="single">
-              <h4>Object fullname:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-            <div className="single">
-              <h4>Primary designation:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-          </div>
-        </div>
+       <SingleSearchGrid kind="PHA"/>
+       <SingleSearchGrid kind=""/>
 
-        <div className="singleObj PHA">
-          <div className="dataBox g">
-            <div className="single">
-              <h4>SPK-ID:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-            <div className="single">
-              <h4>Object fullname:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-            <div className="single">
-              <h4>Primary designation:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-          </div>
-        </div>
-        <div className="singleObj COMET">
-          <div className="dataBox g">
-            <div className="single">
-              <h4>SPK-ID:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-            <div className="single">
-              <h4>Object fullname:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-            <div className="single">
-              <h4>Primary designation:</h4>
-              <span>dsfdsdfsdfs</span>
-            </div>
-          </div>
-        </div>
+       <SingleSearchGrid kind="COMET"/>
+       <SingleSearchGrid kind="PHA"/>
+
       </div>
 
      
     </div>
   );
 };
+
+const SingleSearchGrid = ({kind} : {kind:string}) => {
+  return (
+    <div className={`singleObj ${kind}`}>
+      <div className="dataBox g">
+        <div className="single">
+          <h4>SPK-ID:</h4>
+          <span>dsfdsdfsdfs</span>
+        </div>
+        <div className="single">
+          <h4>Object fullname:</h4>
+          <span>dsfdsdfsdfs</span>
+        </div>
+        <div className="single">
+          <h4>Primary designation:</h4>
+          <span>dsfdsdfsdfs</span>
+        </div>
+      </div>
+    </div>
+  );
+}
 export default SearchObject;
