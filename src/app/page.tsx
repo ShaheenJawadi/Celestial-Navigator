@@ -75,7 +75,7 @@ export default function Home() {
     setIsMerging(false);
     return merged as NEOTypes[];
   }, [neas, phas, comets]);
-
+  return <Loading/>;
   if (loading || isMerging) {
     return <Loading/>;
   }

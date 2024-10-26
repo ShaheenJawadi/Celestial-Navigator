@@ -64,7 +64,35 @@ a {
 .logoHolder:hover{
   opacity: 1;
 }
+.loadingScreen{
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 50px;
+}
+.loadingScreen .loadingBox{
+display: flex;
+align-items: center;
+gap: 10px;
+}
 
+.loadingScreen .loadingInd span span {
+  background-color: var(--primary-color) !important;
+}
+.loadingScreen .loadingInd span span:nth-child(odd) {
+  background-color: var(--secondary-color) !important;
+}
+
+
+
+.loadingScreen .loadingMessage{
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+}
 .popupHolder{ 
   position: absolute;
   top: 0;
