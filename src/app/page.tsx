@@ -72,10 +72,12 @@ export default function Home() {
       ...phas.map((item) => ({ ...item, neoKind: "PHA" })),
       ...comets.map((item) => ({ ...item, neoKind: "COMET" })),
     ] as NEOTypes[];
-    setIsMerging(false);
+    setTimeout(() => setIsMerging(false), 1500); 
+ 
     return merged as NEOTypes[];
-  }, [neas, phas, comets]);
-  return <Loading/>;
+  }, [neas, phas, comets]); 
+
+ 
   if (loading || isMerging) {
     return <Loading/>;
   }
