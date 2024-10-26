@@ -541,22 +541,40 @@ color: #8d8d8d;
     padding: 15px;
      border: 1px solid;
     border-radius: 5px;
-    background-color: #15FB2C45;
+    background-color: #15FB2C2b;
     border-color: #15FB2C;
-
+    color: #15FB2C;
+    padding-right: 30px;
+    position: relative;
 
   }
- 
+  .searchObject  .objList .singleObj .dataBox {
+    color: #fff;
+  }
   .searchObject  .objList .singleObj.PHA{
-    background-color: #D1002D45;
+    background-color: #D1002D2b;
     border-color: #D1002D;
+    color: #D1002D;
+
   }
   .searchObject  .objList .singleObj.COMET{
-    background-color: #D1C60045;
+    background-color: #D1C6002b;
     border-color: #D1C600;
+    color: #D1C600;
+
   }
 
-
+  .searchObject  .objList .singleObj .utils{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    right: 4px;
+  }
  
   /* ******************* */
 

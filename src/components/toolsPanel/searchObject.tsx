@@ -1,4 +1,4 @@
-import { mdiCardSearchOutline, mdiMagnify } from "@mdi/js";
+import { mdiCardSearchOutline, mdiEyeArrowLeft, mdiMagnify, mdiNotebookPlus } from "@mdi/js";
 import Icon from "@mdi/react";
 import { SetStateAction, useState } from "react";
 
@@ -34,20 +34,17 @@ const SearchObject = () => {
       </small>
 
       <div className="objList">
-       <SingleSearchGrid kind="PHA"/>
-       <SingleSearchGrid kind=""/>
+        <SingleSearchGrid kind="PHA" />
+        <SingleSearchGrid kind="" />
 
-       <SingleSearchGrid kind="COMET"/>
-       <SingleSearchGrid kind="PHA"/>
-
+        <SingleSearchGrid kind="COMET" />
+        <SingleSearchGrid kind="PHA" />
       </div>
-
-     
     </div>
   );
 };
 
-const SingleSearchGrid = ({kind} : {kind:string}) => {
+const SingleSearchGrid = ({ kind }: { kind: string }) => {
   return (
     <div className={`singleObj ${kind}`}>
       <div className="dataBox g">
@@ -64,7 +61,15 @@ const SingleSearchGrid = ({kind} : {kind:string}) => {
           <span>dsfdsdfsdfs</span>
         </div>
       </div>
+      <div className="utils">
+        <div>
+          <Icon path={mdiNotebookPlus} size={1} />
+        </div>
+        <div>
+        <Icon path={mdiEyeArrowLeft} size={1} />
+        </div>
+      </div>
     </div>
   );
-}
+};
 export default SearchObject;
