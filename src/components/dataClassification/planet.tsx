@@ -47,20 +47,7 @@ const DisplayData = ({ planetName }: { planetName: string }) => {
           })}
         </ul>
       </div>
-      <div className="units">
-        <button
-          className={state.unitSystem == "us" ? "selected" : ""}
-          onClick={() => dispatch(changeUnitSystem("us"))}
-        >
-          US
-        </button>
-        <button
-          className={state.unitSystem == "metric" ? "selected" : ""}
-          onClick={() => dispatch(changeUnitSystem("metric"))}
-        >
-          Metric
-        </button>
-      </div>
+    
       <div className="dataBox">
         {currentPlanet.map((planet, index) => {
           return (

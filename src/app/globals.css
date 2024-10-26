@@ -149,15 +149,14 @@ gap: 10px;
   margin-right: 25px;
 }
 
-.popupHolder .popup .units{
+ .units{
   display: flex;
   justify-content: center;
   align-items: center;
   padding: 10px;
   gap: 10px;
 }
- 
-.popupHolder .popup .units button.selected{
+  .units button.selected{
   background: var(--secondary-color);
 }
 

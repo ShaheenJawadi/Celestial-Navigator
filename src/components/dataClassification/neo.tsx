@@ -7,7 +7,7 @@ import {
 } from "@/utils/conversionHelpers";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { changeNeoOrbitColor, changeUnitSystem } from "@/store/generalState";
+import { changeNeoOrbitColor } from "@/store/generalState";
  
 import { useState } from "react";
 import { PopoverPicker } from "../ui/PopupColorPicker";
@@ -35,20 +35,7 @@ const DisplayData = ({
             <span className="colorPicker"><PopoverPicker color={state.neoOrbitColor} onChange={ (color:string)=>dispatch(changeNeoOrbitColor(color))}/></span>
           </div>
       </div>
-      <div className="units">
-        <button
-          className={state.unitSystem == "us" ? "selected" : ""}
-          onClick={() => dispatch(changeUnitSystem("us"))}
-        >
-          US
-        </button>
-        <button
-          className={state.unitSystem == "metric" ? "selected" : ""}
-          onClick={() => dispatch(changeUnitSystem("metric"))}
-        >
-          Metric
-        </button>
-      </div>
+
       <div className="dataBox">
         <>
           <div className="subDataSep">

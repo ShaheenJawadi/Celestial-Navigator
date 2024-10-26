@@ -1,12 +1,41 @@
 "use client";
-
+import { AppDispatch, RootState } from "@/store";
+import { useDispatch, useSelector } from "react-redux";
 import { PopoverPicker } from "../ui/PopupColorPicker";
+import { changeUnitSystem } from "@/store/generalState";
 
 const Settings = () => {
+
+  const state = useSelector((state: RootState) => state.generalState);
+  const dispatch = useDispatch<AppDispatch>();
+
   return (
     <>
+    <>
+    
+    <div className="subDataSep">
+        <div className="tit">Unit Preferences</div>
+        <div className="separator"></div>
+      </div>
+      <div className="units">
+        <button
+          className={state.unitSystem == "us" ? "selected" : ""}
+          onClick={() => dispatch(changeUnitSystem("us"))}
+        >
+          US
+        </button>
+        <button
+          className={state.unitSystem == "metric" ? "selected" : ""}
+          onClick={() => dispatch(changeUnitSystem("metric"))}
+        >
+          Metric
+        </button>
+      </div>
+      </>
+      
+
       <div className="dataBox g colorsList">
-      <div className="subDataSep">
+        <div className="subDataSep">
           <div className="tit">Colors</div>
           <div className="separator"></div>
         </div>
@@ -74,9 +103,6 @@ const Settings = () => {
         <input type="checkbox" className={"checkboxInput"} />
         <span className={"checkmark"}></span>
       </label>
-     
-    
-    
     </>
   );
 };
