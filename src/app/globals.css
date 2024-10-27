@@ -208,7 +208,7 @@ color: #8d8d8d;
 
 }
 
-.dataBox:not(.g) .single:not(:last-child)::after {
+.dataBox:not(.g) .single:not(.nb):not(:last-child)::after {
   content: "";
   position: absolute;
   bottom: -5px;
@@ -258,11 +258,31 @@ color: #8d8d8d;
 .colorPicker .palettePopover {
   position: absolute;
   top: calc(100% + 2px);
-  left: 0;
+  left: 100%;
   border-radius: 9px;
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
 
+.ttBox{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-right: 25px;
+}
+.ttBox .btn{
+cursor: pointer;
+padding: 5px;
+height: 35px;
+width: 35px;
+background: #0b3d917d;
+color: #fff;
+position: relative;
+border-radius: 50%;
+border: 2px solid var(--primary-color);
+display: flex;
+align-items: center;
+}
 
 /* ********************** */
 

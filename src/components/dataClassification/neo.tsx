@@ -2,16 +2,15 @@ import { NEOTypes } from "@/types/NEO";
 import {
   convertAU,
   convertUSToMetricDistances,
-  dateToJulian,
   julianToDate,
 } from "@/utils/conversionHelpers";
 import { AppDispatch, RootState } from "@/store";
 import { useDispatch, useSelector } from "react-redux";
-import { changeNeoOrbitColor } from "@/store/generalState";
- 
+
 import { useState } from "react";
-import { PopoverPicker } from "../ui/PopupColorPicker";
-import { stat } from "fs";
+
+import { mdiNotebookPlus } from "@mdi/js";
+import Icon from "@mdi/react";
 const DisplayData = ({
   neoData,
 }: {
@@ -20,23 +19,22 @@ const DisplayData = ({
   const { kind, objectData } = neoData;
   const state = useSelector((state: RootState) => state.generalState);
   const dispatch = useDispatch<AppDispatch>();
-  
+
   const [color, setColor] = useState(state.neoOrbitColor);
   return (
     <>
-      <div className="dataBox">
-        <div className="single">
-          <h4>Object kind:</h4>
-          <span>{kind}</span>
-       
-        </div>
-        <div className="single">
-            <h4>Orbit Color:</h4>
-            <span className="colorPicker"><PopoverPicker color={state.neoOrbitColor} onChange={ (color:string)=>dispatch(changeNeoOrbitColor(color))}/></span>
+      <div className="dataBox  ">
+        <div className="ttBox">
+          <div className="single nb">
+            <h4>Object kind:</h4>
+            <span>{kind}</span>
           </div>
-      </div>
 
-      <div className="dataBox">
+          <div className="btn">
+            <Icon path={mdiNotebookPlus} size={1} />
+            <span className="popover">{"Add to WatchList"}</span>
+          </div>
+        </div>
         <>
           <div className="subDataSep">
             <div className="tit">Identification Information</div>
