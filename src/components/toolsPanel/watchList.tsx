@@ -46,8 +46,10 @@ const SingleWatchListGrid = ({ kind }: { kind: string }) => {
         </div>
       
         <div className="btn">
-          <Icon path={mdiPalette} size={1} />
-        
+          
+          <span className="colorPicker">
+            <PopoverPicker ColorIcon={<Icon path={mdiPalette} size={1} />} color={"#fff"} onChange={(color: string) => null} />
+          </span>
           <span className="popover">{"Change Orbit Color"}</span>
         </div>
 

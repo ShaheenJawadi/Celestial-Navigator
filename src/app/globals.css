@@ -255,7 +255,7 @@ color: #8d8d8d;
   cursor: pointer;
 }
 
-.colorPicker .popover {
+.colorPicker .palettePopover {
   position: absolute;
   top: calc(100% + 2px);
   left: 0;
