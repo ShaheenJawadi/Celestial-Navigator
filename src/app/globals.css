@@ -528,7 +528,7 @@ color: #8d8d8d;
     outline: none;
   }
 
-  .searchObject  .objList{
+  .objList{
     display: flex;
     flex-direction: column;
     gap: 8px;
@@ -536,7 +536,7 @@ color: #8d8d8d;
 
   }
 
-  .searchObject  .objList .singleObj{
+  .objList .singleObj{
   
     padding: 15px;
      border: 1px solid;
@@ -548,23 +548,23 @@ color: #8d8d8d;
     position: relative;
 
   }
-  .searchObject  .objList .singleObj .dataBox {
+  .objList .singleObj .dataBox {
     color: #fff;
   }
-  .searchObject  .objList .singleObj.PHA{
+  .objList .singleObj.PHA{
     background-color: #D1002D2b;
     border-color: #D1002D;
     color: #D1002D;
 
   }
-  .searchObject  .objList .singleObj.COMET{
+  .objList .singleObj.COMET{
     background-color: #D1C6002b;
     border-color: #D1C600;
     color: #D1C600;
 
   }
 
-  .searchObject  .objList .singleObj .utils{
+  .objList .singleObj .utils{
     margin-top: 10px;
     display: flex;
     flex-direction: column;
@@ -575,7 +575,7 @@ color: #8d8d8d;
     top: 0;
     right: 4px;
   }
-  .searchObject  .objList .singleObj .utils .btn{
+  .objList .singleObj .utils .btn{
     position: relative;
   }
  
